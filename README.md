@@ -48,7 +48,11 @@ Parameters with a default value must be set by name.
 use Stagehand\Client;
 
 $client = new Client(
-  apiKey: getenv('STAGEHAND_API_KEY') ?: 'My API Key', environment: 'dev'
+  browserbaseAPIKey: getenv('BROWSERBASE_API_KEY') ?: 'My Browserbase API Key',
+  browserbaseProjectID: getenv(
+    'BROWSERBASE_PROJECT_ID'
+  ) ?: 'My Browserbase Project ID',
+  modelAPIKey: getenv('MODEL_API_KEY') ?: 'My Model API Key',
 );
 
 $response = $client->sessions->act(
