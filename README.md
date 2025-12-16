@@ -1,19 +1,19 @@
-# Browserbase PHP API library
+# Stagehand PHP API library
 
 > [!NOTE]
-> The Browserbase PHP API Library is currently in **beta** and we're excited for you to experiment with it!
+> The Stagehand PHP API Library is currently in **beta** and we're excited for you to experiment with it!
 >
 > This library has not yet been exhaustively tested in production environments and may be missing some features you'd expect in a stable release. As we continue development, there may be breaking changes that require updates to your code.
 >
 > **We'd love your feedback!** Please share any suggestions, bug reports, feature requests, or general thoughts by [filing an issue](https://www.github.com/browserbase/stagehand-php/issues/new).
 
-The Browserbase PHP library provides convenient access to the Browserbase REST API from any PHP 8.1.0+ application.
+The Stagehand PHP library provides convenient access to the Stagehand REST API from any PHP 8.1.0+ application.
 
 It is generated with [Stainless](https://www.stainless.com/).
 
 ## Documentation
 
-The REST API documentation can be found on [browserbase.com](https://browserbase.com).
+The REST API documentation can be found on [docs.stagehand.dev](https://docs.stagehand.dev).
 
 ## Installation
 

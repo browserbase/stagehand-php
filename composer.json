@@ -28,7 +28,7 @@
     "preferred-install": "dist",
     "sort-packages": true
   },
-  "description": "Browserbase PHP SDK",
+  "description": "Stagehand PHP SDK",
   "name": "browserbase/stagehand",
   "require": {
     "php": "^8.1",

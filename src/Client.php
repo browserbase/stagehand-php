@@ -24,7 +24,7 @@ class Client extends BaseClient
         $this->apiKey = (string) ($apiKey ?? getenv('STAGEHAND_API_KEY'));
 
         $baseUrl ??= getenv(
-            'BROWSERBASE_BASE_URL'
+            'STAGEHAND_BASE_URL'
         ) ?: 'https://api.stagehand.browserbase.com/v1';
 
         $options = RequestOptions::with(
@@ -38,7 +38,7 @@ class Client extends BaseClient
             headers: [
                 'Content-Type' => 'application/json',
                 'Accept' => 'application/json',
-                'User-Agent' => sprintf('browserbase/PHP %s', VERSION),
+                'User-Agent' => sprintf('stagehand/PHP %s', VERSION),
                 'X-Stainless-Lang' => 'php',
                 'X-Stainless-Package-Version' => '0.0.1',
                 'X-Stainless-Arch' => Util::machtype(),
