@@ -9,9 +9,7 @@ use Stagehand\Core\Concerns\SdkModel;
 use Stagehand\Core\Contracts\BaseModel;
 
 /**
- * @phpstan-type SessionExecuteAgentResponseShape = array{
- *   message?: string|null, steps?: list<mixed>|null
- * }
+ * @phpstan-type SessionExecuteAgentResponseShape = array{message?: string|null}
  */
 final class SessionExecuteAgentResponse implements BaseModel
 {
@@ -24,14 +22,6 @@ final class SessionExecuteAgentResponse implements BaseModel
     #[Optional]
     public ?string $message;
 
-    /**
-     * Steps taken by the agent.
-     *
-     * @var list<mixed>|null $steps
-     */
-    #[Optional(list: 'mixed')]
-    public ?array $steps;
-
     public function __construct()
     {
         $this->initialize();
@@ -41,17 +31,12 @@ final class SessionExecuteAgentResponse implements BaseModel
      * Construct an instance from the required parameters.
      *
      * You must use named parameters to construct any parameters with a default value.
-     *
-     * @param list<mixed> $steps
      */
-    public static function with(
-        ?string $message = null,
-        ?array $steps = null
-    ): self {
+    public static function with(?string $message = null): self
+    {
         $self = new self;
 
         null !== $message && $self['message'] = $message;
-        null !== $steps && $self['steps'] = $steps;
 
         return $self;
     }
@@ -63,19 +48,6 @@ final class SessionExecuteAgentResponse implements BaseModel
     {
         $self = clone $this;
         $self['message'] = $message;
-
-        return $self;
-    }
-
-    /**
-     * Steps taken by the agent.
-     *
-     * @param list<mixed> $steps
-     */
-    public function withSteps(array $steps): self
-    {
-        $self = clone $this;
-        $self['steps'] = $steps;
 
         return $self;
     }

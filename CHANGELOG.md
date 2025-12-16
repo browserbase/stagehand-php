@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.2.0 (2025-12-16)
+
+Full Changelog: [v0.1.0...v0.2.0](https://github.com/browserbase/stagehand-php/compare/v0.1.0...v0.2.0)
+
+### Features
+
+* **api:** manual updates ([45ddfc2](https://github.com/browserbase/stagehand-php/commit/45ddfc23d06b22d47fe85f6d55dbe6f78f32d782))
+* **api:** manual updates ([77aeeea](https://github.com/browserbase/stagehand-php/commit/77aeeea5ae9c63e4239c9f37026f33e20dd8a5d7))
+
 ## 0.1.0 (2025-12-16)
 
 Full Changelog: [v0.0.1...v0.1.0](https://github.com/browserbase/stagehand-php/compare/v0.0.1...v0.1.0)
