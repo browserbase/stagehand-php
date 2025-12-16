@@ -9,8 +9,6 @@ use Stagehand\Core\Attributes\Required;
 use Stagehand\Core\Concerns\SdkModel;
 use Stagehand\Core\Concerns\SdkParams;
 use Stagehand\Core\Contracts\BaseModel;
-use Stagehand\Sessions\SessionStartParams\Env;
-use Stagehand\Sessions\SessionStartParams\LocalBrowserLaunchOptions;
 
 /**
  * Initializes a new Stagehand session with a browser instance.
@@ -19,14 +17,10 @@ use Stagehand\Sessions\SessionStartParams\LocalBrowserLaunchOptions;
  * @see Stagehand\Services\SessionsService::start()
  *
  * @phpstan-type SessionStartParamsShape = array{
- *   env: Env|value-of<Env>,
- *   apiKey?: string,
+ *   browserbaseAPIKey: string,
+ *   browserbaseProjectID: string,
  *   domSettleTimeout?: int,
- *   localBrowserLaunchOptions?: LocalBrowserLaunchOptions|array{
- *     headless?: bool|null
- *   },
  *   model?: string,
- *   projectID?: string,
  *   selfHeal?: bool,
  *   systemPrompt?: string,
  *   verbose?: int,
@@ -39,18 +33,16 @@ final class SessionStartParams implements BaseModel
     use SdkParams;
 
     /**
-     * Environment to run the browser in.
-     *
-     * @var value-of<Env> $env
+     * API key for Browserbase Cloud.
      */
-    #[Required(enum: Env::class)]
-    public string $env;
+    #[Required('BROWSERBASE_API_KEY')]
+    public string $browserbaseAPIKey;
 
     /**
-     * API key for Browserbase (required when env=BROWSERBASE).
+     * Project ID for Browserbase.
      */
-    #[Optional]
-    public ?string $apiKey;
+    #[Required('BROWSERBASE_PROJECT_ID')]
+    public string $browserbaseProjectID;
 
     /**
      * Timeout in ms to wait for DOM to settle.
@@ -59,22 +51,10 @@ final class SessionStartParams implements BaseModel
     public ?int $domSettleTimeout;
 
     /**
-     * Options for local browser launch.
-     */
-    #[Optional]
-    public ?LocalBrowserLaunchOptions $localBrowserLaunchOptions;
-
-    /**
-     * AI model to use for actions.
+     * AI model to use for actions (must be prefixed with provider/).
      */
     #[Optional]
     public ?string $model;
-
-    /**
-     * Project ID for Browserbase (required when env=BROWSERBASE).
-     */
-    #[Optional('projectId')]
-    public ?string $projectID;
 
     /**
      * Enable self-healing for failed actions.
@@ -99,13 +79,15 @@ final class SessionStartParams implements BaseModel
      *
      * To enforce required parameters use
      * ```
-     * SessionStartParams::with(env: ...)
+     * SessionStartParams::with(browserbaseAPIKey: ..., browserbaseProjectID: ...)
      * ```
      *
      * Otherwise ensure the following setters are called
      *
      * ```
-     * (new SessionStartParams)->withEnv(...)
+     * (new SessionStartParams)
+     *   ->withBrowserbaseAPIKey(...)
+     *   ->withBrowserbaseProjectID(...)
      * ```
      */
     public function __construct()
@@ -117,32 +99,23 @@ final class SessionStartParams implements BaseModel
      * Construct an instance from the required parameters.
      *
      * You must use named parameters to construct any parameters with a default value.
-     *
-     * @param Env|value-of<Env> $env
-     * @param LocalBrowserLaunchOptions|array{
-     *   headless?: bool|null
-     * } $localBrowserLaunchOptions
      */
     public static function with(
-        Env|string $env,
-        ?string $apiKey = null,
+        string $browserbaseAPIKey,
+        string $browserbaseProjectID,
         ?int $domSettleTimeout = null,
-        LocalBrowserLaunchOptions|array|null $localBrowserLaunchOptions = null,
         ?string $model = null,
-        ?string $projectID = null,
         ?bool $selfHeal = null,
         ?string $systemPrompt = null,
         ?int $verbose = null,
     ): self {
         $self = new self;
 
-        $self['env'] = $env;
+        $self['browserbaseAPIKey'] = $browserbaseAPIKey;
+        $self['browserbaseProjectID'] = $browserbaseProjectID;
 
-        null !== $apiKey && $self['apiKey'] = $apiKey;
         null !== $domSettleTimeout && $self['domSettleTimeout'] = $domSettleTimeout;
-        null !== $localBrowserLaunchOptions && $self['localBrowserLaunchOptions'] = $localBrowserLaunchOptions;
         null !== $model && $self['model'] = $model;
-        null !== $projectID && $self['projectID'] = $projectID;
         null !== $selfHeal && $self['selfHeal'] = $selfHeal;
         null !== $systemPrompt && $self['systemPrompt'] = $systemPrompt;
         null !== $verbose && $self['verbose'] = $verbose;
@@ -151,25 +124,23 @@ final class SessionStartParams implements BaseModel
     }
 
     /**
-     * Environment to run the browser in.
-     *
-     * @param Env|value-of<Env> $env
+     * API key for Browserbase Cloud.
      */
-    public function withEnv(Env|string $env): self
+    public function withBrowserbaseAPIKey(string $browserbaseAPIKey): self
     {
         $self = clone $this;
-        $self['env'] = $env;
+        $self['browserbaseAPIKey'] = $browserbaseAPIKey;
 
         return $self;
     }
 
     /**
-     * API key for Browserbase (required when env=BROWSERBASE).
+     * Project ID for Browserbase.
      */
-    public function withAPIKey(string $apiKey): self
+    public function withBrowserbaseProjectID(string $browserbaseProjectID): self
     {
         $self = clone $this;
-        $self['apiKey'] = $apiKey;
+        $self['browserbaseProjectID'] = $browserbaseProjectID;
 
         return $self;
     }
@@ -186,39 +157,12 @@ final class SessionStartParams implements BaseModel
     }
 
     /**
-     * Options for local browser launch.
-     *
-     * @param LocalBrowserLaunchOptions|array{
-     *   headless?: bool|null
-     * } $localBrowserLaunchOptions
-     */
-    public function withLocalBrowserLaunchOptions(
-        LocalBrowserLaunchOptions|array $localBrowserLaunchOptions
-    ): self {
-        $self = clone $this;
-        $self['localBrowserLaunchOptions'] = $localBrowserLaunchOptions;
-
-        return $self;
-    }
-
-    /**
-     * AI model to use for actions.
+     * AI model to use for actions (must be prefixed with provider/).
      */
     public function withModel(string $model): self
     {
         $self = clone $this;
         $self['model'] = $model;
-
-        return $self;
-    }
-
-    /**
-     * Project ID for Browserbase (required when env=BROWSERBASE).
-     */
-    public function withProjectID(string $projectID): self
-    {
-        $self = clone $this;
-        $self['projectID'] = $projectID;
 
         return $self;
     }

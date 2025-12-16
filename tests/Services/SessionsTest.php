@@ -207,7 +207,10 @@ final class SessionsTest extends TestCase
             $this->markTestSkipped('Prism tests are disabled');
         }
 
-        $result = $this->client->sessions->start(env: 'LOCAL');
+        $result = $this->client->sessions->start(
+            browserbaseAPIKey: 'BROWSERBASE_API_KEY',
+            browserbaseProjectID: 'BROWSERBASE_PROJECT_ID',
+        );
 
         // @phpstan-ignore-next-line method.alreadyNarrowedType
         $this->assertInstanceOf(SessionStartResponse::class, $result);
@@ -221,12 +224,10 @@ final class SessionsTest extends TestCase
         }
 
         $result = $this->client->sessions->start(
-            env: 'LOCAL',
-            apiKey: 'apiKey',
+            browserbaseAPIKey: 'BROWSERBASE_API_KEY',
+            browserbaseProjectID: 'BROWSERBASE_PROJECT_ID',
             domSettleTimeout: 0,
-            localBrowserLaunchOptions: ['headless' => true],
             model: 'openai/gpt-4o',
-            projectID: 'projectId',
             selfHeal: true,
             systemPrompt: 'systemPrompt',
             verbose: 1,
