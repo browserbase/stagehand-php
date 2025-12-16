@@ -89,7 +89,23 @@ abstract class BaseClient
     }
 
     /** @return array<string,string> */
-    abstract protected function authHeaders(): array;
+    protected function authHeaders(): array
+    {
+        return [
+            ...$this->bbAPIKeyAuth(),
+            ...$this->bbProjectIDAuth(),
+            ...$this->llmModelAPIKeyAuth(),
+        ];
+    }
+
+    /** @return array<string,string> */
+    abstract protected function bbAPIKeyAuth(): array;
+
+    /** @return array<string,string> */
+    abstract protected function bbProjectIDAuth(): array;
+
+    /** @return array<string,string> */
+    abstract protected function llmModelAPIKeyAuth(): array;
 
     /**
      * @internal

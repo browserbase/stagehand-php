@@ -5,7 +5,7 @@
 >
 > This library has not yet been exhaustively tested in production environments and may be missing some features you'd expect in a stable release. As we continue development, there may be breaking changes that require updates to your code.
 >
-> **We'd love your feedback!** Please share any suggestions, bug reports, feature requests, or general thoughts by [filing an issue](https://www.github.com/stainless-sdks/stagehand-php/issues/new).
+> **We'd love your feedback!** Please share any suggestions, bug reports, feature requests, or general thoughts by [filing an issue](https://www.github.com/browserbase/stagehand-php/issues/new).
 
 The Stagehand PHP library provides convenient access to the Stagehand REST API from any PHP 8.1.0+ application.
 
@@ -13,25 +13,29 @@ It is generated with [Stainless](https://www.stainless.com/).
 
 ## Documentation
 
-The REST API documentation can be found on [browserbase.com](https://browserbase.com).
+The REST API documentation can be found on [docs.stagehand.dev](https://docs.stagehand.dev).
 
 ## Installation
 
 To use this package, install via Composer by adding the following to your application's `composer.json`:
+
+<!-- x-release-please-start-version -->
 
 ```json
 {
   "repositories": [
     {
       "type": "vcs",
-      "url": "git@github.com:stainless-sdks/stagehand-php.git"
+      "url": "git@github.com:browserbase/stagehand-php.git"
     }
   ],
   "require": {
-    "org-placeholder/stagehand": "dev-main"
+    "browserbase/stagehand": "dev-main"
   }
 }
 ```
+
+<!-- x-release-please-end -->
 
 ## Usage
 
@@ -44,13 +48,19 @@ Parameters with a default value must be set by name.
 use Stagehand\Client;
 
 $client = new Client(
-  apiKey: getenv('STAGEHAND_API_KEY') ?: 'My API Key',
-  environment: 'environment_1',
+  browserbaseAPIKey: getenv('BROWSERBASE_API_KEY') ?: 'My Browserbase API Key',
+  browserbaseProjectID: getenv(
+    'BROWSERBASE_PROJECT_ID'
+  ) ?: 'My Browserbase Project ID',
+  modelAPIKey: getenv('MODEL_API_KEY') ?: 'My Model API Key',
 );
 
-$response = $client->sessions->start(env: 'LOCAL');
+$response = $client->sessions->act(
+  '00000000-your-session-id-000000000000',
+  input: 'click the first link on the page',
+);
 
-var_dump($response->available);
+var_dump($response->actions);
 ```
 
 ### Value Objects
@@ -70,7 +80,10 @@ When the library is unable to connect to the API, or if the API returns a non-su
 use Stagehand\Core\Exceptions\APIConnectionException;
 
 try {
-  $response = $client->sessions->start(env: 'LOCAL');
+  $response = $client->sessions->start(
+    browserbaseAPIKey: '<your API key here>',
+    browserbaseProjectID: '<your project ID here>',
+  );
 } catch (APIConnectionException $e) {
   echo "The server could not be reached", PHP_EOL;
   var_dump($e->getPrevious());
@@ -117,7 +130,9 @@ $client = new Client(maxRetries: 0);
 
 // Or, configure per-request:
 $result = $client->sessions->start(
-  env: 'LOCAL', requestOptions: RequestOptions::with(maxRetries: 5)
+  browserbaseAPIKey: '<your API key here>',
+  browserbaseProjectID: '<your project ID here>',
+  requestOptions: RequestOptions::with(maxRetries: 5),
 );
 ```
 
@@ -137,7 +152,8 @@ Note: the `extra*` parameters of the same name overrides the documented paramete
 use Stagehand\RequestOptions;
 
 $response = $client->sessions->start(
-  env: 'LOCAL',
+  browserbaseAPIKey: '<your API key here>',
+  browserbaseProjectID: '<your project ID here>',
   requestOptions: RequestOptions::with(
     extraQueryParams: ['my_query_parameter' => 'value'],
     extraBodyParams: ['my_body_parameter' => 'value'],
@@ -178,4 +194,4 @@ PHP 8.1.0 or higher.
 
 ## Contributing
 
-See [the contributing documentation](https://github.com/stainless-sdks/stagehand-php/tree/main/CONTRIBUTING.md).
+See [the contributing documentation](https://github.com/browserbase/stagehand-php/tree/main/CONTRIBUTING.md).

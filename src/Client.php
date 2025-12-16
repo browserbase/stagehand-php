@@ -12,18 +12,30 @@ use Stagehand\Services\SessionsService;
 
 class Client extends BaseClient
 {
-    public string $apiKey;
+    public string $browserbaseAPIKey;
+
+    public string $browserbaseProjectID;
+
+    public string $modelAPIKey;
 
     /**
      * @api
      */
     public SessionsService $sessions;
 
-    public function __construct(?string $apiKey = null, ?string $baseUrl = null)
-    {
-        $this->apiKey = (string) ($apiKey ?? getenv('STAGEHAND_API_KEY'));
+    public function __construct(
+        ?string $browserbaseAPIKey = null,
+        ?string $browserbaseProjectID = null,
+        ?string $modelAPIKey = null,
+        ?string $baseUrl = null,
+    ) {
+        $this->browserbaseAPIKey = (string) ($browserbaseAPIKey ?? getenv('BROWSERBASE_API_KEY'));
+        $this->browserbaseProjectID = (string) ($browserbaseProjectID ?? getenv('BROWSERBASE_PROJECT_ID'));
+        $this->modelAPIKey = (string) ($modelAPIKey ?? getenv('MODEL_API_KEY'));
 
-        $baseUrl ??= getenv('STAGEHAND_BASE_URL') ?: 'http://localhost:3000/v1';
+        $baseUrl ??= getenv(
+            'STAGEHAND_BASE_URL'
+        ) ?: 'https://api.stagehand.browserbase.com/v1';
 
         $options = RequestOptions::with(
             uriFactory: Psr17FactoryDiscovery::findUriFactory(),
@@ -52,8 +64,24 @@ class Client extends BaseClient
     }
 
     /** @return array<string,string> */
-    protected function authHeaders(): array
+    protected function bbAPIKeyAuth(): array
     {
-        return $this->apiKey ? ['Authorization' => "Bearer {$this->apiKey}"] : [];
+        return $this->browserbaseAPIKey ? [
+            'x-bb-api-key' => $this->browserbaseAPIKey,
+        ] : [];
+    }
+
+    /** @return array<string,string> */
+    protected function bbProjectIDAuth(): array
+    {
+        return $this->browserbaseProjectID ? [
+            'x-bb-project-id' => $this->browserbaseProjectID,
+        ] : [];
+    }
+
+    /** @return array<string,string> */
+    protected function llmModelAPIKeyAuth(): array
+    {
+        return $this->modelAPIKey ? ['x-model-api-key' => $this->modelAPIKey] : [];
     }
 }
