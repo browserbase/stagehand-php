@@ -56,7 +56,7 @@ $client = new Client(
 );
 
 $response = $client->sessions->act(
-  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+  '00000000-your-session-id-000000000000',
   input: 'click the first link on the page',
 );
 
@@ -81,8 +81,8 @@ use Stagehand\Core\Exceptions\APIConnectionException;
 
 try {
   $response = $client->sessions->start(
-    browserbaseAPIKey: 'BROWSERBASE_API_KEY',
-    browserbaseProjectID: 'BROWSERBASE_PROJECT_ID',
+    browserbaseAPIKey: '<your API key here>',
+    browserbaseProjectID: '<your project ID here>',
   );
 } catch (APIConnectionException $e) {
   echo "The server could not be reached", PHP_EOL;
@@ -130,8 +130,8 @@ $client = new Client(maxRetries: 0);
 
 // Or, configure per-request:
 $result = $client->sessions->start(
-  browserbaseAPIKey: 'BROWSERBASE_API_KEY',
-  browserbaseProjectID: 'BROWSERBASE_PROJECT_ID',
+  browserbaseAPIKey: '<your API key here>',
+  browserbaseProjectID: '<your project ID here>',
   requestOptions: RequestOptions::with(maxRetries: 5),
 );
 ```
@@ -152,8 +152,8 @@ Note: the `extra*` parameters of the same name overrides the documented paramete
 use Stagehand\RequestOptions;
 
 $response = $client->sessions->start(
-  browserbaseAPIKey: 'BROWSERBASE_API_KEY',
-  browserbaseProjectID: 'BROWSERBASE_PROJECT_ID',
+  browserbaseAPIKey: '<your API key here>',
+  browserbaseProjectID: '<your project ID here>',
   requestOptions: RequestOptions::with(
     extraQueryParams: ['my_query_parameter' => 'value'],
     extraBodyParams: ['my_body_parameter' => 'value'],
