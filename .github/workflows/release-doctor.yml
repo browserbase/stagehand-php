@@ -18,5 +18,5 @@ jobs:
         run: |
           bash ./bin/check-release-environment
         env:
-          PACKAGIST_USERNAME: ${{ secrets.STAGEHAND_PACKAGIST_USERNAME || secrets.PACKAGIST_USERNAME }}
-          PACKAGIST_SAFE_KEY: ${{ secrets.STAGEHAND_PACKAGIST_SAFE_KEY || secrets.PACKAGIST_SAFE_KEY }}
+          PACKAGIST_USERNAME: ${{ secrets.BROWSERBASE_PACKAGIST_USERNAME || secrets.PACKAGIST_USERNAME }}
+          PACKAGIST_SAFE_KEY: ${{ secrets.BROWSERBASE_PACKAGIST_SAFE_KEY || secrets.PACKAGIST_SAFE_KEY }}
