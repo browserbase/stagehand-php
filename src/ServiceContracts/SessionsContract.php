@@ -15,7 +15,6 @@ use Stagehand\Sessions\SessionExecuteAgentResponse;
 use Stagehand\Sessions\SessionExtractResponse\Extraction;
 use Stagehand\Sessions\SessionNavigateParams\Options\WaitUntil;
 use Stagehand\Sessions\SessionNavigateResponse;
-use Stagehand\Sessions\SessionStartParams\Env;
 use Stagehand\Sessions\SessionStartResponse;
 
 interface SessionsContract
@@ -188,14 +187,10 @@ interface SessionsContract
     /**
      * @api
      *
-     * @param 'LOCAL'|'BROWSERBASE'|Env $env Environment to run the browser in
-     * @param string $apiKey API key for Browserbase (required when env=BROWSERBASE)
+     * @param string $browserbaseAPIKey API key for Browserbase Cloud
+     * @param string $browserbaseProjectID Project ID for Browserbase
      * @param int $domSettleTimeout Timeout in ms to wait for DOM to settle
-     * @param array{
-     *   headless?: bool
-     * } $localBrowserLaunchOptions Options for local browser launch
-     * @param string $model AI model to use for actions
-     * @param string $projectID Project ID for Browserbase (required when env=BROWSERBASE)
+     * @param string $model AI model to use for actions (must be prefixed with provider/)
      * @param bool $selfHeal Enable self-healing for failed actions
      * @param string $systemPrompt Custom system prompt for AI actions
      * @param int $verbose Logging verbosity level
@@ -203,12 +198,10 @@ interface SessionsContract
      * @throws APIException
      */
     public function start(
-        string|Env $env,
-        ?string $apiKey = null,
+        string $browserbaseAPIKey,
+        string $browserbaseProjectID,
         ?int $domSettleTimeout = null,
-        ?array $localBrowserLaunchOptions = null,
         ?string $model = null,
-        ?string $projectID = null,
         ?bool $selfHeal = null,
         ?string $systemPrompt = null,
         int $verbose = 0,

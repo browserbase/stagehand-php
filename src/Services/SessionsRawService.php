@@ -27,7 +27,6 @@ use Stagehand\Sessions\SessionNavigateParams\Options\WaitUntil;
 use Stagehand\Sessions\SessionNavigateResponse;
 use Stagehand\Sessions\SessionObserveParams;
 use Stagehand\Sessions\SessionStartParams;
-use Stagehand\Sessions\SessionStartParams\Env;
 use Stagehand\Sessions\SessionStartResponse;
 
 final class SessionsRawService implements SessionsRawContract
@@ -346,12 +345,10 @@ final class SessionsRawService implements SessionsRawContract
      * Returns a session ID that must be used for all subsequent requests.
      *
      * @param array{
-     *   env: 'LOCAL'|'BROWSERBASE'|Env,
-     *   apiKey?: string,
+     *   browserbaseAPIKey: string,
+     *   browserbaseProjectID: string,
      *   domSettleTimeout?: int,
-     *   localBrowserLaunchOptions?: array{headless?: bool},
      *   model?: string,
-     *   projectID?: string,
      *   selfHeal?: bool,
      *   systemPrompt?: string,
      *   verbose?: int,

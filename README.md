@@ -51,9 +51,12 @@ $client = new Client(
   apiKey: getenv('STAGEHAND_API_KEY') ?: 'My API Key', environment: 'dev'
 );
 
-$response = $client->sessions->start(env: 'LOCAL');
+$response = $client->sessions->act(
+  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+  input: 'click the first link on the page',
+);
 
-var_dump($response->available);
+var_dump($response->actions);
 ```
 
 ### Value Objects
@@ -73,7 +76,10 @@ When the library is unable to connect to the API, or if the API returns a non-su
 use Stagehand\Core\Exceptions\APIConnectionException;
 
 try {
-  $response = $client->sessions->start(env: 'LOCAL');
+  $response = $client->sessions->start(
+    browserbaseAPIKey: 'BROWSERBASE_API_KEY',
+    browserbaseProjectID: 'BROWSERBASE_PROJECT_ID',
+  );
 } catch (APIConnectionException $e) {
   echo "The server could not be reached", PHP_EOL;
   var_dump($e->getPrevious());
@@ -120,7 +126,9 @@ $client = new Client(maxRetries: 0);
 
 // Or, configure per-request:
 $result = $client->sessions->start(
-  env: 'LOCAL', requestOptions: RequestOptions::with(maxRetries: 5)
+  browserbaseAPIKey: 'BROWSERBASE_API_KEY',
+  browserbaseProjectID: 'BROWSERBASE_PROJECT_ID',
+  requestOptions: RequestOptions::with(maxRetries: 5),
 );
 ```
 
@@ -140,7 +148,8 @@ Note: the `extra*` parameters of the same name overrides the documented paramete
 use Stagehand\RequestOptions;
 
 $response = $client->sessions->start(
-  env: 'LOCAL',
+  browserbaseAPIKey: 'BROWSERBASE_API_KEY',
+  browserbaseProjectID: 'BROWSERBASE_PROJECT_ID',
   requestOptions: RequestOptions::with(
     extraQueryParams: ['my_query_parameter' => 'value'],
     extraBodyParams: ['my_body_parameter' => 'value'],
