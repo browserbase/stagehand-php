@@ -80,7 +80,7 @@ When the library is unable to connect to the API, or if the API returns a non-su
 use Stagehand\Core\Exceptions\APIConnectionException;
 
 try {
-  $response = $client->sessions->start(modelName: 'gpt-4o');
+  $response = $client->sessions->start(modelName: 'openai/gpt-5-nano');
 } catch (APIConnectionException $e) {
   echo "The server could not be reached", PHP_EOL;
   var_dump($e->getPrevious());
@@ -127,7 +127,8 @@ $client = new Client(maxRetries: 0);
 
 // Or, configure per-request:
 $result = $client->sessions->start(
-  modelName: 'gpt-4o', requestOptions: RequestOptions::with(maxRetries: 5)
+  modelName: 'openai/gpt-5-nano',
+  requestOptions: RequestOptions::with(maxRetries: 5),
 );
 ```
 
@@ -147,7 +148,7 @@ Note: the `extra*` parameters of the same name overrides the documented paramete
 use Stagehand\RequestOptions;
 
 $response = $client->sessions->start(
-  modelName: 'gpt-4o',
+  modelName: 'openai/gpt-5-nano',
   requestOptions: RequestOptions::with(
     extraQueryParams: ['my_query_parameter' => 'value'],
     extraBodyParams: ['my_body_parameter' => 'value'],
