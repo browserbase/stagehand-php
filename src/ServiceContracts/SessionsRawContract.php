@@ -21,7 +21,7 @@ interface SessionsRawContract
      * @api
      *
      * @param mixed $id Path param: Unique session identifier
-     * @param array<mixed>|SessionActParams $params
+     * @param array<string,mixed>|SessionActParams $params
      *
      * @return BaseResponse<mixed>
      *
@@ -37,7 +37,7 @@ interface SessionsRawContract
      * @api
      *
      * @param mixed $id Unique session identifier
-     * @param array<mixed>|SessionEndParams $params
+     * @param array<string,mixed>|SessionEndParams $params
      *
      * @return BaseResponse<mixed>
      *
@@ -53,7 +53,7 @@ interface SessionsRawContract
      * @api
      *
      * @param mixed $id Path param: Unique session identifier
-     * @param array<mixed>|SessionExecuteAgentParams $params
+     * @param array<string,mixed>|SessionExecuteAgentParams $params
      *
      * @return BaseResponse<mixed>
      *
@@ -69,7 +69,7 @@ interface SessionsRawContract
      * @api
      *
      * @param mixed $id Path param: Unique session identifier
-     * @param array<mixed>|SessionExtractParams $params
+     * @param array<string,mixed>|SessionExtractParams $params
      *
      * @return BaseResponse<mixed>
      *
@@ -85,7 +85,7 @@ interface SessionsRawContract
      * @api
      *
      * @param mixed $id Path param: Unique session identifier
-     * @param array<mixed>|SessionNavigateParams $params
+     * @param array<string,mixed>|SessionNavigateParams $params
      *
      * @return BaseResponse<mixed>
      *
@@ -101,7 +101,7 @@ interface SessionsRawContract
      * @api
      *
      * @param mixed $id Path param: Unique session identifier
-     * @param array<mixed>|SessionObserveParams $params
+     * @param array<string,mixed>|SessionObserveParams $params
      *
      * @return BaseResponse<mixed>
      *
@@ -116,7 +116,7 @@ interface SessionsRawContract
     /**
      * @api
      *
-     * @param array<mixed>|SessionStartParams $params
+     * @param array<string,mixed>|SessionStartParams $params
      *
      * @return BaseResponse<mixed>
      *
