@@ -55,7 +55,10 @@ $client = new Client(
   modelAPIKey: getenv('MODEL_API_KEY') ?: 'My Model API Key',
 );
 
-$response = $client->sessions->act('c4dbf3a9-9a58-4b22-8a1c-9f20f9f9e123');
+$response = $client->sessions->act(
+  'c4dbf3a9-9a58-4b22-8a1c-9f20f9f9e123',
+  input: 'click the first link on the page',
+);
 
 var_dump($response->data);
 ```
@@ -77,7 +80,7 @@ When the library is unable to connect to the API, or if the API returns a non-su
 use Stagehand\Core\Exceptions\APIConnectionException;
 
 try {
-  $response = $client->sessions->act('c4dbf3a9-9a58-4b22-8a1c-9f20f9f9e123');
+  $response = $client->sessions->start(modelName: 'gpt-4o');
 } catch (APIConnectionException $e) {
   echo "The server could not be reached", PHP_EOL;
   var_dump($e->getPrevious());
@@ -123,9 +126,8 @@ use Stagehand\RequestOptions;
 $client = new Client(maxRetries: 0);
 
 // Or, configure per-request:
-$result = $client->sessions->act(
-  'c4dbf3a9-9a58-4b22-8a1c-9f20f9f9e123',
-  requestOptions: RequestOptions::with(maxRetries: 5),
+$result = $client->sessions->start(
+  modelName: 'gpt-4o', requestOptions: RequestOptions::with(maxRetries: 5)
 );
 ```
 
@@ -144,8 +146,8 @@ Note: the `extra*` parameters of the same name overrides the documented paramete
 
 use Stagehand\RequestOptions;
 
-$response = $client->sessions->act(
-  'c4dbf3a9-9a58-4b22-8a1c-9f20f9f9e123',
+$response = $client->sessions->start(
+  modelName: 'gpt-4o',
   requestOptions: RequestOptions::with(
     extraQueryParams: ['my_query_parameter' => 'value'],
     extraBodyParams: ['my_body_parameter' => 'value'],
