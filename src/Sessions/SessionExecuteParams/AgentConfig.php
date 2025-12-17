@@ -7,7 +7,7 @@ namespace Stagehand\Sessions\SessionExecuteParams;
 use Stagehand\Core\Attributes\Optional;
 use Stagehand\Core\Concerns\SdkModel;
 use Stagehand\Core\Contracts\BaseModel;
-use Stagehand\Sessions\ModelConfig\UnionMember1;
+use Stagehand\Sessions\ModelConfig\ModelConfigObject;
 
 /**
  * @phpstan-import-type ModelConfigShape from \Stagehand\Sessions\ModelConfig
@@ -27,8 +27,11 @@ final class AgentConfig implements BaseModel
     #[Optional]
     public ?bool $cua;
 
+    /**
+     * Model name string with provider prefix (e.g., 'openai/gpt-5-nano', 'anthropic/claude-4.5-opus').
+     */
     #[Optional]
-    public string|UnionMember1|null $model;
+    public string|ModelConfigObject|null $model;
 
     /**
      * Custom system prompt for the agent.
@@ -50,7 +53,7 @@ final class AgentConfig implements BaseModel
      */
     public static function with(
         ?bool $cua = null,
-        string|UnionMember1|array|null $model = null,
+        string|ModelConfigObject|array|null $model = null,
         ?string $systemPrompt = null,
     ): self {
         $self = new self;
@@ -74,9 +77,11 @@ final class AgentConfig implements BaseModel
     }
 
     /**
+     * Model name string with provider prefix (e.g., 'openai/gpt-5-nano', 'anthropic/claude-4.5-opus').
+     *
      * @param ModelConfigShape $model
      */
-    public function withModel(string|UnionMember1|array $model): self
+    public function withModel(string|ModelConfigObject|array $model): self
     {
         $self = clone $this;
         $self['model'] = $model;

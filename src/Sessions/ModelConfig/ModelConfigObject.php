@@ -10,36 +10,45 @@ use Stagehand\Core\Concerns\SdkModel;
 use Stagehand\Core\Contracts\BaseModel;
 
 /**
- * @phpstan-type UnionMember1Shape = array{
+ * @phpstan-type ModelConfigObjectShape = array{
  *   modelName: string, apiKey?: string|null, baseURL?: string|null
  * }
  */
-final class UnionMember1 implements BaseModel
+final class ModelConfigObject implements BaseModel
 {
-    /** @use SdkModel<UnionMember1Shape> */
+    /** @use SdkModel<ModelConfigObjectShape> */
     use SdkModel;
 
+    /**
+     * Model name string without prefix (e.g., 'gpt-5-nano', 'claude-4.5-opus').
+     */
     #[Required]
     public string $modelName;
 
+    /**
+     * API key for the model provider.
+     */
     #[Optional]
     public ?string $apiKey;
 
+    /**
+     * Base URL for the model provider.
+     */
     #[Optional]
     public ?string $baseURL;
 
     /**
-     * `new UnionMember1()` is missing required properties by the API.
+     * `new ModelConfigObject()` is missing required properties by the API.
      *
      * To enforce required parameters use
      * ```
-     * UnionMember1::with(modelName: ...)
+     * ModelConfigObject::with(modelName: ...)
      * ```
      *
      * Otherwise ensure the following setters are called
      *
      * ```
-     * (new UnionMember1)->withModelName(...)
+     * (new ModelConfigObject)->withModelName(...)
      * ```
      */
     public function __construct()
@@ -67,6 +76,9 @@ final class UnionMember1 implements BaseModel
         return $self;
     }
 
+    /**
+     * Model name string without prefix (e.g., 'gpt-5-nano', 'claude-4.5-opus').
+     */
     public function withModelName(string $modelName): self
     {
         $self = clone $this;
@@ -75,6 +87,9 @@ final class UnionMember1 implements BaseModel
         return $self;
     }
 
+    /**
+     * API key for the model provider.
+     */
     public function withAPIKey(string $apiKey): self
     {
         $self = clone $this;
@@ -83,6 +98,9 @@ final class UnionMember1 implements BaseModel
         return $self;
     }
 
+    /**
+     * Base URL for the model provider.
+     */
     public function withBaseURL(string $baseURL): self
     {
         $self = clone $this;

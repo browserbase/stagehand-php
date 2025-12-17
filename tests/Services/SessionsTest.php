@@ -66,7 +66,7 @@ final class SessionsTest extends TestCase
             input: 'Click the login button',
             frameID: 'frameId',
             options: [
-                'model' => 'string',
+                'model' => 'openai/gpt-5-nano',
                 'timeout' => 30000,
                 'variables' => ['username' => 'john_doe'],
             ],
@@ -124,7 +124,9 @@ final class SessionsTest extends TestCase
         $result = $this->client->sessions->execute(
             'c4dbf3a9-9a58-4b22-8a1c-9f20f9f9e123',
             agentConfig: [
-                'cua' => true, 'model' => 'string', 'systemPrompt' => 'systemPrompt',
+                'cua' => true,
+                'model' => 'openai/gpt-5-nano',
+                'systemPrompt' => 'systemPrompt',
             ],
             executeOptions: [
                 'instruction' => 'Log in with username \'demo\' and password \'test123\', then navigate to settings',

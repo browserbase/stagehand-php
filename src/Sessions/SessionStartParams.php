@@ -11,6 +11,7 @@ use Stagehand\Core\Concerns\SdkParams;
 use Stagehand\Core\Contracts\BaseModel;
 use Stagehand\Sessions\SessionStartParams\Browser;
 use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams;
+use Stagehand\Sessions\SessionStartParams\Verbose;
 use Stagehand\Sessions\SessionStartParams\XLanguage;
 use Stagehand\Sessions\SessionStartParams\XStreamResponse;
 
@@ -33,7 +34,7 @@ use Stagehand\Sessions\SessionStartParams\XStreamResponse;
  *   experimental?: bool|null,
  *   selfHeal?: bool|null,
  *   systemPrompt?: string|null,
- *   verbose?: int|null,
+ *   verbose?: null|0|1|2,
  *   waitForCaptchaSolves?: bool|null,
  *   xLanguage?: null|XLanguage|value-of<XLanguage>,
  *   xSDKVersion?: string|null,
@@ -97,8 +98,10 @@ final class SessionStartParams implements BaseModel
 
     /**
      * Logging verbosity level (0=quiet, 1=normal, 2=debug).
+     *
+     * @var 0|1|2|null $verbose
      */
-    #[Optional]
+    #[Optional(enum: Verbose::class)]
     public ?int $verbose;
 
     #[Optional]
@@ -158,6 +161,7 @@ final class SessionStartParams implements BaseModel
      *
      * @param BrowserShape $browser
      * @param BrowserbaseSessionCreateParamsShape $browserbaseSessionCreateParams
+     * @param 0|1|2 $verbose
      * @param XLanguage|value-of<XLanguage> $xLanguage
      * @param XStreamResponse|value-of<XStreamResponse> $xStreamResponse
      */
@@ -309,6 +313,8 @@ final class SessionStartParams implements BaseModel
 
     /**
      * Logging verbosity level (0=quiet, 1=normal, 2=debug).
+     *
+     * @param 0|1|2 $verbose
      */
     public function withVerbose(int $verbose): self
     {

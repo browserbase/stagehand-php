@@ -29,6 +29,7 @@ use Stagehand\Sessions\SessionStartParams;
 use Stagehand\Sessions\SessionStartParams\Browser\Type;
 use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings\Fingerprint\HTTPVersion;
 use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Region;
+use Stagehand\Sessions\SessionStartParams\Verbose;
 use Stagehand\Sessions\SessionStartResponse;
 
 final class SessionsRawService implements SessionsRawContract
@@ -444,7 +445,7 @@ final class SessionsRawService implements SessionsRawContract
      *   experimental?: bool,
      *   selfHeal?: bool,
      *   systemPrompt?: string,
-     *   verbose?: int,
+     *   verbose?: 0|1|2|Verbose,
      *   waitForCaptchaSolves?: bool,
      *   xLanguage?: 'typescript'|'python'|'playground'|SessionStartParams\XLanguage,
      *   xSDKVersion?: string,
