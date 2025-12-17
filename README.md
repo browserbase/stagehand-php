@@ -55,20 +55,17 @@ $client = new Client(
   modelAPIKey: getenv('MODEL_API_KEY') ?: 'My Model API Key',
 );
 
-$response = $client->sessions->act(
-  '00000000-your-session-id-000000000000',
-  input: 'click the first link on the page',
-);
+$response = $client->sessions->start();
 
-var_dump($response->actions);
+var_dump($response);
 ```
 
 ### Value Objects
 
-It is recommended to use the static `with` constructor `Action::with(arguments: ['string'], ...)`
+It is recommended to use the static `with` constructor `Dog::with(name: "Joey")`
 and named parameters to initialize value objects.
 
-However, builders are also provided `(new Action)->withArguments(['string'])`.
+However, builders are also provided `(new Dog)->withName("Joey")`.
 
 ### Handling errors
 
@@ -80,10 +77,7 @@ When the library is unable to connect to the API, or if the API returns a non-su
 use Stagehand\Core\Exceptions\APIConnectionException;
 
 try {
-  $response = $client->sessions->start(
-    browserbaseAPIKey: 'your Browserbase API key',
-    browserbaseProjectID: 'your Browserbase Project ID',
-  );
+  $response = $client->sessions->start();
 } catch (APIConnectionException $e) {
   echo "The server could not be reached", PHP_EOL;
   var_dump($e->getPrevious());
@@ -130,9 +124,7 @@ $client = new Client(maxRetries: 0);
 
 // Or, configure per-request:
 $result = $client->sessions->start(
-  browserbaseAPIKey: 'your Browserbase API key',
-  browserbaseProjectID: 'your Browserbase Project ID',
-  requestOptions: RequestOptions::with(maxRetries: 5),
+  requestOptions: RequestOptions::with(maxRetries: 5)
 );
 ```
 
@@ -152,8 +144,6 @@ Note: the `extra*` parameters of the same name overrides the documented paramete
 use Stagehand\RequestOptions;
 
 $response = $client->sessions->start(
-  browserbaseAPIKey: 'your Browserbase API key',
-  browserbaseProjectID: 'your Browserbase Project ID',
   requestOptions: RequestOptions::with(
     extraQueryParams: ['my_query_parameter' => 'value'],
     extraBodyParams: ['my_body_parameter' => 'value'],
