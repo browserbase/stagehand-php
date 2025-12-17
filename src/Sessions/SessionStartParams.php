@@ -33,7 +33,7 @@ use Stagehand\Sessions\SessionStartParams\XStreamResponse;
  *   experimental?: bool|null,
  *   selfHeal?: bool|null,
  *   systemPrompt?: string|null,
- *   verbose?: float|null,
+ *   verbose?: int|null,
  *   waitForCaptchaSolves?: bool|null,
  *   xLanguage?: null|XLanguage|value-of<XLanguage>,
  *   xSDKVersion?: string|null,
@@ -99,7 +99,7 @@ final class SessionStartParams implements BaseModel
      * Logging verbosity level (0=quiet, 1=normal, 2=debug).
      */
     #[Optional]
-    public ?float $verbose;
+    public ?int $verbose;
 
     #[Optional]
     public ?bool $waitForCaptchaSolves;
@@ -172,7 +172,7 @@ final class SessionStartParams implements BaseModel
         ?bool $experimental = null,
         ?bool $selfHeal = null,
         ?string $systemPrompt = null,
-        ?float $verbose = null,
+        ?int $verbose = null,
         ?bool $waitForCaptchaSolves = null,
         XLanguage|string|null $xLanguage = null,
         ?string $xSDKVersion = null,
@@ -310,7 +310,7 @@ final class SessionStartParams implements BaseModel
     /**
      * Logging verbosity level (0=quiet, 1=normal, 2=debug).
      */
-    public function withVerbose(float $verbose): self
+    public function withVerbose(int $verbose): self
     {
         $self = clone $this;
         $self['verbose'] = $verbose;

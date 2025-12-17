@@ -270,7 +270,7 @@ interface SessionsContract
      * @param bool $experimental Body param:
      * @param bool $selfHeal Body param: Enable self-healing for failed actions
      * @param string $systemPrompt Body param: Custom system prompt for AI operations
-     * @param float $verbose Body param: Logging verbosity level (0=quiet, 1=normal, 2=debug)
+     * @param int $verbose Body param: Logging verbosity level (0=quiet, 1=normal, 2=debug)
      * @param bool $waitForCaptchaSolves Body param:
      * @param 'typescript'|'python'|'playground'|\Stagehand\Sessions\SessionStartParams\XLanguage $xLanguage Header param: Client SDK language
      * @param string $xSDKVersion Header param: Version of the Stagehand SDK
@@ -290,7 +290,7 @@ interface SessionsContract
         ?bool $experimental = null,
         ?bool $selfHeal = null,
         ?string $systemPrompt = null,
-        ?float $verbose = null,
+        ?int $verbose = null,
         ?bool $waitForCaptchaSolves = null,
         string|\Stagehand\Sessions\SessionStartParams\XLanguage|null $xLanguage = null,
         ?string $xSDKVersion = null,
