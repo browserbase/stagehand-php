@@ -72,7 +72,7 @@ final class SessionsTest extends TestCase
             ],
             xLanguage: 'typescript',
             xSDKVersion: '3.0.6',
-            xSentAt: new \DateTimeImmutable('2025-01-15T10:30:00.000Z'),
+            xSentAt: new \DateTimeImmutable('2025-01-15T10:30:00Z'),
             xStreamResponse: 'true',
         );
 
@@ -136,7 +136,7 @@ final class SessionsTest extends TestCase
             frameID: 'frameId',
             xLanguage: 'typescript',
             xSDKVersion: '3.0.6',
-            xSentAt: new \DateTimeImmutable('2025-01-15T10:30:00.000Z'),
+            xSentAt: new \DateTimeImmutable('2025-01-15T10:30:00Z'),
             xStreamResponse: 'true',
         );
 
@@ -191,7 +191,7 @@ final class SessionsTest extends TestCase
             ],
             xLanguage: 'typescript',
             xSDKVersion: '3.0.6',
-            xSentAt: new \DateTimeImmutable('2025-01-15T10:30:00.000Z'),
+            xSentAt: new \DateTimeImmutable('2025-01-15T10:30:00Z'),
             xStreamResponse: 'true',
         );
 
@@ -308,7 +308,7 @@ final class SessionsTest extends TestCase
             waitForCaptchaSolves: true,
             xLanguage: 'typescript',
             xSDKVersion: '3.0.6',
-            xSentAt: new \DateTimeImmutable('2025-01-15T10:30:00.000Z'),
+            xSentAt: new \DateTimeImmutable('2025-01-15T10:30:00Z'),
             xStreamResponse: 'true',
         );
 
