@@ -7,12 +7,14 @@ namespace Stagehand\Sessions;
 use Stagehand\Core\Concerns\SdkUnion;
 use Stagehand\Core\Conversion\Contracts\Converter;
 use Stagehand\Core\Conversion\Contracts\ConverterSource;
-use Stagehand\Sessions\ModelConfig\UnionMember1;
+use Stagehand\Sessions\ModelConfig\ModelConfigObject;
 
 /**
- * @phpstan-import-type UnionMember1Shape from \Stagehand\Sessions\ModelConfig\UnionMember1
+ * Model name string with provider prefix (e.g., 'openai/gpt-5-nano', 'anthropic/claude-4.5-opus').
  *
- * @phpstan-type ModelConfigShape = string|UnionMember1Shape
+ * @phpstan-import-type ModelConfigObjectShape from \Stagehand\Sessions\ModelConfig\ModelConfigObject
+ *
+ * @phpstan-type ModelConfigShape = string|ModelConfigObjectShape
  */
 final class ModelConfig implements ConverterSource
 {
@@ -23,6 +25,6 @@ final class ModelConfig implements ConverterSource
      */
     public static function variants(): array
     {
-        return ['string', UnionMember1::class];
+        return ['string', ModelConfigObject::class];
     }
 }

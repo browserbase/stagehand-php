@@ -7,7 +7,7 @@ namespace Stagehand\Sessions\SessionObserveParams;
 use Stagehand\Core\Attributes\Optional;
 use Stagehand\Core\Concerns\SdkModel;
 use Stagehand\Core\Contracts\BaseModel;
-use Stagehand\Sessions\ModelConfig\UnionMember1;
+use Stagehand\Sessions\ModelConfig\ModelConfigObject;
 
 /**
  * @phpstan-import-type ModelConfigShape from \Stagehand\Sessions\ModelConfig
@@ -21,8 +21,11 @@ final class Options implements BaseModel
     /** @use SdkModel<OptionsShape> */
     use SdkModel;
 
+    /**
+     * Model name string with provider prefix (e.g., 'openai/gpt-5-nano', 'anthropic/claude-4.5-opus').
+     */
     #[Optional]
-    public string|UnionMember1|null $model;
+    public string|ModelConfigObject|null $model;
 
     /**
      * CSS selector to scope observation to a specific element.
@@ -49,7 +52,7 @@ final class Options implements BaseModel
      * @param ModelConfigShape $model
      */
     public static function with(
-        string|UnionMember1|array|null $model = null,
+        string|ModelConfigObject|array|null $model = null,
         ?string $selector = null,
         ?float $timeout = null,
     ): self {
@@ -63,9 +66,11 @@ final class Options implements BaseModel
     }
 
     /**
+     * Model name string with provider prefix (e.g., 'openai/gpt-5-nano', 'anthropic/claude-4.5-opus').
+     *
      * @param ModelConfigShape $model
      */
-    public function withModel(string|UnionMember1|array $model): self
+    public function withModel(string|ModelConfigObject|array $model): self
     {
         $self = clone $this;
         $self['model'] = $model;

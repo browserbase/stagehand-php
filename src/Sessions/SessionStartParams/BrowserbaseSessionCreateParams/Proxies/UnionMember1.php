@@ -20,11 +20,19 @@ final class UnionMember1 implements ConverterSource
 {
     use SdkUnion;
 
+    public static function discriminator(): string
+    {
+        return 'type';
+    }
+
     /**
      * @return list<string|Converter|ConverterSource>|array<string,string|Converter|ConverterSource>
      */
     public static function variants(): array
     {
-        return [BrowserbaseProxyConfig::class, ExternalProxyConfig::class];
+        return [
+            'browserbase' => BrowserbaseProxyConfig::class,
+            'external' => ExternalProxyConfig::class,
+        ];
     }
 }
