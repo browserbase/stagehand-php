@@ -5,25 +5,21 @@ declare(strict_types=1);
 namespace Stagehand\Sessions;
 
 use Stagehand\Core\Attributes\Optional;
-use Stagehand\Core\Attributes\Required;
 use Stagehand\Core\Concerns\SdkModel;
 use Stagehand\Core\Concerns\SdkParams;
 use Stagehand\Core\Contracts\BaseModel;
 
 /**
- * Initializes a new Stagehand session with a browser instance.
- * Returns a session ID that must be used for all subsequent requests.
+ * Creates a new browser session with the specified configuration. Returns a session ID used for all subsequent operations.
  *
  * @see Stagehand\Services\SessionsService::start()
  *
  * @phpstan-type SessionStartParamsShape = array{
- *   browserbaseAPIKey: string,
- *   browserbaseProjectID: string,
- *   domSettleTimeout?: int,
- *   model?: string,
- *   selfHeal?: bool,
- *   systemPrompt?: string,
- *   verbose?: int,
+ *   body?: mixed,
+ *   xLanguage?: mixed,
+ *   xSDKVersion?: mixed,
+ *   xSentAt?: mixed,
+ *   xStreamResponse?: mixed,
  * }
  */
 final class SessionStartParams implements BaseModel
@@ -32,64 +28,21 @@ final class SessionStartParams implements BaseModel
     use SdkModel;
     use SdkParams;
 
-    /**
-     * API key for Browserbase Cloud.
-     */
-    #[Required('BROWSERBASE_API_KEY')]
-    public string $browserbaseAPIKey;
-
-    /**
-     * Project ID for Browserbase.
-     */
-    #[Required('BROWSERBASE_PROJECT_ID')]
-    public string $browserbaseProjectID;
-
-    /**
-     * Timeout in ms to wait for DOM to settle.
-     */
     #[Optional]
-    public ?int $domSettleTimeout;
+    public mixed $body;
 
-    /**
-     * AI model to use for actions (must be prefixed with provider/).
-     */
     #[Optional]
-    public ?string $model;
+    public mixed $xLanguage;
 
-    /**
-     * Enable self-healing for failed actions.
-     */
     #[Optional]
-    public ?bool $selfHeal;
+    public mixed $xSDKVersion;
 
-    /**
-     * Custom system prompt for AI actions.
-     */
     #[Optional]
-    public ?string $systemPrompt;
+    public mixed $xSentAt;
 
-    /**
-     * Logging verbosity level.
-     */
     #[Optional]
-    public ?int $verbose;
+    public mixed $xStreamResponse;
 
-    /**
-     * `new SessionStartParams()` is missing required properties by the API.
-     *
-     * To enforce required parameters use
-     * ```
-     * SessionStartParams::with(browserbaseAPIKey: ..., browserbaseProjectID: ...)
-     * ```
-     *
-     * Otherwise ensure the following setters are called
-     *
-     * ```
-     * (new SessionStartParams)
-     *   ->withBrowserbaseAPIKey(...)
-     *   ->withBrowserbaseProjectID(...)
-     * ```
-     */
     public function __construct()
     {
         $this->initialize();
@@ -101,101 +54,59 @@ final class SessionStartParams implements BaseModel
      * You must use named parameters to construct any parameters with a default value.
      */
     public static function with(
-        string $browserbaseAPIKey,
-        string $browserbaseProjectID,
-        ?int $domSettleTimeout = null,
-        ?string $model = null,
-        ?bool $selfHeal = null,
-        ?string $systemPrompt = null,
-        ?int $verbose = null,
+        mixed $body = null,
+        mixed $xLanguage = null,
+        mixed $xSDKVersion = null,
+        mixed $xSentAt = null,
+        mixed $xStreamResponse = null,
     ): self {
         $self = new self;
 
-        $self['browserbaseAPIKey'] = $browserbaseAPIKey;
-        $self['browserbaseProjectID'] = $browserbaseProjectID;
-
-        null !== $domSettleTimeout && $self['domSettleTimeout'] = $domSettleTimeout;
-        null !== $model && $self['model'] = $model;
-        null !== $selfHeal && $self['selfHeal'] = $selfHeal;
-        null !== $systemPrompt && $self['systemPrompt'] = $systemPrompt;
-        null !== $verbose && $self['verbose'] = $verbose;
+        null !== $body && $self['body'] = $body;
+        null !== $xLanguage && $self['xLanguage'] = $xLanguage;
+        null !== $xSDKVersion && $self['xSDKVersion'] = $xSDKVersion;
+        null !== $xSentAt && $self['xSentAt'] = $xSentAt;
+        null !== $xStreamResponse && $self['xStreamResponse'] = $xStreamResponse;
 
         return $self;
     }
 
-    /**
-     * API key for Browserbase Cloud.
-     */
-    public function withBrowserbaseAPIKey(string $browserbaseAPIKey): self
+    public function withBody(mixed $body): self
     {
         $self = clone $this;
-        $self['browserbaseAPIKey'] = $browserbaseAPIKey;
+        $self['body'] = $body;
 
         return $self;
     }
 
-    /**
-     * Project ID for Browserbase.
-     */
-    public function withBrowserbaseProjectID(string $browserbaseProjectID): self
+    public function withXLanguage(mixed $xLanguage): self
     {
         $self = clone $this;
-        $self['browserbaseProjectID'] = $browserbaseProjectID;
+        $self['xLanguage'] = $xLanguage;
 
         return $self;
     }
 
-    /**
-     * Timeout in ms to wait for DOM to settle.
-     */
-    public function withDomSettleTimeout(int $domSettleTimeout): self
+    public function withXSDKVersion(mixed $xSDKVersion): self
     {
         $self = clone $this;
-        $self['domSettleTimeout'] = $domSettleTimeout;
+        $self['xSDKVersion'] = $xSDKVersion;
 
         return $self;
     }
 
-    /**
-     * AI model to use for actions (must be prefixed with provider/).
-     */
-    public function withModel(string $model): self
+    public function withXSentAt(mixed $xSentAt): self
     {
         $self = clone $this;
-        $self['model'] = $model;
+        $self['xSentAt'] = $xSentAt;
 
         return $self;
     }
 
-    /**
-     * Enable self-healing for failed actions.
-     */
-    public function withSelfHeal(bool $selfHeal): self
+    public function withXStreamResponse(mixed $xStreamResponse): self
     {
         $self = clone $this;
-        $self['selfHeal'] = $selfHeal;
-
-        return $self;
-    }
-
-    /**
-     * Custom system prompt for AI actions.
-     */
-    public function withSystemPrompt(string $systemPrompt): self
-    {
-        $self = clone $this;
-        $self['systemPrompt'] = $systemPrompt;
-
-        return $self;
-    }
-
-    /**
-     * Logging verbosity level.
-     */
-    public function withVerbose(int $verbose): self
-    {
-        $self = clone $this;
-        $self['verbose'] = $verbose;
+        $self['xStreamResponse'] = $xStreamResponse;
 
         return $self;
     }

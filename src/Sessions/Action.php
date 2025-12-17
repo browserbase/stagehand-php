@@ -10,12 +10,13 @@ use Stagehand\Core\Concerns\SdkModel;
 use Stagehand\Core\Contracts\BaseModel;
 
 /**
+ * Action object returned by observe and used by act.
+ *
  * @phpstan-type ActionShape = array{
- *   arguments: list<string>,
  *   description: string,
- *   method: string,
  *   selector: string,
- *   backendNodeID?: int|null,
+ *   arguments?: list<string>|null,
+ *   method?: string|null,
  * }
  */
 final class Action implements BaseModel
@@ -24,53 +25,43 @@ final class Action implements BaseModel
     use SdkModel;
 
     /**
-     * Arguments for the method.
-     *
-     * @var list<string> $arguments
-     */
-    #[Required(list: 'string')]
-    public array $arguments;
-
-    /**
      * Human-readable description of the action.
      */
     #[Required]
     public string $description;
 
     /**
-     * Method to execute (e.g., "click", "fill").
-     */
-    #[Required]
-    public string $method;
-
-    /**
-     * CSS or XPath selector for the element.
+     * CSS selector or XPath for the element.
      */
     #[Required]
     public string $selector;
 
     /**
-     * CDP backend node ID.
+     * Arguments to pass to the method.
+     *
+     * @var list<string>|null $arguments
      */
-    #[Optional('backendNodeId')]
-    public ?int $backendNodeID;
+    #[Optional(list: 'string')]
+    public ?array $arguments;
+
+    /**
+     * The method to execute (click, fill, etc.).
+     */
+    #[Optional]
+    public ?string $method;
 
     /**
      * `new Action()` is missing required properties by the API.
      *
      * To enforce required parameters use
      * ```
-     * Action::with(arguments: ..., description: ..., method: ..., selector: ...)
+     * Action::with(description: ..., selector: ...)
      * ```
      *
      * Otherwise ensure the following setters are called
      *
      * ```
-     * (new Action)
-     *   ->withArguments(...)
-     *   ->withDescription(...)
-     *   ->withMethod(...)
-     *   ->withSelector(...)
+     * (new Action)->withDescription(...)->withSelector(...)
      * ```
      */
     public function __construct()
@@ -86,33 +77,18 @@ final class Action implements BaseModel
      * @param list<string> $arguments
      */
     public static function with(
-        array $arguments,
         string $description,
-        string $method,
         string $selector,
-        ?int $backendNodeID = null,
+        ?array $arguments = null,
+        ?string $method = null,
     ): self {
         $self = new self;
 
-        $self['arguments'] = $arguments;
         $self['description'] = $description;
-        $self['method'] = $method;
         $self['selector'] = $selector;
 
-        null !== $backendNodeID && $self['backendNodeID'] = $backendNodeID;
-
-        return $self;
-    }
-
-    /**
-     * Arguments for the method.
-     *
-     * @param list<string> $arguments
-     */
-    public function withArguments(array $arguments): self
-    {
-        $self = clone $this;
-        $self['arguments'] = $arguments;
+        null !== $arguments && $self['arguments'] = $arguments;
+        null !== $method && $self['method'] = $method;
 
         return $self;
     }
@@ -129,18 +105,7 @@ final class Action implements BaseModel
     }
 
     /**
-     * Method to execute (e.g., "click", "fill").
-     */
-    public function withMethod(string $method): self
-    {
-        $self = clone $this;
-        $self['method'] = $method;
-
-        return $self;
-    }
-
-    /**
-     * CSS or XPath selector for the element.
+     * CSS selector or XPath for the element.
      */
     public function withSelector(string $selector): self
     {
@@ -151,12 +116,25 @@ final class Action implements BaseModel
     }
 
     /**
-     * CDP backend node ID.
+     * Arguments to pass to the method.
+     *
+     * @param list<string> $arguments
      */
-    public function withBackendNodeID(int $backendNodeID): self
+    public function withArguments(array $arguments): self
     {
         $self = clone $this;
-        $self['backendNodeID'] = $backendNodeID;
+        $self['arguments'] = $arguments;
+
+        return $self;
+    }
+
+    /**
+     * The method to execute (click, fill, etc.).
+     */
+    public function withMethod(string $method): self
+    {
+        $self = clone $this;
+        $self['method'] = $method;
 
         return $self;
     }
