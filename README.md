@@ -56,7 +56,7 @@ $client = new Client(
 );
 
 $response = $client->sessions->act(
-  'c4dbf3a9-9a58-4b22-8a1c-9f20f9f9e123',
+  '00000000-your-session-id-000000000000',
   input: 'click the first link on the page',
 );
 
