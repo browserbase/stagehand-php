@@ -5,21 +5,31 @@ declare(strict_types=1);
 namespace Stagehand\Sessions;
 
 use Stagehand\Core\Attributes\Optional;
+use Stagehand\Core\Attributes\Required;
 use Stagehand\Core\Concerns\SdkModel;
 use Stagehand\Core\Concerns\SdkParams;
 use Stagehand\Core\Contracts\BaseModel;
+use Stagehand\Sessions\SessionActParams\Input\ActionInput;
+use Stagehand\Sessions\SessionActParams\Options;
+use Stagehand\Sessions\SessionActParams\XLanguage;
+use Stagehand\Sessions\SessionActParams\XStreamResponse;
 
 /**
  * Executes a browser action using natural language instructions or a predefined Action object.
  *
  * @see Stagehand\Services\SessionsService::act()
  *
+ * @phpstan-import-type InputShape from \Stagehand\Sessions\SessionActParams\Input
+ * @phpstan-import-type OptionsShape from \Stagehand\Sessions\SessionActParams\Options
+ *
  * @phpstan-type SessionActParamsShape = array{
- *   body?: mixed,
- *   xLanguage?: mixed,
- *   xSDKVersion?: mixed,
- *   xSentAt?: mixed,
- *   xStreamResponse?: mixed,
+ *   input: InputShape,
+ *   frameID?: string|null,
+ *   options?: OptionsShape|null,
+ *   xLanguage?: null|XLanguage|value-of<XLanguage>,
+ *   xSDKVersion?: string|null,
+ *   xSentAt?: \DateTimeInterface|null,
+ *   xStreamResponse?: null|XStreamResponse|value-of<XStreamResponse>,
  * }
  */
 final class SessionActParams implements BaseModel
@@ -28,21 +38,63 @@ final class SessionActParams implements BaseModel
     use SdkModel;
     use SdkParams;
 
-    #[Optional]
-    public mixed $body;
+    /**
+     * Natural language instruction or Action object.
+     */
+    #[Required]
+    public string|ActionInput $input;
+
+    /**
+     * Target frame ID for the action.
+     */
+    #[Optional('frameId')]
+    public ?string $frameID;
 
     #[Optional]
-    public mixed $xLanguage;
+    public ?Options $options;
 
+    /**
+     * Client SDK language.
+     *
+     * @var value-of<XLanguage>|null $xLanguage
+     */
+    #[Optional(enum: XLanguage::class)]
+    public ?string $xLanguage;
+
+    /**
+     * Version of the Stagehand SDK.
+     */
     #[Optional]
-    public mixed $xSDKVersion;
+    public ?string $xSDKVersion;
 
+    /**
+     * ISO timestamp when request was sent.
+     */
     #[Optional]
-    public mixed $xSentAt;
+    public ?\DateTimeInterface $xSentAt;
 
-    #[Optional]
-    public mixed $xStreamResponse;
+    /**
+     * Whether to stream the response via SSE.
+     *
+     * @var value-of<XStreamResponse>|null $xStreamResponse
+     */
+    #[Optional(enum: XStreamResponse::class)]
+    public ?string $xStreamResponse;
 
+    /**
+     * `new SessionActParams()` is missing required properties by the API.
+     *
+     * To enforce required parameters use
+     * ```
+     * SessionActParams::with(input: ...)
+     * ```
+     *
+     * Otherwise ensure the following setters are called
+     *
+     * ```
+     * (new SessionActParams)->withInput(...)
+     * ```
+     */
     public function __construct()
     {
         $this->initialize();
@@ -52,17 +104,27 @@ final class SessionActParams implements BaseModel
      * Construct an instance from the required parameters.
      *
      * You must use named parameters to construct any parameters with a default value.
+     *
+     * @param InputShape $input
+     * @param OptionsShape $options
+     * @param XLanguage|value-of<XLanguage> $xLanguage
+     * @param XStreamResponse|value-of<XStreamResponse> $xStreamResponse
      */
     public static function with(
-        mixed $body = null,
-        mixed $xLanguage = null,
-        mixed $xSDKVersion = null,
-        mixed $xSentAt = null,
-        mixed $xStreamResponse = null,
+        string|ActionInput|array $input,
+        ?string $frameID = null,
+        Options|array|null $options = null,
+        XLanguage|string|null $xLanguage = null,
+        ?string $xSDKVersion = null,
+        ?\DateTimeInterface $xSentAt = null,
+        XStreamResponse|string|null $xStreamResponse = null,
     ): self {
         $self = new self;
 
-        null !== $body && $self['body'] = $body;
+        $self['input'] = $input;
+
+        null !== $frameID && $self['frameID'] = $frameID;
+        null !== $options && $self['options'] = $options;
         null !== $xLanguage && $self['xLanguage'] = $xLanguage;
         null !== $xSDKVersion && $self['xSDKVersion'] = $xSDKVersion;
         null !== $xSentAt && $self['xSentAt'] = $xSentAt;
@@ -71,15 +133,47 @@ final class SessionActParams implements BaseModel
         return $self;
     }
 
-    public function withBody(mixed $body): self
+    /**
+     * Natural language instruction or Action object.
+     *
+     * @param InputShape $input
+     */
+    public function withInput(string|ActionInput|array $input): self
     {
         $self = clone $this;
-        $self['body'] = $body;
+        $self['input'] = $input;
 
         return $self;
     }
 
-    public function withXLanguage(mixed $xLanguage): self
+    /**
+     * Target frame ID for the action.
+     */
+    public function withFrameID(string $frameID): self
+    {
+        $self = clone $this;
+        $self['frameID'] = $frameID;
+
+        return $self;
+    }
+
+    /**
+     * @param OptionsShape $options
+     */
+    public function withOptions(Options|array $options): self
+    {
+        $self = clone $this;
+        $self['options'] = $options;
+
+        return $self;
+    }
+
+    /**
+     * Client SDK language.
+     *
+     * @param XLanguage|value-of<XLanguage> $xLanguage
+     */
+    public function withXLanguage(XLanguage|string $xLanguage): self
     {
         $self = clone $this;
         $self['xLanguage'] = $xLanguage;
@@ -87,7 +181,10 @@ final class SessionActParams implements BaseModel
         return $self;
     }
 
-    public function withXSDKVersion(mixed $xSDKVersion): self
+    /**
+     * Version of the Stagehand SDK.
+     */
+    public function withXSDKVersion(string $xSDKVersion): self
     {
         $self = clone $this;
         $self['xSDKVersion'] = $xSDKVersion;
@@ -95,7 +192,10 @@ final class SessionActParams implements BaseModel
         return $self;
     }
 
-    public function withXSentAt(mixed $xSentAt): self
+    /**
+     * ISO timestamp when request was sent.
+     */
+    public function withXSentAt(\DateTimeInterface $xSentAt): self
     {
         $self = clone $this;
         $self['xSentAt'] = $xSentAt;
@@ -103,8 +203,14 @@ final class SessionActParams implements BaseModel
         return $self;
     }
 
-    public function withXStreamResponse(mixed $xStreamResponse): self
-    {
+    /**
+     * Whether to stream the response via SSE.
+     *
+     * @param XStreamResponse|value-of<XStreamResponse> $xStreamResponse
+     */
+    public function withXStreamResponse(
+        XStreamResponse|string $xStreamResponse
+    ): self {
         $self = clone $this;
         $self['xStreamResponse'] = $xStreamResponse;
 

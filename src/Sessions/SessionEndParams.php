@@ -8,6 +8,8 @@ use Stagehand\Core\Attributes\Optional;
 use Stagehand\Core\Concerns\SdkModel;
 use Stagehand\Core\Concerns\SdkParams;
 use Stagehand\Core\Contracts\BaseModel;
+use Stagehand\Sessions\SessionEndParams\XLanguage;
+use Stagehand\Sessions\SessionEndParams\XStreamResponse;
 
 /**
  * Terminates the browser session and releases all associated resources.
@@ -15,10 +17,10 @@ use Stagehand\Core\Contracts\BaseModel;
  * @see Stagehand\Services\SessionsService::end()
  *
  * @phpstan-type SessionEndParamsShape = array{
- *   xLanguage?: mixed,
- *   xSDKVersion?: mixed,
- *   xSentAt?: mixed,
- *   xStreamResponse?: mixed,
+ *   xLanguage?: null|XLanguage|value-of<XLanguage>,
+ *   xSDKVersion?: string|null,
+ *   xSentAt?: \DateTimeInterface|null,
+ *   xStreamResponse?: null|XStreamResponse|value-of<XStreamResponse>,
  * }
  */
 final class SessionEndParams implements BaseModel
@@ -27,17 +29,33 @@ final class SessionEndParams implements BaseModel
     use SdkModel;
     use SdkParams;
 
-    #[Optional]
-    public mixed $xLanguage;
+    /**
+     * Client SDK language.
+     *
+     * @var value-of<XLanguage>|null $xLanguage
+     */
+    #[Optional(enum: XLanguage::class)]
+    public ?string $xLanguage;
 
+    /**
+     * Version of the Stagehand SDK.
+     */
     #[Optional]
-    public mixed $xSDKVersion;
+    public ?string $xSDKVersion;
 
+    /**
+     * ISO timestamp when request was sent.
+     */
     #[Optional]
-    public mixed $xSentAt;
+    public ?\DateTimeInterface $xSentAt;
 
-    #[Optional]
-    public mixed $xStreamResponse;
+    /**
+     * Whether to stream the response via SSE.
+     *
+     * @var value-of<XStreamResponse>|null $xStreamResponse
+     */
+    #[Optional(enum: XStreamResponse::class)]
+    public ?string $xStreamResponse;
 
     public function __construct()
     {
@@ -48,12 +66,15 @@ final class SessionEndParams implements BaseModel
      * Construct an instance from the required parameters.
      *
      * You must use named parameters to construct any parameters with a default value.
+     *
+     * @param XLanguage|value-of<XLanguage> $xLanguage
+     * @param XStreamResponse|value-of<XStreamResponse> $xStreamResponse
      */
     public static function with(
-        mixed $xLanguage = null,
-        mixed $xSDKVersion = null,
-        mixed $xSentAt = null,
-        mixed $xStreamResponse = null,
+        XLanguage|string|null $xLanguage = null,
+        ?string $xSDKVersion = null,
+        ?\DateTimeInterface $xSentAt = null,
+        XStreamResponse|string|null $xStreamResponse = null,
     ): self {
         $self = new self;
 
@@ -65,7 +86,12 @@ final class SessionEndParams implements BaseModel
         return $self;
     }
 
-    public function withXLanguage(mixed $xLanguage): self
+    /**
+     * Client SDK language.
+     *
+     * @param XLanguage|value-of<XLanguage> $xLanguage
+     */
+    public function withXLanguage(XLanguage|string $xLanguage): self
     {
         $self = clone $this;
         $self['xLanguage'] = $xLanguage;
@@ -73,7 +99,10 @@ final class SessionEndParams implements BaseModel
         return $self;
     }
 
-    public function withXSDKVersion(mixed $xSDKVersion): self
+    /**
+     * Version of the Stagehand SDK.
+     */
+    public function withXSDKVersion(string $xSDKVersion): self
     {
         $self = clone $this;
         $self['xSDKVersion'] = $xSDKVersion;
@@ -81,7 +110,10 @@ final class SessionEndParams implements BaseModel
         return $self;
     }
 
-    public function withXSentAt(mixed $xSentAt): self
+    /**
+     * ISO timestamp when request was sent.
+     */
+    public function withXSentAt(\DateTimeInterface $xSentAt): self
     {
         $self = clone $this;
         $self['xSentAt'] = $xSentAt;
@@ -89,8 +121,14 @@ final class SessionEndParams implements BaseModel
         return $self;
     }
 
-    public function withXStreamResponse(mixed $xStreamResponse): self
-    {
+    /**
+     * Whether to stream the response via SSE.
+     *
+     * @param XStreamResponse|value-of<XStreamResponse> $xStreamResponse
+     */
+    public function withXStreamResponse(
+        XStreamResponse|string $xStreamResponse
+    ): self {
         $self = clone $this;
         $self['xStreamResponse'] = $xStreamResponse;
 

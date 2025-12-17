@@ -8,18 +8,25 @@ use Stagehand\Core\Attributes\Optional;
 use Stagehand\Core\Concerns\SdkModel;
 use Stagehand\Core\Concerns\SdkParams;
 use Stagehand\Core\Contracts\BaseModel;
+use Stagehand\Sessions\SessionObserveParams\Options;
+use Stagehand\Sessions\SessionObserveParams\XLanguage;
+use Stagehand\Sessions\SessionObserveParams\XStreamResponse;
 
 /**
  * Identifies and returns available actions on the current page that match the given instruction.
  *
  * @see Stagehand\Services\SessionsService::observe()
  *
+ * @phpstan-import-type OptionsShape from \Stagehand\Sessions\SessionObserveParams\Options
+ *
  * @phpstan-type SessionObserveParamsShape = array{
- *   body?: mixed,
- *   xLanguage?: mixed,
- *   xSDKVersion?: mixed,
- *   xSentAt?: mixed,
- *   xStreamResponse?: mixed,
+ *   frameID?: string|null,
+ *   instruction?: string|null,
+ *   options?: OptionsShape|null,
+ *   xLanguage?: null|XLanguage|value-of<XLanguage>,
+ *   xSDKVersion?: string|null,
+ *   xSentAt?: \DateTimeInterface|null,
+ *   xStreamResponse?: null|XStreamResponse|value-of<XStreamResponse>,
  * }
  */
 final class SessionObserveParams implements BaseModel
@@ -28,20 +35,48 @@ final class SessionObserveParams implements BaseModel
     use SdkModel;
     use SdkParams;
 
+    /**
+     * Target frame ID for the observation.
+     */
+    #[Optional('frameId')]
+    public ?string $frameID;
+
+    /**
+     * Natural language instruction for what actions to find.
+     */
     #[Optional]
-    public mixed $body;
+    public ?string $instruction;
 
     #[Optional]
-    public mixed $xLanguage;
+    public ?Options $options;
 
-    #[Optional]
-    public mixed $xSDKVersion;
+    /**
+     * Client SDK language.
+     *
+     * @var value-of<XLanguage>|null $xLanguage
+     */
+    #[Optional(enum: XLanguage::class)]
+    public ?string $xLanguage;
 
+    /**
+     * Version of the Stagehand SDK.
+     */
     #[Optional]
-    public mixed $xSentAt;
+    public ?string $xSDKVersion;
 
+    /**
+     * ISO timestamp when request was sent.
+     */
     #[Optional]
-    public mixed $xStreamResponse;
+    public ?\DateTimeInterface $xSentAt;
+
+    /**
+     * Whether to stream the response via SSE.
+     *
+     * @var value-of<XStreamResponse>|null $xStreamResponse
+     */
+    #[Optional(enum: XStreamResponse::class)]
+    public ?string $xStreamResponse;
 
     public function __construct()
     {
@@ -52,17 +87,25 @@ final class SessionObserveParams implements BaseModel
      * Construct an instance from the required parameters.
      *
      * You must use named parameters to construct any parameters with a default value.
+     *
+     * @param OptionsShape $options
+     * @param XLanguage|value-of<XLanguage> $xLanguage
+     * @param XStreamResponse|value-of<XStreamResponse> $xStreamResponse
      */
     public static function with(
-        mixed $body = null,
-        mixed $xLanguage = null,
-        mixed $xSDKVersion = null,
-        mixed $xSentAt = null,
-        mixed $xStreamResponse = null,
+        ?string $frameID = null,
+        ?string $instruction = null,
+        Options|array|null $options = null,
+        XLanguage|string|null $xLanguage = null,
+        ?string $xSDKVersion = null,
+        ?\DateTimeInterface $xSentAt = null,
+        XStreamResponse|string|null $xStreamResponse = null,
     ): self {
         $self = new self;
 
-        null !== $body && $self['body'] = $body;
+        null !== $frameID && $self['frameID'] = $frameID;
+        null !== $instruction && $self['instruction'] = $instruction;
+        null !== $options && $self['options'] = $options;
         null !== $xLanguage && $self['xLanguage'] = $xLanguage;
         null !== $xSDKVersion && $self['xSDKVersion'] = $xSDKVersion;
         null !== $xSentAt && $self['xSentAt'] = $xSentAt;
@@ -71,15 +114,45 @@ final class SessionObserveParams implements BaseModel
         return $self;
     }
 
-    public function withBody(mixed $body): self
+    /**
+     * Target frame ID for the observation.
+     */
+    public function withFrameID(string $frameID): self
     {
         $self = clone $this;
-        $self['body'] = $body;
+        $self['frameID'] = $frameID;
 
         return $self;
     }
 
-    public function withXLanguage(mixed $xLanguage): self
+    /**
+     * Natural language instruction for what actions to find.
+     */
+    public function withInstruction(string $instruction): self
+    {
+        $self = clone $this;
+        $self['instruction'] = $instruction;
+
+        return $self;
+    }
+
+    /**
+     * @param OptionsShape $options
+     */
+    public function withOptions(Options|array $options): self
+    {
+        $self = clone $this;
+        $self['options'] = $options;
+
+        return $self;
+    }
+
+    /**
+     * Client SDK language.
+     *
+     * @param XLanguage|value-of<XLanguage> $xLanguage
+     */
+    public function withXLanguage(XLanguage|string $xLanguage): self
     {
         $self = clone $this;
         $self['xLanguage'] = $xLanguage;
@@ -87,7 +160,10 @@ final class SessionObserveParams implements BaseModel
         return $self;
     }
 
-    public function withXSDKVersion(mixed $xSDKVersion): self
+    /**
+     * Version of the Stagehand SDK.
+     */
+    public function withXSDKVersion(string $xSDKVersion): self
     {
         $self = clone $this;
         $self['xSDKVersion'] = $xSDKVersion;
@@ -95,7 +171,10 @@ final class SessionObserveParams implements BaseModel
         return $self;
     }
 
-    public function withXSentAt(mixed $xSentAt): self
+    /**
+     * ISO timestamp when request was sent.
+     */
+    public function withXSentAt(\DateTimeInterface $xSentAt): self
     {
         $self = clone $this;
         $self['xSentAt'] = $xSentAt;
@@ -103,8 +182,14 @@ final class SessionObserveParams implements BaseModel
         return $self;
     }
 
-    public function withXStreamResponse(mixed $xStreamResponse): self
-    {
+    /**
+     * Whether to stream the response via SSE.
+     *
+     * @param XStreamResponse|value-of<XStreamResponse> $xStreamResponse
+     */
+    public function withXStreamResponse(
+        XStreamResponse|string $xStreamResponse
+    ): self {
         $self = clone $this;
         $self['xStreamResponse'] = $xStreamResponse;
 

@@ -55,9 +55,9 @@ $client = new Client(
   modelAPIKey: getenv('MODEL_API_KEY') ?: 'My Model API Key',
 );
 
-$response = $client->sessions->start();
+$response = $client->sessions->act('c4dbf3a9-9a58-4b22-8a1c-9f20f9f9e123');
 
-var_dump($response);
+var_dump($response->data);
 ```
 
 ### Value Objects
@@ -77,7 +77,7 @@ When the library is unable to connect to the API, or if the API returns a non-su
 use Stagehand\Core\Exceptions\APIConnectionException;
 
 try {
-  $response = $client->sessions->start();
+  $response = $client->sessions->act('c4dbf3a9-9a58-4b22-8a1c-9f20f9f9e123');
 } catch (APIConnectionException $e) {
   echo "The server could not be reached", PHP_EOL;
   var_dump($e->getPrevious());
@@ -123,8 +123,9 @@ use Stagehand\RequestOptions;
 $client = new Client(maxRetries: 0);
 
 // Or, configure per-request:
-$result = $client->sessions->start(
-  requestOptions: RequestOptions::with(maxRetries: 5)
+$result = $client->sessions->act(
+  'c4dbf3a9-9a58-4b22-8a1c-9f20f9f9e123',
+  requestOptions: RequestOptions::with(maxRetries: 5),
 );
 ```
 
@@ -143,7 +144,8 @@ Note: the `extra*` parameters of the same name overrides the documented paramete
 
 use Stagehand\RequestOptions;
 
-$response = $client->sessions->start(
+$response = $client->sessions->act(
+  'c4dbf3a9-9a58-4b22-8a1c-9f20f9f9e123',
   requestOptions: RequestOptions::with(
     extraQueryParams: ['my_query_parameter' => 'value'],
     extraBodyParams: ['my_body_parameter' => 'value'],
