@@ -9,6 +9,11 @@ use Stagehand\Core\Conversion\Contracts\Converter;
 use Stagehand\Core\Conversion\Contracts\ConverterSource;
 use Stagehand\Sessions\ModelConfig\UnionMember1;
 
+/**
+ * @phpstan-import-type UnionMember1Shape from \Stagehand\Sessions\ModelConfig\UnionMember1
+ *
+ * @phpstan-type ModelConfigShape = string|UnionMember1Shape
+ */
 final class ModelConfig implements ConverterSource
 {
     use SdkUnion;
