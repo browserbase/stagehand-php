@@ -8,27 +8,34 @@ use Stagehand\Core\Contracts\BaseResponse;
 use Stagehand\Core\Exceptions\APIException;
 use Stagehand\RequestOptions;
 use Stagehand\Sessions\SessionActParams;
+use Stagehand\Sessions\SessionActResponse;
 use Stagehand\Sessions\SessionEndParams;
-use Stagehand\Sessions\SessionExecuteAgentParams;
+use Stagehand\Sessions\SessionEndResponse;
+use Stagehand\Sessions\SessionExecuteParams;
+use Stagehand\Sessions\SessionExecuteResponse;
 use Stagehand\Sessions\SessionExtractParams;
+use Stagehand\Sessions\SessionExtractResponse;
 use Stagehand\Sessions\SessionNavigateParams;
+use Stagehand\Sessions\SessionNavigateResponse;
 use Stagehand\Sessions\SessionObserveParams;
+use Stagehand\Sessions\SessionObserveResponse;
 use Stagehand\Sessions\SessionStartParams;
+use Stagehand\Sessions\SessionStartResponse;
 
 interface SessionsRawContract
 {
     /**
      * @api
      *
-     * @param mixed $id Path param: Unique session identifier
+     * @param string $id Path param: Unique session identifier
      * @param array<string,mixed>|SessionActParams $params
      *
-     * @return BaseResponse<mixed>
+     * @return BaseResponse<SessionActResponse>
      *
      * @throws APIException
      */
     public function act(
-        mixed $id,
+        string $id,
         array|SessionActParams $params,
         ?RequestOptions $requestOptions = null,
     ): BaseResponse;
@@ -36,15 +43,15 @@ interface SessionsRawContract
     /**
      * @api
      *
-     * @param mixed $id Unique session identifier
+     * @param string $id Unique session identifier
      * @param array<string,mixed>|SessionEndParams $params
      *
-     * @return BaseResponse<mixed>
+     * @return BaseResponse<SessionEndResponse>
      *
      * @throws APIException
      */
     public function end(
-        mixed $id,
+        string $id,
         array|SessionEndParams $params,
         ?RequestOptions $requestOptions = null,
     ): BaseResponse;
@@ -52,31 +59,31 @@ interface SessionsRawContract
     /**
      * @api
      *
-     * @param mixed $id Path param: Unique session identifier
-     * @param array<string,mixed>|SessionExecuteAgentParams $params
+     * @param string $id Path param: Unique session identifier
+     * @param array<string,mixed>|SessionExecuteParams $params
      *
-     * @return BaseResponse<mixed>
+     * @return BaseResponse<SessionExecuteResponse>
      *
      * @throws APIException
      */
-    public function executeAgent(
-        mixed $id,
-        array|SessionExecuteAgentParams $params,
+    public function execute(
+        string $id,
+        array|SessionExecuteParams $params,
         ?RequestOptions $requestOptions = null,
     ): BaseResponse;
 
     /**
      * @api
      *
-     * @param mixed $id Path param: Unique session identifier
+     * @param string $id Path param: Unique session identifier
      * @param array<string,mixed>|SessionExtractParams $params
      *
-     * @return BaseResponse<mixed>
+     * @return BaseResponse<SessionExtractResponse>
      *
      * @throws APIException
      */
     public function extract(
-        mixed $id,
+        string $id,
         array|SessionExtractParams $params,
         ?RequestOptions $requestOptions = null,
     ): BaseResponse;
@@ -84,15 +91,15 @@ interface SessionsRawContract
     /**
      * @api
      *
-     * @param mixed $id Path param: Unique session identifier
+     * @param string $id Path param: Unique session identifier
      * @param array<string,mixed>|SessionNavigateParams $params
      *
-     * @return BaseResponse<mixed>
+     * @return BaseResponse<SessionNavigateResponse>
      *
      * @throws APIException
      */
     public function navigate(
-        mixed $id,
+        string $id,
         array|SessionNavigateParams $params,
         ?RequestOptions $requestOptions = null,
     ): BaseResponse;
@@ -100,15 +107,15 @@ interface SessionsRawContract
     /**
      * @api
      *
-     * @param mixed $id Path param: Unique session identifier
+     * @param string $id Path param: Unique session identifier
      * @param array<string,mixed>|SessionObserveParams $params
      *
-     * @return BaseResponse<mixed>
+     * @return BaseResponse<SessionObserveResponse>
      *
      * @throws APIException
      */
     public function observe(
-        mixed $id,
+        string $id,
         array|SessionObserveParams $params,
         ?RequestOptions $requestOptions = null,
     ): BaseResponse;
@@ -118,7 +125,7 @@ interface SessionsRawContract
      *
      * @param array<string,mixed>|SessionStartParams $params
      *
-     * @return BaseResponse<mixed>
+     * @return BaseResponse<SessionStartResponse>
      *
      * @throws APIException
      */

@@ -11,12 +11,25 @@ use Stagehand\Core\Util;
 use Stagehand\RequestOptions;
 use Stagehand\ServiceContracts\SessionsRawContract;
 use Stagehand\Sessions\SessionActParams;
+use Stagehand\Sessions\SessionActParams\XLanguage;
+use Stagehand\Sessions\SessionActParams\XStreamResponse;
+use Stagehand\Sessions\SessionActResponse;
 use Stagehand\Sessions\SessionEndParams;
-use Stagehand\Sessions\SessionExecuteAgentParams;
+use Stagehand\Sessions\SessionEndResponse;
+use Stagehand\Sessions\SessionExecuteParams;
+use Stagehand\Sessions\SessionExecuteResponse;
 use Stagehand\Sessions\SessionExtractParams;
+use Stagehand\Sessions\SessionExtractResponse;
 use Stagehand\Sessions\SessionNavigateParams;
+use Stagehand\Sessions\SessionNavigateParams\Options\WaitUntil;
+use Stagehand\Sessions\SessionNavigateResponse;
 use Stagehand\Sessions\SessionObserveParams;
+use Stagehand\Sessions\SessionObserveResponse;
 use Stagehand\Sessions\SessionStartParams;
+use Stagehand\Sessions\SessionStartParams\Browser\Type;
+use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings\Fingerprint\HTTPVersion;
+use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Region;
+use Stagehand\Sessions\SessionStartResponse;
 
 final class SessionsRawService implements SessionsRawContract
 {
@@ -31,21 +44,32 @@ final class SessionsRawService implements SessionsRawContract
      *
      * Executes a browser action using natural language instructions or a predefined Action object.
      *
-     * @param mixed $id Path param: Unique session identifier
+     * @param string $id Path param: Unique session identifier
      * @param array{
-     *   body?: mixed,
-     *   xLanguage?: mixed,
-     *   xSDKVersion?: mixed,
-     *   xSentAt?: mixed,
-     *   xStreamResponse?: mixed,
+     *   input: string|array{
+     *     description: string,
+     *     selector: string,
+     *     arguments?: list<string>,
+     *     method?: string,
+     *   },
+     *   frameID?: string,
+     *   options?: array{
+     *     model?: string|array{modelName: string, apiKey?: string, baseURL?: string},
+     *     timeout?: float,
+     *     variables?: array<string,string>,
+     *   },
+     *   xLanguage?: 'typescript'|'python'|'playground'|XLanguage,
+     *   xSDKVersion?: string,
+     *   xSentAt?: string|\DateTimeInterface,
+     *   xStreamResponse?: 'true'|'false'|XStreamResponse,
      * }|SessionActParams $params
      *
-     * @return BaseResponse<mixed>
+     * @return BaseResponse<SessionActResponse>
      *
      * @throws APIException
      */
     public function act(
-        mixed $id,
+        string $id,
         array|SessionActParams $params,
         ?RequestOptions $requestOptions = null,
     ): BaseResponse {
@@ -53,23 +77,27 @@ final class SessionsRawService implements SessionsRawContract
             $params,
             $requestOptions,
         );
+        $header_params = [
+            'xLanguage' => 'x-language',
+            'xSDKVersion' => 'x-sdk-version',
+            'xSentAt' => 'x-sent-at',
+            'xStreamResponse' => 'x-stream-response',
+        ];
 
         // @phpstan-ignore-next-line return.type
         return $this->client->request(
             method: 'post',
-            path: ['sessions/%1$s/act', $id],
+            path: ['v1/sessions/%1$s/act', $id],
             headers: Util::array_transform_keys(
-                array_diff_key($parsed, array_flip(['body'])),
-                [
-                    'xLanguage' => 'x-language',
-                    'xSDKVersion' => 'x-sdk-version',
-                    'xSentAt' => 'x-sent-at',
-                    'xStreamResponse' => 'x-stream-response',
-                ],
+                array_intersect_key($parsed, array_flip(array_keys($header_params))),
+                $header_params,
             ),
-            body: $parsed['body'],
+            body: (object) array_diff_key(
+                $parsed,
+                array_flip(array_keys($header_params))
+            ),
             options: $options,
-            convert: 'mixed',
+            convert: SessionActResponse::class,
         );
     }
 
@@ -78,20 +106,20 @@ final class SessionsRawService implements SessionsRawContract
      *
      * Terminates the browser session and releases all associated resources.
      *
-     * @param mixed $id Unique session identifier
+     * @param string $id Unique session identifier
      * @param array{
-     *   xLanguage?: mixed,
-     *   xSDKVersion?: mixed,
-     *   xSentAt?: mixed,
-     *   xStreamResponse?: mixed,
+     *   xLanguage?: 'typescript'|'python'|'playground'|SessionEndParams\XLanguage,
+     *   xSDKVersion?: string,
+     *   xSentAt?: string|\DateTimeInterface,
+     *   xStreamResponse?: 'true'|'false'|SessionEndParams\XStreamResponse,
      * }|SessionEndParams $params
      *
-     * @return BaseResponse<mixed>
+     * @return BaseResponse<SessionEndResponse>
      *
      * @throws APIException
      */
     public function end(
-        mixed $id,
+        string $id,
         array|SessionEndParams $params,
         ?RequestOptions $requestOptions = null,
     ): BaseResponse {
@@ -103,7 +131,7 @@ final class SessionsRawService implements SessionsRawContract
         // @phpstan-ignore-next-line return.type
         return $this->client->request(
             method: 'post',
-            path: ['sessions/%1$s/end', $id],
+            path: ['v1/sessions/%1$s/end', $id],
             headers: Util::array_transform_keys(
                 $parsed,
                 [
@@ -114,7 +142,7 @@ final class SessionsRawService implements SessionsRawContract
                 ],
             ),
             options: $options,
-            convert: 'mixed',
+            convert: SessionEndResponse::class,
         );
     }
 
@@ -123,45 +151,57 @@ final class SessionsRawService implements SessionsRawContract
      *
      * Runs an autonomous AI agent that can perform complex multi-step browser tasks.
      *
-     * @param mixed $id Path param: Unique session identifier
+     * @param string $id Path param: Unique session identifier
      * @param array{
-     *   body?: mixed,
-     *   xLanguage?: mixed,
-     *   xSDKVersion?: mixed,
-     *   xSentAt?: mixed,
-     *   xStreamResponse?: mixed,
-     * }|SessionExecuteAgentParams $params
+     *   agentConfig: array{
+     *     cua?: bool,
+     *     model?: string|array{modelName: string, apiKey?: string, baseURL?: string},
+     *     systemPrompt?: string,
+     *   },
+     *   executeOptions: array{
+     *     instruction: string, highlightCursor?: bool, maxSteps?: float
+     *   },
+     *   frameID?: string,
+     *   xLanguage?: 'typescript'|'python'|'playground'|SessionExecuteParams\XLanguage,
+     *   xSDKVersion?: string,
+     *   xSentAt?: string|\DateTimeInterface,
+     *   xStreamResponse?: 'true'|'false'|SessionExecuteParams\XStreamResponse,
+     * }|SessionExecuteParams $params
      *
-     * @return BaseResponse<mixed>
+     * @return BaseResponse<SessionExecuteResponse>
      *
      * @throws APIException
      */
-    public function executeAgent(
-        mixed $id,
-        array|SessionExecuteAgentParams $params,
+    public function execute(
+        string $id,
+        array|SessionExecuteParams $params,
         ?RequestOptions $requestOptions = null,
     ): BaseResponse {
-        [$parsed, $options] = SessionExecuteAgentParams::parseRequest(
+        [$parsed, $options] = SessionExecuteParams::parseRequest(
             $params,
             $requestOptions,
         );
+        $header_params = [
+            'xLanguage' => 'x-language',
+            'xSDKVersion' => 'x-sdk-version',
+            'xSentAt' => 'x-sent-at',
+            'xStreamResponse' => 'x-stream-response',
+        ];
 
         // @phpstan-ignore-next-line return.type
         return $this->client->request(
             method: 'post',
-            path: ['sessions/%1$s/agentExecute', $id],
+            path: ['v1/sessions/%1$s/agentExecute', $id],
             headers: Util::array_transform_keys(
-                array_diff_key($parsed, array_flip(['body'])),
-                [
-                    'xLanguage' => 'x-language',
-                    'xSDKVersion' => 'x-sdk-version',
-                    'xSentAt' => 'x-sent-at',
-                    'xStreamResponse' => 'x-stream-response',
-                ],
+                array_intersect_key($parsed, array_flip(array_keys($header_params))),
+                $header_params,
             ),
-            body: $parsed['body'],
+            body: (object) array_diff_key(
+                $parsed,
+                array_flip(array_keys($header_params))
+            ),
             options: $options,
-            convert: 'mixed',
+            convert: SessionExecuteResponse::class,
         );
     }
 
@@ -170,21 +210,28 @@ final class SessionsRawService implements SessionsRawContract
      *
      * Extracts structured data from the current page using AI-powered analysis.
      *
-     * @param mixed $id Path param: Unique session identifier
+     * @param string $id Path param: Unique session identifier
      * @param array{
-     *   body?: mixed,
-     *   xLanguage?: mixed,
-     *   xSDKVersion?: mixed,
-     *   xSentAt?: mixed,
-     *   xStreamResponse?: mixed,
+     *   frameID?: string,
+     *   instruction?: string,
+     *   options?: array{
+     *     model?: string|array{modelName: string, apiKey?: string, baseURL?: string},
+     *     selector?: string,
+     *     timeout?: float,
+     *   },
+     *   schema?: array<string,mixed>,
+     *   xLanguage?: 'typescript'|'python'|'playground'|SessionExtractParams\XLanguage,
+     *   xSDKVersion?: string,
+     *   xSentAt?: string|\DateTimeInterface,
+     *   xStreamResponse?: 'true'|'false'|SessionExtractParams\XStreamResponse,
      * }|SessionExtractParams $params
      *
-     * @return BaseResponse<mixed>
+     * @return BaseResponse<SessionExtractResponse>
      *
      * @throws APIException
      */
     public function extract(
-        mixed $id,
+        string $id,
         array|SessionExtractParams $params,
         ?RequestOptions $requestOptions = null,
     ): BaseResponse {
@@ -192,23 +239,27 @@ final class SessionsRawService implements SessionsRawContract
             $params,
             $requestOptions,
         );
+        $header_params = [
+            'xLanguage' => 'x-language',
+            'xSDKVersion' => 'x-sdk-version',
+            'xSentAt' => 'x-sent-at',
+            'xStreamResponse' => 'x-stream-response',
+        ];
 
         // @phpstan-ignore-next-line return.type
         return $this->client->request(
             method: 'post',
-            path: ['sessions/%1$s/extract', $id],
+            path: ['v1/sessions/%1$s/extract', $id],
             headers: Util::array_transform_keys(
-                array_diff_key($parsed, array_flip(['body'])),
-                [
-                    'xLanguage' => 'x-language',
-                    'xSDKVersion' => 'x-sdk-version',
-                    'xSentAt' => 'x-sent-at',
-                    'xStreamResponse' => 'x-stream-response',
-                ],
+                array_intersect_key($parsed, array_flip(array_keys($header_params))),
+                $header_params,
             ),
-            body: $parsed['body'],
+            body: (object) array_diff_key(
+                $parsed,
+                array_flip(array_keys($header_params))
+            ),
             options: $options,
-            convert: 'mixed',
+            convert: SessionExtractResponse::class,
         );
     }
 
@@ -217,21 +268,27 @@ final class SessionsRawService implements SessionsRawContract
      *
      * Navigates the browser to the specified URL.
      *
-     * @param mixed $id Path param: Unique session identifier
+     * @param string $id Path param: Unique session identifier
      * @param array{
-     *   body?: mixed,
-     *   xLanguage?: mixed,
-     *   xSDKVersion?: mixed,
-     *   xSentAt?: mixed,
-     *   xStreamResponse?: mixed,
+     *   url: string,
+     *   frameID?: string,
+     *   options?: array{
+     *     referer?: string,
+     *     timeout?: float,
+     *     waitUntil?: 'load'|'domcontentloaded'|'networkidle'|WaitUntil,
+     *   },
+     *   xLanguage?: 'typescript'|'python'|'playground'|SessionNavigateParams\XLanguage,
+     *   xSDKVersion?: string,
+     *   xSentAt?: string|\DateTimeInterface,
+     *   xStreamResponse?: 'true'|'false'|SessionNavigateParams\XStreamResponse,
      * }|SessionNavigateParams $params
      *
-     * @return BaseResponse<mixed>
+     * @return BaseResponse<SessionNavigateResponse>
      *
      * @throws APIException
      */
     public function navigate(
-        mixed $id,
+        string $id,
         array|SessionNavigateParams $params,
         ?RequestOptions $requestOptions = null,
     ): BaseResponse {
@@ -239,23 +296,27 @@ final class SessionsRawService implements SessionsRawContract
             $params,
             $requestOptions,
         );
+        $header_params = [
+            'xLanguage' => 'x-language',
+            'xSDKVersion' => 'x-sdk-version',
+            'xSentAt' => 'x-sent-at',
+            'xStreamResponse' => 'x-stream-response',
+        ];
 
         // @phpstan-ignore-next-line return.type
         return $this->client->request(
             method: 'post',
-            path: ['sessions/%1$s/navigate', $id],
+            path: ['v1/sessions/%1$s/navigate', $id],
             headers: Util::array_transform_keys(
-                array_diff_key($parsed, array_flip(['body'])),
-                [
-                    'xLanguage' => 'x-language',
-                    'xSDKVersion' => 'x-sdk-version',
-                    'xSentAt' => 'x-sent-at',
-                    'xStreamResponse' => 'x-stream-response',
-                ],
+                array_intersect_key($parsed, array_flip(array_keys($header_params))),
+                $header_params,
             ),
-            body: $parsed['body'],
+            body: (object) array_diff_key(
+                $parsed,
+                array_flip(array_keys($header_params))
+            ),
             options: $options,
-            convert: 'mixed',
+            convert: SessionNavigateResponse::class,
         );
     }
 
@@ -264,21 +325,27 @@ final class SessionsRawService implements SessionsRawContract
      *
      * Identifies and returns available actions on the current page that match the given instruction.
      *
-     * @param mixed $id Path param: Unique session identifier
+     * @param string $id Path param: Unique session identifier
      * @param array{
-     *   body?: mixed,
-     *   xLanguage?: mixed,
-     *   xSDKVersion?: mixed,
-     *   xSentAt?: mixed,
-     *   xStreamResponse?: mixed,
+     *   frameID?: string,
+     *   instruction?: string,
+     *   options?: array{
+     *     model?: string|array{modelName: string, apiKey?: string, baseURL?: string},
+     *     selector?: string,
+     *     timeout?: float,
+     *   },
+     *   xLanguage?: 'typescript'|'python'|'playground'|SessionObserveParams\XLanguage,
+     *   xSDKVersion?: string,
+     *   xSentAt?: string|\DateTimeInterface,
+     *   xStreamResponse?: 'true'|'false'|SessionObserveParams\XStreamResponse,
      * }|SessionObserveParams $params
      *
-     * @return BaseResponse<mixed>
+     * @return BaseResponse<SessionObserveResponse>
      *
      * @throws APIException
      */
     public function observe(
-        mixed $id,
+        string $id,
         array|SessionObserveParams $params,
         ?RequestOptions $requestOptions = null,
     ): BaseResponse {
@@ -286,23 +353,27 @@ final class SessionsRawService implements SessionsRawContract
             $params,
             $requestOptions,
         );
+        $header_params = [
+            'xLanguage' => 'x-language',
+            'xSDKVersion' => 'x-sdk-version',
+            'xSentAt' => 'x-sent-at',
+            'xStreamResponse' => 'x-stream-response',
+        ];
 
         // @phpstan-ignore-next-line return.type
         return $this->client->request(
             method: 'post',
-            path: ['sessions/%1$s/observe', $id],
+            path: ['v1/sessions/%1$s/observe', $id],
             headers: Util::array_transform_keys(
-                array_diff_key($parsed, array_flip(['body'])),
-                [
-                    'xLanguage' => 'x-language',
-                    'xSDKVersion' => 'x-sdk-version',
-                    'xSentAt' => 'x-sent-at',
-                    'xStreamResponse' => 'x-stream-response',
-                ],
+                array_intersect_key($parsed, array_flip(array_keys($header_params))),
+                $header_params,
             ),
-            body: $parsed['body'],
+            body: (object) array_diff_key(
+                $parsed,
+                array_flip(array_keys($header_params))
+            ),
             options: $options,
-            convert: 'mixed',
+            convert: SessionObserveResponse::class,
         );
     }
 
@@ -312,14 +383,76 @@ final class SessionsRawService implements SessionsRawContract
      * Creates a new browser session with the specified configuration. Returns a session ID used for all subsequent operations.
      *
      * @param array{
-     *   body?: mixed,
-     *   xLanguage?: mixed,
-     *   xSDKVersion?: mixed,
-     *   xSentAt?: mixed,
-     *   xStreamResponse?: mixed,
+     *   modelName: string,
+     *   actTimeoutMs?: float,
+     *   browser?: array{
+     *     cdpURL?: string,
+     *     launchOptions?: array{
+     *       acceptDownloads?: bool,
+     *       args?: list<string>,
+     *       cdpURL?: string,
+     *       chromiumSandbox?: bool,
+     *       connectTimeoutMs?: float,
+     *       deviceScaleFactor?: float,
+     *       devtools?: bool,
+     *       downloadsPath?: string,
+     *       executablePath?: string,
+     *       hasTouch?: bool,
+     *       headless?: bool,
+     *       ignoreDefaultArgs?: bool|list<string>,
+     *       ignoreHTTPSErrors?: bool,
+     *       locale?: string,
+     *       preserveUserDataDir?: bool,
+     *       proxy?: array{
+     *         server: string, bypass?: string, password?: string, username?: string
+     *       },
+     *       userDataDir?: string,
+     *       viewport?: array{height: float, width: float},
+     *     },
+     *     type?: 'local'|'browserbase'|Type,
+     *   },
+     *   browserbaseSessionCreateParams?: array{
+     *     browserSettings?: array{
+     *       advancedStealth?: bool,
+     *       blockAds?: bool,
+     *       context?: array{id: string, persist?: bool},
+     *       extensionID?: string,
+     *       fingerprint?: array{
+     *         browsers?: list<mixed>,
+     *         devices?: list<mixed>,
+     *         httpVersion?: '1'|'2'|HTTPVersion,
+     *         locales?: list<string>,
+     *         operatingSystems?: list<mixed>,
+     *         screen?: array<string,mixed>,
+     *       },
+     *       logSession?: bool,
+     *       recordSession?: bool,
+     *       solveCaptchas?: bool,
+     *       viewport?: array{height?: float, width?: float},
+     *     },
+     *     extensionID?: string,
+     *     keepAlive?: bool,
+     *     projectID?: string,
+     *     proxies?: bool|list<array<string,mixed>>,
+     *     region?: 'us-west-2'|'us-east-1'|'eu-central-1'|'ap-southeast-1'|Region,
+     *     timeout?: float,
+     *     userMetadata?: array<string,mixed>,
+     *   },
+     *   browserbaseSessionID?: string,
+     *   debugDom?: bool,
+     *   domSettleTimeoutMs?: float,
+     *   experimental?: bool,
+     *   selfHeal?: bool,
+     *   systemPrompt?: string,
+     *   verbose?: float,
+     *   waitForCaptchaSolves?: bool,
+     *   xLanguage?: 'typescript'|'python'|'playground'|SessionStartParams\XLanguage,
+     *   xSDKVersion?: string,
+     *   xSentAt?: string|\DateTimeInterface,
+     *   xStreamResponse?: 'true'|'false'|SessionStartParams\XStreamResponse,
      * }|SessionStartParams $params
      *
-     * @return BaseResponse<mixed>
+     * @return BaseResponse<SessionStartResponse>
      *
      * @throws APIException
      */
@@ -331,23 +464,27 @@ final class SessionsRawService implements SessionsRawContract
             $params,
             $requestOptions,
         );
+        $header_params = [
+            'xLanguage' => 'x-language',
+            'xSDKVersion' => 'x-sdk-version',
+            'xSentAt' => 'x-sent-at',
+            'xStreamResponse' => 'x-stream-response',
+        ];
 
         // @phpstan-ignore-next-line return.type
         return $this->client->request(
             method: 'post',
-            path: 'sessions/start',
+            path: 'v1/sessions/start',
             headers: Util::array_transform_keys(
-                array_diff_key($parsed, array_flip(['body'])),
-                [
-                    'xLanguage' => 'x-language',
-                    'xSDKVersion' => 'x-sdk-version',
-                    'xSentAt' => 'x-sent-at',
-                    'xStreamResponse' => 'x-stream-response',
-                ],
+                array_intersect_key($parsed, array_flip(array_keys($header_params))),
+                $header_params,
             ),
-            body: $parsed['body'],
+            body: (object) array_diff_key(
+                $parsed,
+                array_flip(array_keys($header_params))
+            ),
             options: $options,
-            convert: 'mixed',
+            convert: SessionStartResponse::class,
         );
     }
 }
