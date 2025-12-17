@@ -444,7 +444,7 @@ final class SessionsRawService implements SessionsRawContract
      *   experimental?: bool,
      *   selfHeal?: bool,
      *   systemPrompt?: string,
-     *   verbose?: float,
+     *   verbose?: int,
      *   waitForCaptchaSolves?: bool,
      *   xLanguage?: 'typescript'|'python'|'playground'|SessionStartParams\XLanguage,
      *   xSDKVersion?: string,

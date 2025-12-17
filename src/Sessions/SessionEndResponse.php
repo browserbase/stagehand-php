@@ -17,22 +17,8 @@ final class SessionEndResponse implements BaseModel
     use SdkModel;
 
     #[Required]
-    public bool $success;
+    public bool $success = true;
 
-    /**
-     * `new SessionEndResponse()` is missing required properties by the API.
-     *
-     * To enforce required parameters use
-     * ```
-     * SessionEndResponse::with(success: ...)
-     * ```
-     *
-     * Otherwise ensure the following setters are called
-     *
-     * ```
-     * (new SessionEndResponse)->withSuccess(...)
-     * ```
-     */
     public function __construct()
     {
         $this->initialize();
@@ -43,20 +29,8 @@ final class SessionEndResponse implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      */
-    public static function with(bool $success): self
+    public static function with(): self
     {
-        $self = new self;
-
-        $self['success'] = $success;
-
-        return $self;
-    }
-
-    public function withSuccess(bool $success): self
-    {
-        $self = clone $this;
-        $self['success'] = $success;
-
-        return $self;
+        return new self;
     }
 }

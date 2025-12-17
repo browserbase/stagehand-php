@@ -24,6 +24,9 @@ final class SessionExtractResponse implements BaseModel
     #[Required]
     public Data $data;
 
+    /**
+     * Indicates whether the request was successful.
+     */
     #[Required]
     public bool $success;
 
@@ -74,6 +77,9 @@ final class SessionExtractResponse implements BaseModel
         return $self;
     }
 
+    /**
+     * Indicates whether the request was successful.
+     */
     public function withSuccess(bool $success): self
     {
         $self = clone $this;
