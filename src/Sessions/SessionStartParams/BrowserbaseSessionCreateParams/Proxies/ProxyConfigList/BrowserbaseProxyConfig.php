@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Proxies\UnionMember1;
+namespace Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Proxies\ProxyConfigList;
 
 use Stagehand\Core\Attributes\Optional;
 use Stagehand\Core\Attributes\Required;
 use Stagehand\Core\Concerns\SdkModel;
 use Stagehand\Core\Contracts\BaseModel;
-use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Proxies\UnionMember1\BrowserbaseProxyConfig\Geolocation;
+use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Proxies\ProxyConfigList\BrowserbaseProxyConfig\Geolocation;
 
 /**
- * @phpstan-import-type GeolocationShape from \Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Proxies\UnionMember1\BrowserbaseProxyConfig\Geolocation
+ * @phpstan-import-type GeolocationShape from \Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Proxies\ProxyConfigList\BrowserbaseProxyConfig\Geolocation
  *
  * @phpstan-type BrowserbaseProxyConfigShape = array{
  *   type: 'browserbase',

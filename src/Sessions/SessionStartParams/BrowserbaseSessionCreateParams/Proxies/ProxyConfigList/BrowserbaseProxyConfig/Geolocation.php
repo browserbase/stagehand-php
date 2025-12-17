@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Proxies\UnionMember1\BrowserbaseProxyConfig;
+namespace Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Proxies\ProxyConfigList\BrowserbaseProxyConfig;
 
 use Stagehand\Core\Attributes\Optional;
 use Stagehand\Core\Attributes\Required;

@@ -9,8 +9,8 @@ use Stagehand\Core\Concerns\SdkModel;
 use Stagehand\Core\Contracts\BaseModel;
 use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings;
 use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Proxies;
-use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Proxies\UnionMember1\BrowserbaseProxyConfig;
-use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Proxies\UnionMember1\ExternalProxyConfig;
+use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Proxies\ProxyConfigList\BrowserbaseProxyConfig;
+use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Proxies\ProxyConfigList\ExternalProxyConfig;
 use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Region;
 
 /**

@@ -8,12 +8,12 @@ use Stagehand\Core\Concerns\SdkUnion;
 use Stagehand\Core\Conversion\Contracts\Converter;
 use Stagehand\Core\Conversion\Contracts\ConverterSource;
 use Stagehand\Core\Conversion\ListOf;
-use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Proxies\UnionMember1;
+use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Proxies\ProxyConfigList;
 
 /**
- * @phpstan-import-type UnionMember1Shape from \Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Proxies\UnionMember1
+ * @phpstan-import-type ProxyConfigListShape from \Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Proxies\ProxyConfigList
  *
- * @phpstan-type ProxiesShape = bool|list<UnionMember1Shape>
+ * @phpstan-type ProxiesShape = bool|list<ProxyConfigListShape>
  */
 final class Proxies implements ConverterSource
 {
@@ -24,6 +24,6 @@ final class Proxies implements ConverterSource
      */
     public static function variants(): array
     {
-        return ['bool', new ListOf(UnionMember1::class)];
+        return ['bool', new ListOf(ProxyConfigList::class)];
     }
 }

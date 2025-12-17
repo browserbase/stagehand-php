@@ -21,7 +21,6 @@ use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Browser
 use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings\Fingerprint\HTTPVersion;
 use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings\Fingerprint\OperatingSystem;
 use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Region;
-use Stagehand\Sessions\SessionStartParams\Verbose;
 use Stagehand\Sessions\SessionStartResponse;
 
 interface SessionsContract
@@ -271,7 +270,7 @@ interface SessionsContract
      * @param bool $experimental Body param:
      * @param bool $selfHeal Body param: Enable self-healing for failed actions
      * @param string $systemPrompt Body param: Custom system prompt for AI operations
-     * @param 0|1|2|Verbose $verbose Body param: Logging verbosity level (0=quiet, 1=normal, 2=debug)
+     * @param int $verbose Body param: Logging verbosity level (0=quiet, 1=normal, 2=debug)
      * @param bool $waitForCaptchaSolves Body param:
      * @param 'typescript'|'python'|'playground'|\Stagehand\Sessions\SessionStartParams\XLanguage $xLanguage Header param: Client SDK language
      * @param string $xSDKVersion Header param: Version of the Stagehand SDK
@@ -291,7 +290,7 @@ interface SessionsContract
         ?bool $experimental = null,
         ?bool $selfHeal = null,
         ?string $systemPrompt = null,
-        int|Verbose|null $verbose = null,
+        ?int $verbose = null,
         ?bool $waitForCaptchaSolves = null,
         string|\Stagehand\Sessions\SessionStartParams\XLanguage|null $xLanguage = null,
         ?string $xSDKVersion = null,
