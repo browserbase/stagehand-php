@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Stagehand\Services;
 
 use Stagehand\Client;
+use Stagehand\Core\Contracts\BaseStream;
 use Stagehand\Core\Exceptions\APIException;
 use Stagehand\Core\Util;
 use Stagehand\RequestOptions;
 use Stagehand\ServiceContracts\SessionsContract;
+use Stagehand\Sessions\Action;
 use Stagehand\Sessions\SessionActParams\XLanguage;
 use Stagehand\Sessions\SessionActParams\XStreamResponse;
 use Stagehand\Sessions\SessionActResponse;
@@ -25,6 +27,7 @@ use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Browser
 use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings\Fingerprint\OperatingSystem;
 use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Region;
 use Stagehand\Sessions\SessionStartResponse;
+use Stagehand\Sessions\StreamEvent;
 
 final class SessionsService implements SessionsContract
 {
@@ -52,7 +55,7 @@ final class SessionsService implements SessionsContract
      *   selector: string,
      *   arguments?: list<string>,
      *   method?: string,
-     * } $input Body param: Natural language instruction or Action object
+     * }|Action $input Body param: Natural language instruction or Action object
      * @param string $frameID Body param: Target frame ID for the action
      * @param array{
      *   model?: string|array{modelName: string, apiKey?: string, baseURL?: string},
@@ -68,7 +71,7 @@ final class SessionsService implements SessionsContract
      */
     public function act(
         string $id,
-        string|array $input,
+        string|array|Action $input,
         ?string $frameID = null,
         ?array $options = null,
         string|XLanguage|null $xLanguage = null,
@@ -91,6 +94,60 @@ final class SessionsService implements SessionsContract
 
         // @phpstan-ignore-next-line argument.type
         $response = $this->raw->act($id, params: $params, requestOptions: $requestOptions);
+
+        return $response->parse();
+    }
+
+    /**
+     * @api
+     *
+     * @param string $id Path param: Unique session identifier
+     * @param string|array{
+     *   description: string,
+     *   selector: string,
+     *   arguments?: list<string>,
+     *   method?: string,
+     * }|Action $input Body param: Natural language instruction or Action object
+     * @param string $frameID Body param: Target frame ID for the action
+     * @param array{
+     *   model?: string|array{modelName: string, apiKey?: string, baseURL?: string},
+     *   timeout?: float,
+     *   variables?: array<string,string>,
+     * } $options Body param:
+     * @param 'typescript'|'python'|'playground'|XLanguage $xLanguage Header param: Client SDK language
+     * @param string $xSDKVersion Header param: Version of the Stagehand SDK
+     * @param string|\DateTimeInterface $xSentAt Header param: ISO timestamp when request was sent
+     * @param 'true'|'false'|XStreamResponse $xStreamResponse Header param: Whether to stream the response via SSE
+     *
+     * @return BaseStream<StreamEvent>
+     *
+     * @throws APIException
+     */
+    public function actStream(
+        string $id,
+        string|array|Action $input,
+        ?string $frameID = null,
+        ?array $options = null,
+        string|XLanguage|null $xLanguage = null,
+        ?string $xSDKVersion = null,
+        string|\DateTimeInterface|null $xSentAt = null,
+        string|XStreamResponse|null $xStreamResponse = null,
+        ?RequestOptions $requestOptions = null,
+    ): BaseStream {
+        $params = Util::removeNulls(
+            [
+                'input' => $input,
+                'frameID' => $frameID,
+                'options' => $options,
+                'xLanguage' => $xLanguage,
+                'xSDKVersion' => $xSDKVersion,
+                'xSentAt' => $xSentAt,
+                'xStreamResponse' => $xStreamResponse,
+            ],
+        );
+
+        // @phpstan-ignore-next-line argument.type
+        $response = $this->raw->actStream($id, params: $params, requestOptions: $requestOptions);
 
         return $response->parse();
     }
@@ -185,6 +242,57 @@ final class SessionsService implements SessionsContract
     /**
      * @api
      *
+     * @param string $id Path param: Unique session identifier
+     * @param array{
+     *   cua?: bool,
+     *   model?: string|array{modelName: string, apiKey?: string, baseURL?: string},
+     *   systemPrompt?: string,
+     * } $agentConfig Body param:
+     * @param array{
+     *   instruction: string, highlightCursor?: bool, maxSteps?: float
+     * } $executeOptions Body param:
+     * @param string $frameID Body param: Target frame ID for the agent
+     * @param 'typescript'|'python'|'playground'|\Stagehand\Sessions\SessionExecuteParams\XLanguage $xLanguage Header param: Client SDK language
+     * @param string $xSDKVersion Header param: Version of the Stagehand SDK
+     * @param string|\DateTimeInterface $xSentAt Header param: ISO timestamp when request was sent
+     * @param 'true'|'false'|\Stagehand\Sessions\SessionExecuteParams\XStreamResponse $xStreamResponse Header param: Whether to stream the response via SSE
+     *
+     * @return BaseStream<StreamEvent>
+     *
+     * @throws APIException
+     */
+    public function executeStream(
+        string $id,
+        array $agentConfig,
+        array $executeOptions,
+        ?string $frameID = null,
+        string|\Stagehand\Sessions\SessionExecuteParams\XLanguage|null $xLanguage = null,
+        ?string $xSDKVersion = null,
+        string|\DateTimeInterface|null $xSentAt = null,
+        string|\Stagehand\Sessions\SessionExecuteParams\XStreamResponse|null $xStreamResponse = null,
+        ?RequestOptions $requestOptions = null,
+    ): BaseStream {
+        $params = Util::removeNulls(
+            [
+                'agentConfig' => $agentConfig,
+                'executeOptions' => $executeOptions,
+                'frameID' => $frameID,
+                'xLanguage' => $xLanguage,
+                'xSDKVersion' => $xSDKVersion,
+                'xSentAt' => $xSentAt,
+                'xStreamResponse' => $xStreamResponse,
+            ],
+        );
+
+        // @phpstan-ignore-next-line argument.type
+        $response = $this->raw->executeStream($id, params: $params, requestOptions: $requestOptions);
+
+        return $response->parse();
+    }
+
+    /**
+     * @api
+     *
      * Extracts structured data from the current page using AI-powered analysis.
      *
      * @param string $id Path param: Unique session identifier
@@ -237,6 +345,58 @@ final class SessionsService implements SessionsContract
     /**
      * @api
      *
+     * @param string $id Path param: Unique session identifier
+     * @param string $frameID Body param: Target frame ID for the extraction
+     * @param string $instruction Body param: Natural language instruction for what to extract
+     * @param array{
+     *   model?: string|array{modelName: string, apiKey?: string, baseURL?: string},
+     *   selector?: string,
+     *   timeout?: float,
+     * } $options Body param:
+     * @param array<string,mixed> $schema Body param: JSON Schema defining the structure of data to extract
+     * @param 'typescript'|'python'|'playground'|\Stagehand\Sessions\SessionExtractParams\XLanguage $xLanguage Header param: Client SDK language
+     * @param string $xSDKVersion Header param: Version of the Stagehand SDK
+     * @param string|\DateTimeInterface $xSentAt Header param: ISO timestamp when request was sent
+     * @param 'true'|'false'|\Stagehand\Sessions\SessionExtractParams\XStreamResponse $xStreamResponse Header param: Whether to stream the response via SSE
+     *
+     * @return BaseStream<StreamEvent>
+     *
+     * @throws APIException
+     */
+    public function extractStream(
+        string $id,
+        ?string $frameID = null,
+        ?string $instruction = null,
+        ?array $options = null,
+        ?array $schema = null,
+        string|\Stagehand\Sessions\SessionExtractParams\XLanguage|null $xLanguage = null,
+        ?string $xSDKVersion = null,
+        string|\DateTimeInterface|null $xSentAt = null,
+        string|\Stagehand\Sessions\SessionExtractParams\XStreamResponse|null $xStreamResponse = null,
+        ?RequestOptions $requestOptions = null,
+    ): BaseStream {
+        $params = Util::removeNulls(
+            [
+                'frameID' => $frameID,
+                'instruction' => $instruction,
+                'options' => $options,
+                'schema' => $schema,
+                'xLanguage' => $xLanguage,
+                'xSDKVersion' => $xSDKVersion,
+                'xSentAt' => $xSentAt,
+                'xStreamResponse' => $xStreamResponse,
+            ],
+        );
+
+        // @phpstan-ignore-next-line argument.type
+        $response = $this->raw->extractStream($id, params: $params, requestOptions: $requestOptions);
+
+        return $response->parse();
+    }
+
+    /**
+     * @api
+     *
      * Navigates the browser to the specified URL.
      *
      * @param string $id Path param: Unique session identifier
@@ -247,6 +407,7 @@ final class SessionsService implements SessionsContract
      *   timeout?: float,
      *   waitUntil?: 'load'|'domcontentloaded'|'networkidle'|WaitUntil,
      * } $options Body param:
+     * @param bool $streamResponse Body param: Whether to stream the response via SSE
      * @param 'typescript'|'python'|'playground'|\Stagehand\Sessions\SessionNavigateParams\XLanguage $xLanguage Header param: Client SDK language
      * @param string $xSDKVersion Header param: Version of the Stagehand SDK
      * @param string|\DateTimeInterface $xSentAt Header param: ISO timestamp when request was sent
@@ -259,6 +420,7 @@ final class SessionsService implements SessionsContract
         string $url,
         ?string $frameID = null,
         ?array $options = null,
+        ?bool $streamResponse = null,
         string|\Stagehand\Sessions\SessionNavigateParams\XLanguage|null $xLanguage = null,
         ?string $xSDKVersion = null,
         string|\DateTimeInterface|null $xSentAt = null,
@@ -270,6 +432,7 @@ final class SessionsService implements SessionsContract
                 'url' => $url,
                 'frameID' => $frameID,
                 'options' => $options,
+                'streamResponse' => $streamResponse,
                 'xLanguage' => $xLanguage,
                 'xSDKVersion' => $xSDKVersion,
                 'xSentAt' => $xSentAt,
@@ -328,6 +491,55 @@ final class SessionsService implements SessionsContract
 
         // @phpstan-ignore-next-line argument.type
         $response = $this->raw->observe($id, params: $params, requestOptions: $requestOptions);
+
+        return $response->parse();
+    }
+
+    /**
+     * @api
+     *
+     * @param string $id Path param: Unique session identifier
+     * @param string $frameID Body param: Target frame ID for the observation
+     * @param string $instruction Body param: Natural language instruction for what actions to find
+     * @param array{
+     *   model?: string|array{modelName: string, apiKey?: string, baseURL?: string},
+     *   selector?: string,
+     *   timeout?: float,
+     * } $options Body param:
+     * @param 'typescript'|'python'|'playground'|\Stagehand\Sessions\SessionObserveParams\XLanguage $xLanguage Header param: Client SDK language
+     * @param string $xSDKVersion Header param: Version of the Stagehand SDK
+     * @param string|\DateTimeInterface $xSentAt Header param: ISO timestamp when request was sent
+     * @param 'true'|'false'|\Stagehand\Sessions\SessionObserveParams\XStreamResponse $xStreamResponse Header param: Whether to stream the response via SSE
+     *
+     * @return BaseStream<StreamEvent>
+     *
+     * @throws APIException
+     */
+    public function observeStream(
+        string $id,
+        ?string $frameID = null,
+        ?string $instruction = null,
+        ?array $options = null,
+        string|\Stagehand\Sessions\SessionObserveParams\XLanguage|null $xLanguage = null,
+        ?string $xSDKVersion = null,
+        string|\DateTimeInterface|null $xSentAt = null,
+        string|\Stagehand\Sessions\SessionObserveParams\XStreamResponse|null $xStreamResponse = null,
+        ?RequestOptions $requestOptions = null,
+    ): BaseStream {
+        $params = Util::removeNulls(
+            [
+                'frameID' => $frameID,
+                'instruction' => $instruction,
+                'options' => $options,
+                'xLanguage' => $xLanguage,
+                'xSDKVersion' => $xSDKVersion,
+                'xSentAt' => $xSentAt,
+                'xStreamResponse' => $xStreamResponse,
+            ],
+        );
+
+        // @phpstan-ignore-next-line argument.type
+        $response = $this->raw->observeStream($id, params: $params, requestOptions: $requestOptions);
 
         return $response->parse();
     }

@@ -9,7 +9,6 @@ use Stagehand\Core\Attributes\Required;
 use Stagehand\Core\Concerns\SdkModel;
 use Stagehand\Core\Concerns\SdkParams;
 use Stagehand\Core\Contracts\BaseModel;
-use Stagehand\Sessions\SessionActParams\Input\ActionInput;
 use Stagehand\Sessions\SessionActParams\Options;
 use Stagehand\Sessions\SessionActParams\XLanguage;
 use Stagehand\Sessions\SessionActParams\XStreamResponse;
@@ -42,7 +41,7 @@ final class SessionActParams implements BaseModel
      * Natural language instruction or Action object.
      */
     #[Required]
-    public string|ActionInput $input;
+    public string|Action $input;
 
     /**
      * Target frame ID for the action.
@@ -111,7 +110,7 @@ final class SessionActParams implements BaseModel
      * @param XStreamResponse|value-of<XStreamResponse> $xStreamResponse
      */
     public static function with(
-        string|ActionInput|array $input,
+        string|Action|array $input,
         ?string $frameID = null,
         Options|array|null $options = null,
         XLanguage|string|null $xLanguage = null,
@@ -138,7 +137,7 @@ final class SessionActParams implements BaseModel
      *
      * @param InputShape $input
      */
-    public function withInput(string|ActionInput|array $input): self
+    public function withInput(string|Action|array $input): self
     {
         $self = clone $this;
         $self['input'] = $input;

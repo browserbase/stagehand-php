@@ -24,6 +24,7 @@ use Stagehand\Sessions\SessionNavigateParams\XStreamResponse;
  *   url: string,
  *   frameID?: string|null,
  *   options?: OptionsShape|null,
+ *   streamResponse?: bool|null,
  *   xLanguage?: null|XLanguage|value-of<XLanguage>,
  *   xSDKVersion?: string|null,
  *   xSentAt?: \DateTimeInterface|null,
@@ -50,6 +51,12 @@ final class SessionNavigateParams implements BaseModel
 
     #[Optional]
     public ?Options $options;
+
+    /**
+     * Whether to stream the response via SSE.
+     */
+    #[Optional]
+    public ?bool $streamResponse;
 
     /**
      * Client SDK language.
@@ -111,6 +118,7 @@ final class SessionNavigateParams implements BaseModel
         string $url,
         ?string $frameID = null,
         Options|array|null $options = null,
+        ?bool $streamResponse = null,
         XLanguage|string|null $xLanguage = null,
         ?string $xSDKVersion = null,
         ?\DateTimeInterface $xSentAt = null,
@@ -122,6 +130,7 @@ final class SessionNavigateParams implements BaseModel
 
         null !== $frameID && $self['frameID'] = $frameID;
         null !== $options && $self['options'] = $options;
+        null !== $streamResponse && $self['streamResponse'] = $streamResponse;
         null !== $xLanguage && $self['xLanguage'] = $xLanguage;
         null !== $xSDKVersion && $self['xSDKVersion'] = $xSDKVersion;
         null !== $xSentAt && $self['xSentAt'] = $xSentAt;
@@ -159,6 +168,17 @@ final class SessionNavigateParams implements BaseModel
     {
         $self = clone $this;
         $self['options'] = $options;
+
+        return $self;
+    }
+
+    /**
+     * Whether to stream the response via SSE.
+     */
+    public function withStreamResponse(bool $streamResponse): self
+    {
+        $self = clone $this;
+        $self['streamResponse'] = $streamResponse;
 
         return $self;
     }

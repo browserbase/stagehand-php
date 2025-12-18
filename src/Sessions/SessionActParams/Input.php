@@ -7,14 +7,14 @@ namespace Stagehand\Sessions\SessionActParams;
 use Stagehand\Core\Concerns\SdkUnion;
 use Stagehand\Core\Conversion\Contracts\Converter;
 use Stagehand\Core\Conversion\Contracts\ConverterSource;
-use Stagehand\Sessions\SessionActParams\Input\ActionInput;
+use Stagehand\Sessions\Action;
 
 /**
  * Natural language instruction or Action object.
  *
- * @phpstan-import-type ActionInputShape from \Stagehand\Sessions\SessionActParams\Input\ActionInput
+ * @phpstan-import-type ActionShape from \Stagehand\Sessions\Action
  *
- * @phpstan-type InputShape = string|ActionInputShape
+ * @phpstan-type InputShape = string|ActionShape
  */
 final class Input implements ConverterSource
 {
@@ -25,6 +25,6 @@ final class Input implements ConverterSource
      */
     public static function variants(): array
     {
-        return ['string', ActionInput::class];
+        return ['string', Action::class];
     }
 }
