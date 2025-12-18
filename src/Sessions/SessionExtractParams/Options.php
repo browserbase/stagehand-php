@@ -49,7 +49,7 @@ final class Options implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
-     * @param ModelConfigShape $model
+     * @param ModelConfigShape|null $model
      */
     public static function with(
         string|ModelConfigObject|array|null $model = null,

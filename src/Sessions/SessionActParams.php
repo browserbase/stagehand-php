@@ -24,7 +24,7 @@ use Stagehand\Sessions\SessionActParams\XStreamResponse;
  * @phpstan-type SessionActParamsShape = array{
  *   input: InputShape,
  *   frameID?: string|null,
- *   options?: OptionsShape|null,
+ *   options?: null|Options|OptionsShape,
  *   xLanguage?: null|XLanguage|value-of<XLanguage>,
  *   xSDKVersion?: string|null,
  *   xSentAt?: \DateTimeInterface|null,
@@ -105,9 +105,9 @@ final class SessionActParams implements BaseModel
      * You must use named parameters to construct any parameters with a default value.
      *
      * @param InputShape $input
-     * @param OptionsShape $options
-     * @param XLanguage|value-of<XLanguage> $xLanguage
-     * @param XStreamResponse|value-of<XStreamResponse> $xStreamResponse
+     * @param Options|OptionsShape|null $options
+     * @param XLanguage|value-of<XLanguage>|null $xLanguage
+     * @param XStreamResponse|value-of<XStreamResponse>|null $xStreamResponse
      */
     public static function with(
         string|Action|array $input,
@@ -157,7 +157,7 @@ final class SessionActParams implements BaseModel
     }
 
     /**
-     * @param OptionsShape $options
+     * @param Options|OptionsShape $options
      */
     public function withOptions(Options|array $options): self
     {

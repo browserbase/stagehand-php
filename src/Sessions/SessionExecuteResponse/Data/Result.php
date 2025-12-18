@@ -87,8 +87,8 @@ final class Result implements BaseModel
      * You must use named parameters to construct any parameters with a default value.
      *
      * @param list<ActionShape> $actions
-     * @param array<string,mixed> $metadata
-     * @param UsageShape $usage
+     * @param array<string,mixed>|null $metadata
+     * @param Usage|UsageShape|null $usage
      */
     public static function with(
         array $actions,
@@ -167,7 +167,7 @@ final class Result implements BaseModel
     }
 
     /**
-     * @param UsageShape $usage
+     * @param Usage|UsageShape $usage
      */
     public function withUsage(Usage|array $usage): self
     {

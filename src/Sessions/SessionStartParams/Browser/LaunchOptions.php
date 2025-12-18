@@ -108,10 +108,10 @@ final class LaunchOptions implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
-     * @param list<string> $args
-     * @param IgnoreDefaultArgsShape $ignoreDefaultArgs
-     * @param ProxyShape $proxy
-     * @param ViewportShape $viewport
+     * @param list<string>|null $args
+     * @param IgnoreDefaultArgsShape|null $ignoreDefaultArgs
+     * @param Proxy|ProxyShape|null $proxy
+     * @param Viewport|ViewportShape|null $viewport
      */
     public static function with(
         ?bool $acceptDownloads = null,
@@ -284,7 +284,7 @@ final class LaunchOptions implements BaseModel
     }
 
     /**
-     * @param ProxyShape $proxy
+     * @param Proxy|ProxyShape $proxy
      */
     public function withProxy(Proxy|array $proxy): self
     {
@@ -303,7 +303,7 @@ final class LaunchOptions implements BaseModel
     }
 
     /**
-     * @param ViewportShape $viewport
+     * @param Viewport|ViewportShape $viewport
      */
     public function withViewport(Viewport|array $viewport): self
     {

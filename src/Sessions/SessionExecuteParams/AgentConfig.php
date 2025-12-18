@@ -49,7 +49,7 @@ final class AgentConfig implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
-     * @param ModelConfigShape $model
+     * @param ModelConfigShape|null $model
      */
     public static function with(
         ?bool $cua = null,

@@ -70,9 +70,9 @@ final class BrowserSettings implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
-     * @param ContextShape $context
-     * @param FingerprintShape $fingerprint
-     * @param ViewportShape $viewport
+     * @param Context|ContextShape|null $context
+     * @param Fingerprint|FingerprintShape|null $fingerprint
+     * @param Viewport|ViewportShape|null $viewport
      */
     public static function with(
         ?bool $advancedStealth = null,
@@ -117,7 +117,7 @@ final class BrowserSettings implements BaseModel
     }
 
     /**
-     * @param ContextShape $context
+     * @param Context|ContextShape $context
      */
     public function withContext(Context|array $context): self
     {
@@ -136,7 +136,7 @@ final class BrowserSettings implements BaseModel
     }
 
     /**
-     * @param FingerprintShape $fingerprint
+     * @param Fingerprint|FingerprintShape $fingerprint
      */
     public function withFingerprint(Fingerprint|array $fingerprint): self
     {
@@ -171,7 +171,7 @@ final class BrowserSettings implements BaseModel
     }
 
     /**
-     * @param ViewportShape $viewport
+     * @param Viewport|ViewportShape $viewport
      */
     public function withViewport(Viewport|array $viewport): self
     {

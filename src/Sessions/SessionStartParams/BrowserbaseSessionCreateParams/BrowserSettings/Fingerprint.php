@@ -63,12 +63,12 @@ final class Fingerprint implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
-     * @param list<Browser|value-of<Browser>> $browsers
-     * @param list<Device|value-of<Device>> $devices
-     * @param HTTPVersion|value-of<HTTPVersion> $httpVersion
-     * @param list<string> $locales
-     * @param list<OperatingSystem|value-of<OperatingSystem>> $operatingSystems
-     * @param ScreenShape $screen
+     * @param list<Browser|value-of<Browser>>|null $browsers
+     * @param list<Device|value-of<Device>>|null $devices
+     * @param HTTPVersion|value-of<HTTPVersion>|null $httpVersion
+     * @param list<string>|null $locales
+     * @param list<OperatingSystem|value-of<OperatingSystem>>|null $operatingSystems
+     * @param Screen|ScreenShape|null $screen
      */
     public static function with(
         ?array $browsers = null,
@@ -146,7 +146,7 @@ final class Fingerprint implements BaseModel
     }
 
     /**
-     * @param ScreenShape $screen
+     * @param Screen|ScreenShape $screen
      */
     public function withScreen(Screen|array $screen): self
     {

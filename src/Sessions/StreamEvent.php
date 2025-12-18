@@ -17,9 +17,7 @@ use Stagehand\Sessions\StreamEvent\Type;
  * @phpstan-import-type DataShape from \Stagehand\Sessions\StreamEvent\Data
  *
  * @phpstan-type StreamEventShape = array{
- *   id: string,
- *   data: StreamEventSystemDataOutput|StreamEventLogDataOutput|DataShape,
- *   type: Type|value-of<Type>,
+ *   id: string, data: DataShape, type: Type|value-of<Type>
  * }
  */
 final class StreamEvent implements BaseModel
