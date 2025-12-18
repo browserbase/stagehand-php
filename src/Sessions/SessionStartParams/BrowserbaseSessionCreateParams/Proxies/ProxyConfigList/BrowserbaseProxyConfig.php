@@ -44,7 +44,7 @@ final class BrowserbaseProxyConfig implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
-     * @param GeolocationShape $geolocation
+     * @param Geolocation|GeolocationShape|null $geolocation
      */
     public static function with(
         ?string $domainPattern = null,
@@ -67,7 +67,7 @@ final class BrowserbaseProxyConfig implements BaseModel
     }
 
     /**
-     * @param GeolocationShape $geolocation
+     * @param Geolocation|GeolocationShape $geolocation
      */
     public function withGeolocation(Geolocation|array $geolocation): self
     {

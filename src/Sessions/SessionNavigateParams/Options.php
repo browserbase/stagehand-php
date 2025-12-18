@@ -51,7 +51,7 @@ final class Options implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
-     * @param WaitUntil|value-of<WaitUntil> $waitUntil
+     * @param WaitUntil|value-of<WaitUntil>|null $waitUntil
      */
     public static function with(
         ?string $referer = null,

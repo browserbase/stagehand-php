@@ -25,8 +25,8 @@ use Stagehand\Sessions\SessionStartParams\XStreamResponse;
  * @phpstan-type SessionStartParamsShape = array{
  *   modelName: string,
  *   actTimeoutMs?: float|null,
- *   browser?: BrowserShape|null,
- *   browserbaseSessionCreateParams?: BrowserbaseSessionCreateParamsShape|null,
+ *   browser?: null|Browser|BrowserShape,
+ *   browserbaseSessionCreateParams?: null|BrowserbaseSessionCreateParams|BrowserbaseSessionCreateParamsShape,
  *   browserbaseSessionID?: string|null,
  *   debugDom?: bool|null,
  *   domSettleTimeoutMs?: float|null,
@@ -156,10 +156,10 @@ final class SessionStartParams implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
-     * @param BrowserShape $browser
-     * @param BrowserbaseSessionCreateParamsShape $browserbaseSessionCreateParams
-     * @param XLanguage|value-of<XLanguage> $xLanguage
-     * @param XStreamResponse|value-of<XStreamResponse> $xStreamResponse
+     * @param Browser|BrowserShape|null $browser
+     * @param BrowserbaseSessionCreateParams|BrowserbaseSessionCreateParamsShape|null $browserbaseSessionCreateParams
+     * @param XLanguage|value-of<XLanguage>|null $xLanguage
+     * @param XStreamResponse|value-of<XStreamResponse>|null $xStreamResponse
      */
     public static function with(
         string $modelName,
@@ -225,7 +225,7 @@ final class SessionStartParams implements BaseModel
     }
 
     /**
-     * @param BrowserShape $browser
+     * @param Browser|BrowserShape $browser
      */
     public function withBrowser(Browser|array $browser): self
     {
@@ -236,7 +236,7 @@ final class SessionStartParams implements BaseModel
     }
 
     /**
-     * @param BrowserbaseSessionCreateParamsShape $browserbaseSessionCreateParams
+     * @param BrowserbaseSessionCreateParams|BrowserbaseSessionCreateParamsShape $browserbaseSessionCreateParams
      */
     public function withBrowserbaseSessionCreateParams(
         BrowserbaseSessionCreateParams|array $browserbaseSessionCreateParams

@@ -74,7 +74,7 @@ final class Action implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
-     * @param list<string> $arguments
+     * @param list<string>|null $arguments
      */
     public static function with(
         string $description,

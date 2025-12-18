@@ -55,7 +55,7 @@ final class Data implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
-     * @param ResultShape $result
+     * @param Result|ResultShape $result
      */
     public static function with(
         Result|array $result,
@@ -71,7 +71,7 @@ final class Data implements BaseModel
     }
 
     /**
-     * @param ResultShape $result
+     * @param Result|ResultShape $result
      */
     public function withResult(Result|array $result): self
     {

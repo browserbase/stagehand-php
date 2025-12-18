@@ -23,7 +23,7 @@ use Stagehand\Sessions\SessionNavigateParams\XStreamResponse;
  * @phpstan-type SessionNavigateParamsShape = array{
  *   url: string,
  *   frameID?: string|null,
- *   options?: OptionsShape|null,
+ *   options?: null|Options|OptionsShape,
  *   streamResponse?: bool|null,
  *   xLanguage?: null|XLanguage|value-of<XLanguage>,
  *   xSDKVersion?: string|null,
@@ -110,9 +110,9 @@ final class SessionNavigateParams implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
-     * @param OptionsShape $options
-     * @param XLanguage|value-of<XLanguage> $xLanguage
-     * @param XStreamResponse|value-of<XStreamResponse> $xStreamResponse
+     * @param Options|OptionsShape|null $options
+     * @param XLanguage|value-of<XLanguage>|null $xLanguage
+     * @param XStreamResponse|value-of<XStreamResponse>|null $xStreamResponse
      */
     public static function with(
         string $url,
@@ -162,7 +162,7 @@ final class SessionNavigateParams implements BaseModel
     }
 
     /**
-     * @param OptionsShape $options
+     * @param Options|OptionsShape $options
      */
     public function withOptions(Options|array $options): self
     {

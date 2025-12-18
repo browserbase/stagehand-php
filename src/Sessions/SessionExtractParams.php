@@ -22,7 +22,7 @@ use Stagehand\Sessions\SessionExtractParams\XStreamResponse;
  * @phpstan-type SessionExtractParamsShape = array{
  *   frameID?: string|null,
  *   instruction?: string|null,
- *   options?: OptionsShape|null,
+ *   options?: null|Options|OptionsShape,
  *   schema?: array<string,mixed>|null,
  *   xLanguage?: null|XLanguage|value-of<XLanguage>,
  *   xSDKVersion?: string|null,
@@ -97,10 +97,10 @@ final class SessionExtractParams implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
-     * @param OptionsShape $options
-     * @param array<string,mixed> $schema
-     * @param XLanguage|value-of<XLanguage> $xLanguage
-     * @param XStreamResponse|value-of<XStreamResponse> $xStreamResponse
+     * @param Options|OptionsShape|null $options
+     * @param array<string,mixed>|null $schema
+     * @param XLanguage|value-of<XLanguage>|null $xLanguage
+     * @param XStreamResponse|value-of<XStreamResponse>|null $xStreamResponse
      */
     public static function with(
         ?string $frameID = null,
@@ -149,7 +149,7 @@ final class SessionExtractParams implements BaseModel
     }
 
     /**
-     * @param OptionsShape $options
+     * @param Options|OptionsShape $options
      */
     public function withOptions(Options|array $options): self
     {

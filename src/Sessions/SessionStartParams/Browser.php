@@ -51,8 +51,8 @@ final class Browser implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
-     * @param LaunchOptionsShape $launchOptions
-     * @param Type|value-of<Type> $type
+     * @param LaunchOptions|LaunchOptionsShape|null $launchOptions
+     * @param Type|value-of<Type>|null $type
      */
     public static function with(
         ?string $cdpURL = null,
@@ -80,7 +80,7 @@ final class Browser implements BaseModel
     }
 
     /**
-     * @param LaunchOptionsShape $launchOptions
+     * @param LaunchOptions|LaunchOptionsShape $launchOptions
      */
     public function withLaunchOptions(LaunchOptions|array $launchOptions): self
     {

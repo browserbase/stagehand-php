@@ -23,8 +23,8 @@ use Stagehand\Sessions\SessionExecuteParams\XStreamResponse;
  * @phpstan-import-type ExecuteOptionsShape from \Stagehand\Sessions\SessionExecuteParams\ExecuteOptions
  *
  * @phpstan-type SessionExecuteParamsShape = array{
- *   agentConfig: AgentConfigShape,
- *   executeOptions: ExecuteOptionsShape,
+ *   agentConfig: AgentConfig|AgentConfigShape,
+ *   executeOptions: ExecuteOptions|ExecuteOptionsShape,
  *   frameID?: string|null,
  *   xLanguage?: null|XLanguage|value-of<XLanguage>,
  *   xSDKVersion?: string|null,
@@ -102,10 +102,10 @@ final class SessionExecuteParams implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
-     * @param AgentConfigShape $agentConfig
-     * @param ExecuteOptionsShape $executeOptions
-     * @param XLanguage|value-of<XLanguage> $xLanguage
-     * @param XStreamResponse|value-of<XStreamResponse> $xStreamResponse
+     * @param AgentConfig|AgentConfigShape $agentConfig
+     * @param ExecuteOptions|ExecuteOptionsShape $executeOptions
+     * @param XLanguage|value-of<XLanguage>|null $xLanguage
+     * @param XStreamResponse|value-of<XStreamResponse>|null $xStreamResponse
      */
     public static function with(
         AgentConfig|array $agentConfig,
@@ -131,7 +131,7 @@ final class SessionExecuteParams implements BaseModel
     }
 
     /**
-     * @param AgentConfigShape $agentConfig
+     * @param AgentConfig|AgentConfigShape $agentConfig
      */
     public function withAgentConfig(AgentConfig|array $agentConfig): self
     {
@@ -142,7 +142,7 @@ final class SessionExecuteParams implements BaseModel
     }
 
     /**
-     * @param ExecuteOptionsShape $executeOptions
+     * @param ExecuteOptions|ExecuteOptionsShape $executeOptions
      */
     public function withExecuteOptions(
         ExecuteOptions|array $executeOptions

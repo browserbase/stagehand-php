@@ -70,10 +70,10 @@ final class BrowserbaseSessionCreateParams implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
-     * @param BrowserSettingsShape $browserSettings
-     * @param ProxiesShape $proxies
-     * @param Region|value-of<Region> $region
-     * @param array<string,mixed> $userMetadata
+     * @param BrowserSettings|BrowserSettingsShape|null $browserSettings
+     * @param ProxiesShape|null $proxies
+     * @param Region|value-of<Region>|null $region
+     * @param array<string,mixed>|null $userMetadata
      */
     public static function with(
         BrowserSettings|array|null $browserSettings = null,
@@ -100,7 +100,7 @@ final class BrowserbaseSessionCreateParams implements BaseModel
     }
 
     /**
-     * @param BrowserSettingsShape $browserSettings
+     * @param BrowserSettings|BrowserSettingsShape $browserSettings
      */
     public function withBrowserSettings(
         BrowserSettings|array $browserSettings

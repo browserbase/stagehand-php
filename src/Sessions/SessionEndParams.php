@@ -67,8 +67,8 @@ final class SessionEndParams implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
-     * @param XLanguage|value-of<XLanguage> $xLanguage
-     * @param XStreamResponse|value-of<XStreamResponse> $xStreamResponse
+     * @param XLanguage|value-of<XLanguage>|null $xLanguage
+     * @param XStreamResponse|value-of<XStreamResponse>|null $xStreamResponse
      */
     public static function with(
         XLanguage|string|null $xLanguage = null,
