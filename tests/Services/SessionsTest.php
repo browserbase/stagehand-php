@@ -189,6 +189,7 @@ final class SessionsTest extends TestCase
             options: [
                 'referer' => 'referer', 'timeout' => 30000, 'waitUntil' => 'networkidle',
             ],
+            streamResponse: true,
             xLanguage: 'typescript',
             xSDKVersion: '3.0.6',
             xSentAt: new \DateTimeImmutable('2025-01-15T10:30:00Z'),

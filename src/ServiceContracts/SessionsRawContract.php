@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stagehand\ServiceContracts;
 
 use Stagehand\Core\Contracts\BaseResponse;
+use Stagehand\Core\Contracts\BaseStream;
 use Stagehand\Core\Exceptions\APIException;
 use Stagehand\RequestOptions;
 use Stagehand\Sessions\SessionActParams;
@@ -21,6 +22,7 @@ use Stagehand\Sessions\SessionObserveParams;
 use Stagehand\Sessions\SessionObserveResponse;
 use Stagehand\Sessions\SessionStartParams;
 use Stagehand\Sessions\SessionStartResponse;
+use Stagehand\Sessions\StreamEvent;
 
 interface SessionsRawContract
 {
@@ -35,6 +37,22 @@ interface SessionsRawContract
      * @throws APIException
      */
     public function act(
+        string $id,
+        array|SessionActParams $params,
+        ?RequestOptions $requestOptions = null,
+    ): BaseResponse;
+
+    /**
+     * @api
+     *
+     * @param string $id Path param: Unique session identifier
+     * @param array<string,mixed>|SessionActParams $params
+     *
+     * @return BaseResponse<BaseStream<StreamEvent>>
+     *
+     * @throws APIException
+     */
+    public function actStream(
         string $id,
         array|SessionActParams $params,
         ?RequestOptions $requestOptions = null,
@@ -76,6 +94,22 @@ interface SessionsRawContract
      * @api
      *
      * @param string $id Path param: Unique session identifier
+     * @param array<string,mixed>|SessionExecuteParams $params
+     *
+     * @return BaseResponse<BaseStream<StreamEvent>>
+     *
+     * @throws APIException
+     */
+    public function executeStream(
+        string $id,
+        array|SessionExecuteParams $params,
+        ?RequestOptions $requestOptions = null,
+    ): BaseResponse;
+
+    /**
+     * @api
+     *
+     * @param string $id Path param: Unique session identifier
      * @param array<string,mixed>|SessionExtractParams $params
      *
      * @return BaseResponse<SessionExtractResponse>
@@ -83,6 +117,22 @@ interface SessionsRawContract
      * @throws APIException
      */
     public function extract(
+        string $id,
+        array|SessionExtractParams $params,
+        ?RequestOptions $requestOptions = null,
+    ): BaseResponse;
+
+    /**
+     * @api
+     *
+     * @param string $id Path param: Unique session identifier
+     * @param array<string,mixed>|SessionExtractParams $params
+     *
+     * @return BaseResponse<BaseStream<StreamEvent>>
+     *
+     * @throws APIException
+     */
+    public function extractStream(
         string $id,
         array|SessionExtractParams $params,
         ?RequestOptions $requestOptions = null,
@@ -115,6 +165,22 @@ interface SessionsRawContract
      * @throws APIException
      */
     public function observe(
+        string $id,
+        array|SessionObserveParams $params,
+        ?RequestOptions $requestOptions = null,
+    ): BaseResponse;
+
+    /**
+     * @api
+     *
+     * @param string $id Path param: Unique session identifier
+     * @param array<string,mixed>|SessionObserveParams $params
+     *
+     * @return BaseResponse<BaseStream<StreamEvent>>
+     *
+     * @throws APIException
+     */
+    public function observeStream(
         string $id,
         array|SessionObserveParams $params,
         ?RequestOptions $requestOptions = null,

@@ -9,7 +9,9 @@ use Stagehand\Core\Concerns\SdkModel;
 use Stagehand\Core\Contracts\BaseModel;
 
 /**
- * @phpstan-type DataShape = array{available: bool, sessionID: string}
+ * @phpstan-type DataShape = array{
+ *   available: bool, connectURL: string, sessionID: string
+ * }
  */
 final class Data implements BaseModel
 {
@@ -20,7 +22,13 @@ final class Data implements BaseModel
     public bool $available;
 
     /**
-     * Unique session identifier.
+     * CDP WebSocket URL for connecting to the Browserbase cloud browser.
+     */
+    #[Required('connectUrl')]
+    public string $connectURL;
+
+    /**
+     * Unique Browserbase session identifier.
      */
     #[Required('sessionId')]
     public string $sessionID;
@@ -30,13 +38,13 @@ final class Data implements BaseModel
      *
      * To enforce required parameters use
      * ```
-     * Data::with(available: ..., sessionID: ...)
+     * Data::with(available: ..., connectURL: ..., sessionID: ...)
      * ```
      *
      * Otherwise ensure the following setters are called
      *
      * ```
-     * (new Data)->withAvailable(...)->withSessionID(...)
+     * (new Data)->withAvailable(...)->withConnectURL(...)->withSessionID(...)
      * ```
      */
     public function __construct()
@@ -49,11 +57,15 @@ final class Data implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      */
-    public static function with(bool $available, string $sessionID): self
-    {
+    public static function with(
+        bool $available,
+        string $connectURL,
+        string $sessionID
+    ): self {
         $self = new self;
 
         $self['available'] = $available;
+        $self['connectURL'] = $connectURL;
         $self['sessionID'] = $sessionID;
 
         return $self;
@@ -68,7 +80,18 @@ final class Data implements BaseModel
     }
 
     /**
-     * Unique session identifier.
+     * CDP WebSocket URL for connecting to the Browserbase cloud browser.
+     */
+    public function withConnectURL(string $connectURL): self
+    {
+        $self = clone $this;
+        $self['connectURL'] = $connectURL;
+
+        return $self;
+    }
+
+    /**
+     * Unique Browserbase session identifier.
      */
     public function withSessionID(string $sessionID): self
     {
