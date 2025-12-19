@@ -8,10 +8,14 @@ use Stagehand\Core\Attributes\Optional;
 use Stagehand\Core\Attributes\Required;
 use Stagehand\Core\Concerns\SdkModel;
 use Stagehand\Core\Contracts\BaseModel;
+use Stagehand\Sessions\ModelConfig\ModelConfigObject\Provider;
 
 /**
  * @phpstan-type ModelConfigObjectShape = array{
- *   modelName: string, apiKey?: string|null, baseURL?: string|null
+ *   modelName: string,
+ *   apiKey?: string|null,
+ *   baseURL?: string|null,
+ *   provider?: null|Provider|value-of<Provider>,
  * }
  */
 final class ModelConfigObject implements BaseModel
@@ -38,6 +42,14 @@ final class ModelConfigObject implements BaseModel
     public ?string $baseURL;
 
     /**
+     * AI provider for the model (or provide a baseURL endpoint instead).
+     *
+     * @var value-of<Provider>|null $provider
+     */
+    #[Optional(enum: Provider::class)]
+    public ?string $provider;
+
+    /**
      * `new ModelConfigObject()` is missing required properties by the API.
      *
      * To enforce required parameters use
@@ -60,11 +72,14 @@ final class ModelConfigObject implements BaseModel
      * Construct an instance from the required parameters.
      *
      * You must use named parameters to construct any parameters with a default value.
+     *
+     * @param Provider|value-of<Provider>|null $provider
      */
     public static function with(
         string $modelName,
         ?string $apiKey = null,
-        ?string $baseURL = null
+        ?string $baseURL = null,
+        Provider|string|null $provider = null,
     ): self {
         $self = new self;
 
@@ -72,6 +87,7 @@ final class ModelConfigObject implements BaseModel
 
         null !== $apiKey && $self['apiKey'] = $apiKey;
         null !== $baseURL && $self['baseURL'] = $baseURL;
+        null !== $provider && $self['provider'] = $provider;
 
         return $self;
     }
@@ -105,6 +121,19 @@ final class ModelConfigObject implements BaseModel
     {
         $self = clone $this;
         $self['baseURL'] = $baseURL;
+
+        return $self;
+    }
+
+    /**
+     * AI provider for the model (or provide a baseURL endpoint instead).
+     *
+     * @param Provider|value-of<Provider> $provider
+     */
+    public function withProvider(Provider|string $provider): self
+    {
+        $self = clone $this;
+        $self['provider'] = $provider;
 
         return $self;
     }

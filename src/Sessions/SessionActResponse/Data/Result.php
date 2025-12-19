@@ -7,10 +7,10 @@ namespace Stagehand\Sessions\SessionActResponse\Data;
 use Stagehand\Core\Attributes\Required;
 use Stagehand\Core\Concerns\SdkModel;
 use Stagehand\Core\Contracts\BaseModel;
-use Stagehand\Sessions\Action;
+use Stagehand\Sessions\SessionActResponse\Data\Result\Action;
 
 /**
- * @phpstan-import-type ActionShape from \Stagehand\Sessions\Action
+ * @phpstan-import-type ActionShape from \Stagehand\Sessions\SessionActResponse\Data\Result\Action
  *
  * @phpstan-type ResultShape = array{
  *   actionDescription: string,

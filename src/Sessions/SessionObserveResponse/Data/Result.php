@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stagehand\Sessions;
+namespace Stagehand\Sessions\SessionObserveResponse\Data;
 
 use Stagehand\Core\Attributes\Optional;
 use Stagehand\Core\Attributes\Required;
@@ -12,7 +12,7 @@ use Stagehand\Core\Contracts\BaseModel;
 /**
  * Action object returned by observe and used by act.
  *
- * @phpstan-type ActionShape = array{
+ * @phpstan-type ResultShape = array{
  *   description: string,
  *   selector: string,
  *   arguments?: list<string>|null,
@@ -20,9 +20,9 @@ use Stagehand\Core\Contracts\BaseModel;
  *   method?: string|null,
  * }
  */
-final class Action implements BaseModel
+final class Result implements BaseModel
 {
-    /** @use SdkModel<ActionShape> */
+    /** @use SdkModel<ResultShape> */
     use SdkModel;
 
     /**
@@ -58,17 +58,17 @@ final class Action implements BaseModel
     public ?string $method;
 
     /**
-     * `new Action()` is missing required properties by the API.
+     * `new Result()` is missing required properties by the API.
      *
      * To enforce required parameters use
      * ```
-     * Action::with(description: ..., selector: ...)
+     * Result::with(description: ..., selector: ...)
      * ```
      *
      * Otherwise ensure the following setters are called
      *
      * ```
-     * (new Action)->withDescription(...)->withSelector(...)
+     * (new Result)->withDescription(...)->withSelector(...)
      * ```
      */
     public function __construct()

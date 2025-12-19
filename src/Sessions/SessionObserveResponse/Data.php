@@ -8,13 +8,13 @@ use Stagehand\Core\Attributes\Optional;
 use Stagehand\Core\Attributes\Required;
 use Stagehand\Core\Concerns\SdkModel;
 use Stagehand\Core\Contracts\BaseModel;
-use Stagehand\Sessions\Action;
+use Stagehand\Sessions\SessionObserveResponse\Data\Result;
 
 /**
- * @phpstan-import-type ActionShape from \Stagehand\Sessions\Action
+ * @phpstan-import-type ResultShape from \Stagehand\Sessions\SessionObserveResponse\Data\Result
  *
  * @phpstan-type DataShape = array{
- *   result: list<ActionShape>, actionID?: string|null
+ *   result: list<ResultShape>, actionID?: string|null
  * }
  */
 final class Data implements BaseModel
@@ -22,8 +22,8 @@ final class Data implements BaseModel
     /** @use SdkModel<DataShape> */
     use SdkModel;
 
-    /** @var list<Action> $result */
-    #[Required(list: Action::class)]
+    /** @var list<Result> $result */
+    #[Required(list: Result::class)]
     public array $result;
 
     /**
@@ -56,7 +56,7 @@ final class Data implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
-     * @param list<ActionShape> $result
+     * @param list<ResultShape> $result
      */
     public static function with(array $result, ?string $actionID = null): self
     {
@@ -70,7 +70,7 @@ final class Data implements BaseModel
     }
 
     /**
-     * @param list<ActionShape> $result
+     * @param list<ResultShape> $result
      */
     public function withResult(array $result): self
     {
