@@ -11,7 +11,7 @@ use Stagehand\Core\Exceptions\APIException;
 use Stagehand\Core\Util;
 use Stagehand\RequestOptions;
 use Stagehand\ServiceContracts\SessionsRawContract;
-use Stagehand\Sessions\Action;
+use Stagehand\Sessions\ModelConfig\ModelConfigObject\Provider;
 use Stagehand\Sessions\SessionActParams;
 use Stagehand\Sessions\SessionActResponse;
 use Stagehand\Sessions\SessionEndParams;
@@ -31,6 +31,7 @@ use Stagehand\Sessions\SessionStartParams;
 use Stagehand\Sessions\SessionStartParams\Browser\Type;
 use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings\Fingerprint\HTTPVersion;
 use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Region;
+use Stagehand\Sessions\SessionStartParams\Verbose;
 use Stagehand\Sessions\SessionStartResponse;
 use Stagehand\Sessions\StreamEvent;
 use Stagehand\SSEStream;
@@ -54,11 +55,17 @@ final class SessionsRawService implements SessionsRawContract
      *     description: string,
      *     selector: string,
      *     arguments?: list<string>,
+     *     backendNodeID?: float,
      *     method?: string,
-     *   }|Action,
+     *   },
      *   frameID?: string,
      *   options?: array{
-     *     model?: string|array{modelName: string, apiKey?: string, baseURL?: string},
+     *     model?: string|array{
+     *       modelName: string,
+     *       apiKey?: string,
+     *       baseURL?: string,
+     *       provider?: 'openai'|'anthropic'|'google'|'microsoft'|Provider,
+     *     },
      *     timeout?: float,
      *     variables?: array<string,string>,
      *   },
@@ -114,11 +121,17 @@ final class SessionsRawService implements SessionsRawContract
      *     description: string,
      *     selector: string,
      *     arguments?: list<string>,
+     *     backendNodeID?: float,
      *     method?: string,
-     *   }|Action,
+     *   },
      *   frameID?: string,
      *   options?: array{
-     *     model?: string|array{modelName: string, apiKey?: string, baseURL?: string},
+     *     model?: string|array{
+     *       modelName: string,
+     *       apiKey?: string,
+     *       baseURL?: string,
+     *       provider?: 'openai'|'anthropic'|'google'|'microsoft'|Provider,
+     *     },
      *     timeout?: float,
      *     variables?: array<string,string>,
      *   },
@@ -227,7 +240,13 @@ final class SessionsRawService implements SessionsRawContract
      * @param array{
      *   agentConfig: array{
      *     cua?: bool,
-     *     model?: string|array{modelName: string, apiKey?: string, baseURL?: string},
+     *     model?: string|array{
+     *       modelName: string,
+     *       apiKey?: string,
+     *       baseURL?: string,
+     *       provider?: 'openai'|'anthropic'|'google'|'microsoft'|Provider,
+     *     },
+     *     provider?: 'openai'|'anthropic'|'google'|'microsoft'|SessionExecuteParams\AgentConfig\Provider,
      *     systemPrompt?: string,
      *   },
      *   executeOptions: array{
@@ -284,7 +303,13 @@ final class SessionsRawService implements SessionsRawContract
      * @param array{
      *   agentConfig: array{
      *     cua?: bool,
-     *     model?: string|array{modelName: string, apiKey?: string, baseURL?: string},
+     *     model?: string|array{
+     *       modelName: string,
+     *       apiKey?: string,
+     *       baseURL?: string,
+     *       provider?: 'openai'|'anthropic'|'google'|'microsoft'|Provider,
+     *     },
+     *     provider?: 'openai'|'anthropic'|'google'|'microsoft'|SessionExecuteParams\AgentConfig\Provider,
      *     systemPrompt?: string,
      *   },
      *   executeOptions: array{
@@ -352,7 +377,12 @@ final class SessionsRawService implements SessionsRawContract
      *   frameID?: string,
      *   instruction?: string,
      *   options?: array{
-     *     model?: string|array{modelName: string, apiKey?: string, baseURL?: string},
+     *     model?: string|array{
+     *       modelName: string,
+     *       apiKey?: string,
+     *       baseURL?: string,
+     *       provider?: 'openai'|'anthropic'|'google'|'microsoft'|Provider,
+     *     },
      *     selector?: string,
      *     timeout?: float,
      *   },
@@ -408,7 +438,12 @@ final class SessionsRawService implements SessionsRawContract
      *   frameID?: string,
      *   instruction?: string,
      *   options?: array{
-     *     model?: string|array{modelName: string, apiKey?: string, baseURL?: string},
+     *     model?: string|array{
+     *       modelName: string,
+     *       apiKey?: string,
+     *       baseURL?: string,
+     *       provider?: 'openai'|'anthropic'|'google'|'microsoft'|Provider,
+     *     },
      *     selector?: string,
      *     timeout?: float,
      *   },
@@ -532,7 +567,12 @@ final class SessionsRawService implements SessionsRawContract
      *   frameID?: string,
      *   instruction?: string,
      *   options?: array{
-     *     model?: string|array{modelName: string, apiKey?: string, baseURL?: string},
+     *     model?: string|array{
+     *       modelName: string,
+     *       apiKey?: string,
+     *       baseURL?: string,
+     *       provider?: 'openai'|'anthropic'|'google'|'microsoft'|Provider,
+     *     },
      *     selector?: string,
      *     timeout?: float,
      *   },
@@ -587,7 +627,12 @@ final class SessionsRawService implements SessionsRawContract
      *   frameID?: string,
      *   instruction?: string,
      *   options?: array{
-     *     model?: string|array{modelName: string, apiKey?: string, baseURL?: string},
+     *     model?: string|array{
+     *       modelName: string,
+     *       apiKey?: string,
+     *       baseURL?: string,
+     *       provider?: 'openai'|'anthropic'|'google'|'microsoft'|Provider,
+     *     },
      *     selector?: string,
      *     timeout?: float,
      *   },
@@ -704,12 +749,11 @@ final class SessionsRawService implements SessionsRawContract
      *     userMetadata?: array<string,mixed>,
      *   },
      *   browserbaseSessionID?: string,
-     *   debugDom?: bool,
      *   domSettleTimeoutMs?: float,
      *   experimental?: bool,
      *   selfHeal?: bool,
      *   systemPrompt?: string,
-     *   verbose?: int,
+     *   verbose?: '0'|'1'|'2'|Verbose,
      *   waitForCaptchaSolves?: bool,
      *   xLanguage?: 'typescript'|'python'|'playground'|SessionStartParams\XLanguage,
      *   xSDKVersion?: string,

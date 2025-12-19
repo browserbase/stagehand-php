@@ -11,6 +11,7 @@ use Stagehand\Core\Concerns\SdkParams;
 use Stagehand\Core\Contracts\BaseModel;
 use Stagehand\Sessions\SessionStartParams\Browser;
 use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams;
+use Stagehand\Sessions\SessionStartParams\Verbose;
 use Stagehand\Sessions\SessionStartParams\XLanguage;
 use Stagehand\Sessions\SessionStartParams\XStreamResponse;
 
@@ -28,12 +29,11 @@ use Stagehand\Sessions\SessionStartParams\XStreamResponse;
  *   browser?: null|Browser|BrowserShape,
  *   browserbaseSessionCreateParams?: null|BrowserbaseSessionCreateParams|BrowserbaseSessionCreateParamsShape,
  *   browserbaseSessionID?: string|null,
- *   debugDom?: bool|null,
  *   domSettleTimeoutMs?: float|null,
  *   experimental?: bool|null,
  *   selfHeal?: bool|null,
  *   systemPrompt?: string|null,
- *   verbose?: int|null,
+ *   verbose?: null|Verbose|value-of<Verbose>,
  *   waitForCaptchaSolves?: bool|null,
  *   xLanguage?: null|XLanguage|value-of<XLanguage>,
  *   xSDKVersion?: string|null,
@@ -54,7 +54,7 @@ final class SessionStartParams implements BaseModel
     public string $modelName;
 
     /**
-     * Timeout in ms for act operations.
+     * Timeout in ms for act operations (deprecated, v2 only).
      */
     #[Optional]
     public ?float $actTimeoutMs;
@@ -70,9 +70,6 @@ final class SessionStartParams implements BaseModel
      */
     #[Optional]
     public ?string $browserbaseSessionID;
-
-    #[Optional]
-    public ?bool $debugDom;
 
     /**
      * Timeout in ms to wait for DOM to settle.
@@ -97,10 +94,15 @@ final class SessionStartParams implements BaseModel
 
     /**
      * Logging verbosity level (0=quiet, 1=normal, 2=debug).
+     *
+     * @var value-of<Verbose>|null $verbose
      */
-    #[Optional]
-    public ?int $verbose;
+    #[Optional(enum: Verbose::class)]
+    public ?string $verbose;
 
+    /**
+     * Wait for captcha solves (deprecated, v2 only).
+     */
     #[Optional]
     public ?bool $waitForCaptchaSolves;
 
@@ -158,6 +160,7 @@ final class SessionStartParams implements BaseModel
      *
      * @param Browser|BrowserShape|null $browser
      * @param BrowserbaseSessionCreateParams|BrowserbaseSessionCreateParamsShape|null $browserbaseSessionCreateParams
+     * @param Verbose|value-of<Verbose>|null $verbose
      * @param XLanguage|value-of<XLanguage>|null $xLanguage
      * @param XStreamResponse|value-of<XStreamResponse>|null $xStreamResponse
      */
@@ -167,12 +170,11 @@ final class SessionStartParams implements BaseModel
         Browser|array|null $browser = null,
         BrowserbaseSessionCreateParams|array|null $browserbaseSessionCreateParams = null,
         ?string $browserbaseSessionID = null,
-        ?bool $debugDom = null,
         ?float $domSettleTimeoutMs = null,
         ?bool $experimental = null,
         ?bool $selfHeal = null,
         ?string $systemPrompt = null,
-        ?int $verbose = null,
+        Verbose|string|null $verbose = null,
         ?bool $waitForCaptchaSolves = null,
         XLanguage|string|null $xLanguage = null,
         ?string $xSDKVersion = null,
@@ -187,7 +189,6 @@ final class SessionStartParams implements BaseModel
         null !== $browser && $self['browser'] = $browser;
         null !== $browserbaseSessionCreateParams && $self['browserbaseSessionCreateParams'] = $browserbaseSessionCreateParams;
         null !== $browserbaseSessionID && $self['browserbaseSessionID'] = $browserbaseSessionID;
-        null !== $debugDom && $self['debugDom'] = $debugDom;
         null !== $domSettleTimeoutMs && $self['domSettleTimeoutMs'] = $domSettleTimeoutMs;
         null !== $experimental && $self['experimental'] = $experimental;
         null !== $selfHeal && $self['selfHeal'] = $selfHeal;
@@ -214,7 +215,7 @@ final class SessionStartParams implements BaseModel
     }
 
     /**
-     * Timeout in ms for act operations.
+     * Timeout in ms for act operations (deprecated, v2 only).
      */
     public function withActTimeoutMs(float $actTimeoutMs): self
     {
@@ -254,14 +255,6 @@ final class SessionStartParams implements BaseModel
     {
         $self = clone $this;
         $self['browserbaseSessionID'] = $browserbaseSessionID;
-
-        return $self;
-    }
-
-    public function withDebugDom(bool $debugDom): self
-    {
-        $self = clone $this;
-        $self['debugDom'] = $debugDom;
 
         return $self;
     }
@@ -309,8 +302,10 @@ final class SessionStartParams implements BaseModel
 
     /**
      * Logging verbosity level (0=quiet, 1=normal, 2=debug).
+     *
+     * @param Verbose|value-of<Verbose> $verbose
      */
-    public function withVerbose(int $verbose): self
+    public function withVerbose(Verbose|string $verbose): self
     {
         $self = clone $this;
         $self['verbose'] = $verbose;
@@ -318,6 +313,9 @@ final class SessionStartParams implements BaseModel
         return $self;
     }
 
+    /**
+     * Wait for captcha solves (deprecated, v2 only).
+     */
     public function withWaitForCaptchaSolves(bool $waitForCaptchaSolves): self
     {
         $self = clone $this;

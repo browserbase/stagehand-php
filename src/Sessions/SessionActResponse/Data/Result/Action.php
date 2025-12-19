@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stagehand\Sessions;
+namespace Stagehand\Sessions\SessionActResponse\Data\Result;
 
 use Stagehand\Core\Attributes\Optional;
 use Stagehand\Core\Attributes\Required;

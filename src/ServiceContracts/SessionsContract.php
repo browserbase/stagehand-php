@@ -7,7 +7,7 @@ namespace Stagehand\ServiceContracts;
 use Stagehand\Core\Contracts\BaseStream;
 use Stagehand\Core\Exceptions\APIException;
 use Stagehand\RequestOptions;
-use Stagehand\Sessions\Action;
+use Stagehand\Sessions\ModelConfig\ModelConfigObject\Provider;
 use Stagehand\Sessions\SessionActParams\XLanguage;
 use Stagehand\Sessions\SessionActParams\XStreamResponse;
 use Stagehand\Sessions\SessionActResponse;
@@ -23,6 +23,7 @@ use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Browser
 use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings\Fingerprint\HTTPVersion;
 use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings\Fingerprint\OperatingSystem;
 use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Region;
+use Stagehand\Sessions\SessionStartParams\Verbose;
 use Stagehand\Sessions\SessionStartResponse;
 use Stagehand\Sessions\StreamEvent;
 
@@ -36,11 +37,17 @@ interface SessionsContract
      *   description: string,
      *   selector: string,
      *   arguments?: list<string>,
+     *   backendNodeID?: float,
      *   method?: string,
-     * }|Action $input Body param: Natural language instruction or Action object
+     * } $input Body param: Natural language instruction or Action object
      * @param string $frameID Body param: Target frame ID for the action
      * @param array{
-     *   model?: string|array{modelName: string, apiKey?: string, baseURL?: string},
+     *   model?: string|array{
+     *     modelName: string,
+     *     apiKey?: string,
+     *     baseURL?: string,
+     *     provider?: 'openai'|'anthropic'|'google'|'microsoft'|Provider,
+     *   },
      *   timeout?: float,
      *   variables?: array<string,string>,
      * } $options Body param:
@@ -53,7 +60,7 @@ interface SessionsContract
      */
     public function act(
         string $id,
-        string|array|Action $input,
+        string|array $input,
         ?string $frameID = null,
         ?array $options = null,
         string|XLanguage|null $xLanguage = null,
@@ -71,11 +78,17 @@ interface SessionsContract
      *   description: string,
      *   selector: string,
      *   arguments?: list<string>,
+     *   backendNodeID?: float,
      *   method?: string,
-     * }|Action $input Body param: Natural language instruction or Action object
+     * } $input Body param: Natural language instruction or Action object
      * @param string $frameID Body param: Target frame ID for the action
      * @param array{
-     *   model?: string|array{modelName: string, apiKey?: string, baseURL?: string},
+     *   model?: string|array{
+     *     modelName: string,
+     *     apiKey?: string,
+     *     baseURL?: string,
+     *     provider?: 'openai'|'anthropic'|'google'|'microsoft'|Provider,
+     *   },
      *   timeout?: float,
      *   variables?: array<string,string>,
      * } $options Body param:
@@ -90,7 +103,7 @@ interface SessionsContract
      */
     public function actStream(
         string $id,
-        string|array|Action $input,
+        string|array $input,
         ?string $frameID = null,
         ?array $options = null,
         string|XLanguage|null $xLanguage = null,
@@ -126,7 +139,13 @@ interface SessionsContract
      * @param string $id Path param: Unique session identifier
      * @param array{
      *   cua?: bool,
-     *   model?: string|array{modelName: string, apiKey?: string, baseURL?: string},
+     *   model?: string|array{
+     *     modelName: string,
+     *     apiKey?: string,
+     *     baseURL?: string,
+     *     provider?: 'openai'|'anthropic'|'google'|'microsoft'|Provider,
+     *   },
+     *   provider?: 'openai'|'anthropic'|'google'|'microsoft'|\Stagehand\Sessions\SessionExecuteParams\AgentConfig\Provider,
      *   systemPrompt?: string,
      * } $agentConfig Body param:
      * @param array{
@@ -158,7 +177,13 @@ interface SessionsContract
      * @param string $id Path param: Unique session identifier
      * @param array{
      *   cua?: bool,
-     *   model?: string|array{modelName: string, apiKey?: string, baseURL?: string},
+     *   model?: string|array{
+     *     modelName: string,
+     *     apiKey?: string,
+     *     baseURL?: string,
+     *     provider?: 'openai'|'anthropic'|'google'|'microsoft'|Provider,
+     *   },
+     *   provider?: 'openai'|'anthropic'|'google'|'microsoft'|\Stagehand\Sessions\SessionExecuteParams\AgentConfig\Provider,
      *   systemPrompt?: string,
      * } $agentConfig Body param:
      * @param array{
@@ -193,7 +218,12 @@ interface SessionsContract
      * @param string $frameID Body param: Target frame ID for the extraction
      * @param string $instruction Body param: Natural language instruction for what to extract
      * @param array{
-     *   model?: string|array{modelName: string, apiKey?: string, baseURL?: string},
+     *   model?: string|array{
+     *     modelName: string,
+     *     apiKey?: string,
+     *     baseURL?: string,
+     *     provider?: 'openai'|'anthropic'|'google'|'microsoft'|Provider,
+     *   },
      *   selector?: string,
      *   timeout?: float,
      * } $options Body param:
@@ -225,7 +255,12 @@ interface SessionsContract
      * @param string $frameID Body param: Target frame ID for the extraction
      * @param string $instruction Body param: Natural language instruction for what to extract
      * @param array{
-     *   model?: string|array{modelName: string, apiKey?: string, baseURL?: string},
+     *   model?: string|array{
+     *     modelName: string,
+     *     apiKey?: string,
+     *     baseURL?: string,
+     *     provider?: 'openai'|'anthropic'|'google'|'microsoft'|Provider,
+     *   },
      *   selector?: string,
      *   timeout?: float,
      * } $options Body param:
@@ -291,7 +326,12 @@ interface SessionsContract
      * @param string $frameID Body param: Target frame ID for the observation
      * @param string $instruction Body param: Natural language instruction for what actions to find
      * @param array{
-     *   model?: string|array{modelName: string, apiKey?: string, baseURL?: string},
+     *   model?: string|array{
+     *     modelName: string,
+     *     apiKey?: string,
+     *     baseURL?: string,
+     *     provider?: 'openai'|'anthropic'|'google'|'microsoft'|Provider,
+     *   },
      *   selector?: string,
      *   timeout?: float,
      * } $options Body param:
@@ -321,7 +361,12 @@ interface SessionsContract
      * @param string $frameID Body param: Target frame ID for the observation
      * @param string $instruction Body param: Natural language instruction for what actions to find
      * @param array{
-     *   model?: string|array{modelName: string, apiKey?: string, baseURL?: string},
+     *   model?: string|array{
+     *     modelName: string,
+     *     apiKey?: string,
+     *     baseURL?: string,
+     *     provider?: 'openai'|'anthropic'|'google'|'microsoft'|Provider,
+     *   },
      *   selector?: string,
      *   timeout?: float,
      * } $options Body param:
@@ -350,7 +395,7 @@ interface SessionsContract
      * @api
      *
      * @param string $modelName Body param: Model name to use for AI operations
-     * @param float $actTimeoutMs Body param: Timeout in ms for act operations
+     * @param float $actTimeoutMs Body param: Timeout in ms for act operations (deprecated, v2 only)
      * @param array{
      *   cdpURL?: string,
      *   launchOptions?: array{
@@ -407,13 +452,12 @@ interface SessionsContract
      *   userMetadata?: array<string,mixed>,
      * } $browserbaseSessionCreateParams Body param:
      * @param string $browserbaseSessionID Body param: Existing Browserbase session ID to resume
-     * @param bool $debugDom Body param:
      * @param float $domSettleTimeoutMs Body param: Timeout in ms to wait for DOM to settle
      * @param bool $experimental Body param:
      * @param bool $selfHeal Body param: Enable self-healing for failed actions
      * @param string $systemPrompt Body param: Custom system prompt for AI operations
-     * @param int $verbose Body param: Logging verbosity level (0=quiet, 1=normal, 2=debug)
-     * @param bool $waitForCaptchaSolves Body param:
+     * @param '0'|'1'|'2'|Verbose $verbose Body param: Logging verbosity level (0=quiet, 1=normal, 2=debug)
+     * @param bool $waitForCaptchaSolves Body param: Wait for captcha solves (deprecated, v2 only)
      * @param 'typescript'|'python'|'playground'|\Stagehand\Sessions\SessionStartParams\XLanguage $xLanguage Header param: Client SDK language
      * @param string $xSDKVersion Header param: Version of the Stagehand SDK
      * @param string|\DateTimeInterface $xSentAt Header param: ISO timestamp when request was sent
@@ -427,12 +471,11 @@ interface SessionsContract
         ?array $browser = null,
         ?array $browserbaseSessionCreateParams = null,
         ?string $browserbaseSessionID = null,
-        ?bool $debugDom = null,
         ?float $domSettleTimeoutMs = null,
         ?bool $experimental = null,
         ?bool $selfHeal = null,
         ?string $systemPrompt = null,
-        ?int $verbose = null,
+        string|Verbose|null $verbose = null,
         ?bool $waitForCaptchaSolves = null,
         string|\Stagehand\Sessions\SessionStartParams\XLanguage|null $xLanguage = null,
         ?string $xSDKVersion = null,

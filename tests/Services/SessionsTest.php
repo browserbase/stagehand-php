@@ -126,6 +126,7 @@ final class SessionsTest extends TestCase
             agentConfig: [
                 'cua' => true,
                 'model' => 'openai/gpt-5-nano',
+                'provider' => 'openai',
                 'systemPrompt' => 'systemPrompt',
             ],
             executeOptions: [
@@ -237,7 +238,7 @@ final class SessionsTest extends TestCase
 
         $result = $this->client->sessions->start(
             modelName: 'gpt-4o',
-            actTimeoutMs: 30000,
+            actTimeoutMs: 0,
             browser: [
                 'cdpURL' => 'ws://localhost:9222',
                 'launchOptions' => [
@@ -300,12 +301,11 @@ final class SessionsTest extends TestCase
                 'userMetadata' => ['foo' => 'bar'],
             ],
             browserbaseSessionID: 'browserbaseSessionID',
-            debugDom: true,
             domSettleTimeoutMs: 5000,
             experimental: true,
             selfHeal: true,
             systemPrompt: 'systemPrompt',
-            verbose: 1,
+            verbose: '1',
             waitForCaptchaSolves: true,
             xLanguage: 'typescript',
             xSDKVersion: '3.0.6',
