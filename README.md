@@ -70,6 +70,33 @@ and named parameters to initialize value objects.
 
 However, builders are also provided `(new Action)->withDescription('Click the submit button')`.
 
+### Streaming
+
+We provide support for streaming responses using Server-Sent Events (SSE).
+
+```php
+<?php
+
+use Stagehand\Client;
+
+$client = new Client(
+  browserbaseAPIKey: getenv('BROWSERBASE_API_KEY') ?: 'My Browserbase API Key',
+  browserbaseProjectID: getenv(
+    'BROWSERBASE_PROJECT_ID'
+  ) ?: 'My Browserbase Project ID',
+  modelAPIKey: getenv('MODEL_API_KEY') ?: 'My Model API Key',
+);
+
+$stream = $client->sessions->actStream(
+  '00000000-your-session-id-000000000000',
+  input: 'click the first link on the page',
+);
+
+foreach ($stream as $response) {
+  var_dump($response);
+}
+```
+
 ### Handling errors
 
 When the library is unable to connect to the API, or if the API returns a non-success status code (i.e., 4xx or 5xx response), a subclass of `Stagehand\Core\Exceptions\APIException` will be thrown:
