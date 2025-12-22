@@ -11,7 +11,6 @@ use Stagehand\Core\Concerns\SdkParams;
 use Stagehand\Core\Contracts\BaseModel;
 use Stagehand\Sessions\SessionStartParams\Browser;
 use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams;
-use Stagehand\Sessions\SessionStartParams\Verbose;
 use Stagehand\Sessions\SessionStartParams\XLanguage;
 use Stagehand\Sessions\SessionStartParams\XStreamResponse;
 
@@ -33,7 +32,7 @@ use Stagehand\Sessions\SessionStartParams\XStreamResponse;
  *   experimental?: bool|null,
  *   selfHeal?: bool|null,
  *   systemPrompt?: string|null,
- *   verbose?: null|Verbose|value-of<Verbose>,
+ *   verbose?: float|null,
  *   waitForCaptchaSolves?: bool|null,
  *   xLanguage?: null|XLanguage|value-of<XLanguage>,
  *   xSDKVersion?: string|null,
@@ -94,11 +93,9 @@ final class SessionStartParams implements BaseModel
 
     /**
      * Logging verbosity level (0=quiet, 1=normal, 2=debug).
-     *
-     * @var value-of<Verbose>|null $verbose
      */
-    #[Optional(enum: Verbose::class)]
-    public ?string $verbose;
+    #[Optional]
+    public ?float $verbose;
 
     /**
      * Wait for captcha solves (deprecated, v2 only).
@@ -160,7 +157,6 @@ final class SessionStartParams implements BaseModel
      *
      * @param Browser|BrowserShape|null $browser
      * @param BrowserbaseSessionCreateParams|BrowserbaseSessionCreateParamsShape|null $browserbaseSessionCreateParams
-     * @param Verbose|value-of<Verbose>|null $verbose
      * @param XLanguage|value-of<XLanguage>|null $xLanguage
      * @param XStreamResponse|value-of<XStreamResponse>|null $xStreamResponse
      */
@@ -174,7 +170,7 @@ final class SessionStartParams implements BaseModel
         ?bool $experimental = null,
         ?bool $selfHeal = null,
         ?string $systemPrompt = null,
-        Verbose|string|null $verbose = null,
+        ?float $verbose = null,
         ?bool $waitForCaptchaSolves = null,
         XLanguage|string|null $xLanguage = null,
         ?string $xSDKVersion = null,
@@ -302,10 +298,8 @@ final class SessionStartParams implements BaseModel
 
     /**
      * Logging verbosity level (0=quiet, 1=normal, 2=debug).
-     *
-     * @param Verbose|value-of<Verbose> $verbose
      */
-    public function withVerbose(Verbose|string $verbose): self
+    public function withVerbose(float $verbose): self
     {
         $self = clone $this;
         $self['verbose'] = $verbose;

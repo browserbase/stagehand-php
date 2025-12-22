@@ -305,7 +305,7 @@ final class SessionsTest extends TestCase
             experimental: true,
             selfHeal: true,
             systemPrompt: 'systemPrompt',
-            verbose: '1',
+            verbose: 1,
             waitForCaptchaSolves: true,
             xLanguage: 'typescript',
             xSDKVersion: '3.0.6',
