@@ -4,21 +4,38 @@ declare(strict_types=1);
 
 namespace Stagehand\Sessions;
 
-use Stagehand\Core\Attributes\Optional;
+use Stagehand\Core\Attributes\Required;
 use Stagehand\Core\Concerns\SdkModel;
 use Stagehand\Core\Contracts\BaseModel;
 
 /**
- * @phpstan-type SessionEndResponseShape = array{success?: bool|null}
+ * @phpstan-type SessionEndResponseShape = array{success: bool}
  */
 final class SessionEndResponse implements BaseModel
 {
     /** @use SdkModel<SessionEndResponseShape> */
     use SdkModel;
 
-    #[Optional]
-    public ?bool $success;
+    /**
+     * Indicates whether the request was successful.
+     */
+    #[Required]
+    public bool $success;
 
+    /**
+     * `new SessionEndResponse()` is missing required properties by the API.
+     *
+     * To enforce required parameters use
+     * ```
+     * SessionEndResponse::with(success: ...)
+     * ```
+     *
+     * Otherwise ensure the following setters are called
+     *
+     * ```
+     * (new SessionEndResponse)->withSuccess(...)
+     * ```
+     */
     public function __construct()
     {
         $this->initialize();
@@ -29,15 +46,18 @@ final class SessionEndResponse implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      */
-    public static function with(?bool $success = null): self
+    public static function with(bool $success): self
     {
         $self = new self;
 
-        null !== $success && $self['success'] = $success;
+        $self['success'] = $success;
 
         return $self;
     }
 
+    /**
+     * Indicates whether the request was successful.
+     */
     public function withSuccess(bool $success): self
     {
         $self = clone $this;

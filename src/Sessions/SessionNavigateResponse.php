@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace Stagehand\Sessions;
 
-use Stagehand\Core\Attributes\Optional;
+use Stagehand\Core\Attributes\Required;
 use Stagehand\Core\Concerns\SdkModel;
 use Stagehand\Core\Contracts\BaseModel;
+use Stagehand\Sessions\SessionNavigateResponse\Data;
 
 /**
- * Navigation response (may be null).
+ * @phpstan-import-type DataShape from \Stagehand\Sessions\SessionNavigateResponse\Data
  *
  * @phpstan-type SessionNavigateResponseShape = array{
- *   ok?: bool|null, status?: int|null, url?: string|null
+ *   data: Data|DataShape, success: bool
  * }
  */
 final class SessionNavigateResponse implements BaseModel
@@ -20,15 +21,29 @@ final class SessionNavigateResponse implements BaseModel
     /** @use SdkModel<SessionNavigateResponseShape> */
     use SdkModel;
 
-    #[Optional]
-    public ?bool $ok;
+    #[Required]
+    public Data $data;
 
-    #[Optional]
-    public ?int $status;
+    /**
+     * Indicates whether the request was successful.
+     */
+    #[Required]
+    public bool $success;
 
-    #[Optional]
-    public ?string $url;
-
+    /**
+     * `new SessionNavigateResponse()` is missing required properties by the API.
+     *
+     * To enforce required parameters use
+     * ```
+     * SessionNavigateResponse::with(data: ..., success: ...)
+     * ```
+     *
+     * Otherwise ensure the following setters are called
+     *
+     * ```
+     * (new SessionNavigateResponse)->withData(...)->withSuccess(...)
+     * ```
+     */
     public function __construct()
     {
         $this->initialize();
@@ -38,41 +53,37 @@ final class SessionNavigateResponse implements BaseModel
      * Construct an instance from the required parameters.
      *
      * You must use named parameters to construct any parameters with a default value.
+     *
+     * @param Data|DataShape $data
      */
-    public static function with(
-        ?bool $ok = null,
-        ?int $status = null,
-        ?string $url = null
-    ): self {
+    public static function with(Data|array $data, bool $success): self
+    {
         $self = new self;
 
-        null !== $ok && $self['ok'] = $ok;
-        null !== $status && $self['status'] = $status;
-        null !== $url && $self['url'] = $url;
+        $self['data'] = $data;
+        $self['success'] = $success;
 
         return $self;
     }
 
-    public function withOk(bool $ok): self
+    /**
+     * @param Data|DataShape $data
+     */
+    public function withData(Data|array $data): self
     {
         $self = clone $this;
-        $self['ok'] = $ok;
+        $self['data'] = $data;
 
         return $self;
     }
 
-    public function withStatus(int $status): self
+    /**
+     * Indicates whether the request was successful.
+     */
+    public function withSuccess(bool $success): self
     {
         $self = clone $this;
-        $self['status'] = $status;
-
-        return $self;
-    }
-
-    public function withURL(string $url): self
-    {
-        $self = clone $this;
-        $self['url'] = $url;
+        $self['success'] = $success;
 
         return $self;
     }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stagehand\Sessions\SessionExecuteAgentParams;
+namespace Stagehand\Sessions\SessionExecuteParams;
 
 use Stagehand\Core\Attributes\Optional;
 use Stagehand\Core\Attributes\Required;
@@ -11,7 +11,7 @@ use Stagehand\Core\Contracts\BaseModel;
 
 /**
  * @phpstan-type ExecuteOptionsShape = array{
- *   instruction: string, highlightCursor?: bool|null, maxSteps?: int|null
+ *   instruction: string, highlightCursor?: bool|null, maxSteps?: float|null
  * }
  */
 final class ExecuteOptions implements BaseModel
@@ -20,13 +20,13 @@ final class ExecuteOptions implements BaseModel
     use SdkModel;
 
     /**
-     * Task for the agent to complete.
+     * Natural language instruction for the agent.
      */
     #[Required]
     public string $instruction;
 
     /**
-     * Visually highlight the cursor during actions.
+     * Whether to visually highlight the cursor during execution.
      */
     #[Optional]
     public ?bool $highlightCursor;
@@ -35,7 +35,7 @@ final class ExecuteOptions implements BaseModel
      * Maximum number of steps the agent can take.
      */
     #[Optional]
-    public ?int $maxSteps;
+    public ?float $maxSteps;
 
     /**
      * `new ExecuteOptions()` is missing required properties by the API.
@@ -64,7 +64,7 @@ final class ExecuteOptions implements BaseModel
     public static function with(
         string $instruction,
         ?bool $highlightCursor = null,
-        ?int $maxSteps = null
+        ?float $maxSteps = null
     ): self {
         $self = new self;
 
@@ -77,7 +77,7 @@ final class ExecuteOptions implements BaseModel
     }
 
     /**
-     * Task for the agent to complete.
+     * Natural language instruction for the agent.
      */
     public function withInstruction(string $instruction): self
     {
@@ -88,7 +88,7 @@ final class ExecuteOptions implements BaseModel
     }
 
     /**
-     * Visually highlight the cursor during actions.
+     * Whether to visually highlight the cursor during execution.
      */
     public function withHighlightCursor(bool $highlightCursor): self
     {
@@ -101,7 +101,7 @@ final class ExecuteOptions implements BaseModel
     /**
      * Maximum number of steps the agent can take.
      */
-    public function withMaxSteps(int $maxSteps): self
+    public function withMaxSteps(float $maxSteps): self
     {
         $self = clone $this;
         $self['maxSteps'] = $maxSteps;
