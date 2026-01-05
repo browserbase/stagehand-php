@@ -35,7 +35,7 @@ class Client extends BaseClient
 
         $baseUrl ??= getenv(
             'STAGEHAND_BASE_URL'
-        ) ?: 'https://api.stagehand.browserbase.com/v1';
+        ) ?: 'https://api.stagehand.browserbase.com';
 
         $options = RequestOptions::with(
             uriFactory: Psr17FactoryDiscovery::findUriFactory(),
