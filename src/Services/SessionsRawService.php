@@ -190,8 +190,9 @@ final class SessionsRawService implements SessionsRawContract
      *
      * Terminates the browser session and releases all associated resources.
      *
-     * @param string $id Unique session identifier
+     * @param string $id Path param: Unique session identifier
      * @param array{
+     *   _forceBody?: mixed,
      *   xLanguage?: 'typescript'|'python'|'playground'|XLanguage,
      *   xSDKVersion?: string,
      *   xSentAt?: string|\DateTimeInterface,
@@ -211,19 +212,24 @@ final class SessionsRawService implements SessionsRawContract
             $params,
             $requestOptions,
         );
+        $header_params = [
+            'xLanguage' => 'x-language',
+            'xSDKVersion' => 'x-sdk-version',
+            'xSentAt' => 'x-sent-at',
+            'xStreamResponse' => 'x-stream-response',
+        ];
 
         // @phpstan-ignore-next-line return.type
         return $this->client->request(
             method: 'post',
             path: ['v1/sessions/%1$s/end', $id],
             headers: Util::array_transform_keys(
+                array_intersect_key($parsed, array_flip(array_keys($header_params))),
+                $header_params,
+            ),
+            body: (object) array_diff_key(
                 $parsed,
-                [
-                    'xLanguage' => 'x-language',
-                    'xSDKVersion' => 'x-sdk-version',
-                    'xSentAt' => 'x-sent-at',
-                    'xStreamResponse' => 'x-stream-response',
-                ],
+                array_flip(array_keys($header_params))
             ),
             options: $options,
             convert: SessionEndResponse::class,

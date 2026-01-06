@@ -115,16 +115,18 @@ interface SessionsContract
     /**
      * @api
      *
-     * @param string $id Unique session identifier
-     * @param 'typescript'|'python'|'playground'|\Stagehand\Sessions\SessionEndParams\XLanguage $xLanguage Client SDK language
-     * @param string $xSDKVersion Version of the Stagehand SDK
-     * @param string|\DateTimeInterface $xSentAt ISO timestamp when request was sent
-     * @param 'true'|'false'|\Stagehand\Sessions\SessionEndParams\XStreamResponse $xStreamResponse Whether to stream the response via SSE
+     * @param string $id Path param: Unique session identifier
+     * @param mixed $_forceBody Body param:
+     * @param 'typescript'|'python'|'playground'|\Stagehand\Sessions\SessionEndParams\XLanguage $xLanguage Header param: Client SDK language
+     * @param string $xSDKVersion Header param: Version of the Stagehand SDK
+     * @param string|\DateTimeInterface $xSentAt Header param: ISO timestamp when request was sent
+     * @param 'true'|'false'|\Stagehand\Sessions\SessionEndParams\XStreamResponse $xStreamResponse Header param: Whether to stream the response via SSE
      *
      * @throws APIException
      */
     public function end(
         string $id,
+        mixed $_forceBody = null,
         string|\Stagehand\Sessions\SessionEndParams\XLanguage|null $xLanguage = null,
         ?string $xSDKVersion = null,
         string|\DateTimeInterface|null $xSentAt = null,
