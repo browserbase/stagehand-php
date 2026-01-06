@@ -17,6 +17,7 @@ use Stagehand\Sessions\SessionEndParams\XStreamResponse;
  * @see Stagehand\Services\SessionsService::end()
  *
  * @phpstan-type SessionEndParamsShape = array{
+ *   _forceBody?: mixed,
  *   xLanguage?: null|XLanguage|value-of<XLanguage>,
  *   xSDKVersion?: string|null,
  *   xSentAt?: \DateTimeInterface|null,
@@ -28,6 +29,9 @@ final class SessionEndParams implements BaseModel
     /** @use SdkModel<SessionEndParamsShape> */
     use SdkModel;
     use SdkParams;
+
+    #[Optional]
+    public mixed $_forceBody;
 
     /**
      * Client SDK language.
@@ -71,6 +75,7 @@ final class SessionEndParams implements BaseModel
      * @param XStreamResponse|value-of<XStreamResponse>|null $xStreamResponse
      */
     public static function with(
+        mixed $_forceBody = null,
         XLanguage|string|null $xLanguage = null,
         ?string $xSDKVersion = null,
         ?\DateTimeInterface $xSentAt = null,
@@ -78,10 +83,19 @@ final class SessionEndParams implements BaseModel
     ): self {
         $self = new self;
 
+        null !== $_forceBody && $self['_forceBody'] = $_forceBody;
         null !== $xLanguage && $self['xLanguage'] = $xLanguage;
         null !== $xSDKVersion && $self['xSDKVersion'] = $xSDKVersion;
         null !== $xSentAt && $self['xSentAt'] = $xSentAt;
         null !== $xStreamResponse && $self['xStreamResponse'] = $xStreamResponse;
+
+        return $self;
+    }
+
+    public function withForceBody(mixed $_forceBody): self
+    {
+        $self = clone $this;
+        $self['_forceBody'] = $_forceBody;
 
         return $self;
     }
