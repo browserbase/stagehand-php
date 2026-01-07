@@ -12,6 +12,8 @@ use Stagehand\Core\Exceptions\APIStatusException;
 use Stagehand\RequestOptions;
 
 /**
+ * @phpstan-import-type NormalizedRequest from \Stagehand\Core\BaseClient
+ *
  * @internal
  *
  * @template Item
@@ -94,7 +96,7 @@ trait SdkPage
     /**
      * @internal
      *
-     * @return array{normalized_request, RequestOptions}
+     * @return array{NormalizedRequest, RequestOptions}
      */
     abstract protected function nextRequest(): ?array;
 }
