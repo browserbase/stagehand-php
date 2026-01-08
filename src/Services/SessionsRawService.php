@@ -11,30 +11,42 @@ use Stagehand\Core\Exceptions\APIException;
 use Stagehand\Core\Util;
 use Stagehand\RequestOptions;
 use Stagehand\ServiceContracts\SessionsRawContract;
-use Stagehand\Sessions\ModelConfig\ModelConfigObject\Provider;
 use Stagehand\Sessions\SessionActParams;
+use Stagehand\Sessions\SessionActParams\XLanguage;
+use Stagehand\Sessions\SessionActParams\XStreamResponse;
 use Stagehand\Sessions\SessionActResponse;
 use Stagehand\Sessions\SessionEndParams;
-use Stagehand\Sessions\SessionEndParams\XLanguage;
-use Stagehand\Sessions\SessionEndParams\XStreamResponse;
 use Stagehand\Sessions\SessionEndResponse;
 use Stagehand\Sessions\SessionExecuteParams;
+use Stagehand\Sessions\SessionExecuteParams\AgentConfig;
+use Stagehand\Sessions\SessionExecuteParams\ExecuteOptions;
 use Stagehand\Sessions\SessionExecuteResponse;
 use Stagehand\Sessions\SessionExtractParams;
 use Stagehand\Sessions\SessionExtractResponse;
 use Stagehand\Sessions\SessionNavigateParams;
-use Stagehand\Sessions\SessionNavigateParams\Options\WaitUntil;
+use Stagehand\Sessions\SessionNavigateParams\Options;
 use Stagehand\Sessions\SessionNavigateResponse;
 use Stagehand\Sessions\SessionObserveParams;
 use Stagehand\Sessions\SessionObserveResponse;
 use Stagehand\Sessions\SessionStartParams;
-use Stagehand\Sessions\SessionStartParams\Browser\Type;
-use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings\Fingerprint\HTTPVersion;
-use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Region;
+use Stagehand\Sessions\SessionStartParams\Browser;
+use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams;
 use Stagehand\Sessions\SessionStartResponse;
 use Stagehand\Sessions\StreamEvent;
 use Stagehand\SSEStream;
 
+/**
+ * @phpstan-import-type OptionsShape from \Stagehand\Sessions\SessionNavigateParams\Options
+ * @phpstan-import-type BrowserShape from \Stagehand\Sessions\SessionStartParams\Browser
+ * @phpstan-import-type BrowserbaseSessionCreateParamsShape from \Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams
+ * @phpstan-import-type InputShape from \Stagehand\Sessions\SessionActParams\Input
+ * @phpstan-import-type OptionsShape from \Stagehand\Sessions\SessionActParams\Options as OptionsShape1
+ * @phpstan-import-type RequestOpts from \Stagehand\RequestOptions
+ * @phpstan-import-type AgentConfigShape from \Stagehand\Sessions\SessionExecuteParams\AgentConfig
+ * @phpstan-import-type ExecuteOptionsShape from \Stagehand\Sessions\SessionExecuteParams\ExecuteOptions
+ * @phpstan-import-type OptionsShape from \Stagehand\Sessions\SessionExtractParams\Options as OptionsShape2
+ * @phpstan-import-type OptionsShape from \Stagehand\Sessions\SessionObserveParams\Options as OptionsShape3
+ */
 final class SessionsRawService implements SessionsRawContract
 {
     // @phpstan-ignore-next-line
@@ -50,29 +62,15 @@ final class SessionsRawService implements SessionsRawContract
      *
      * @param string $id Path param: Unique session identifier
      * @param array{
-     *   input: string|array{
-     *     description: string,
-     *     selector: string,
-     *     arguments?: list<string>,
-     *     backendNodeID?: float,
-     *     method?: string,
-     *   },
+     *   input: InputShape,
      *   frameID?: string,
-     *   options?: array{
-     *     model?: string|array{
-     *       modelName: string,
-     *       apiKey?: string,
-     *       baseURL?: string,
-     *       provider?: 'openai'|'anthropic'|'google'|'microsoft'|Provider,
-     *     },
-     *     timeout?: float,
-     *     variables?: array<string,string>,
-     *   },
-     *   xLanguage?: 'typescript'|'python'|'playground'|SessionActParams\XLanguage,
+     *   options?: SessionActParams\Options|OptionsShape1,
+     *   xLanguage?: XLanguage|value-of<XLanguage>,
      *   xSDKVersion?: string,
-     *   xSentAt?: string|\DateTimeInterface,
-     *   xStreamResponse?: 'true'|'false'|SessionActParams\XStreamResponse,
+     *   xSentAt?: \DateTimeInterface,
+     *   xStreamResponse?: XStreamResponse|value-of<XStreamResponse>,
      * }|SessionActParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<SessionActResponse>
      *
@@ -81,7 +79,7 @@ final class SessionsRawService implements SessionsRawContract
     public function act(
         string $id,
         array|SessionActParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = SessionActParams::parseRequest(
             $params,
@@ -116,29 +114,15 @@ final class SessionsRawService implements SessionsRawContract
      *
      * @param string $id Path param: Unique session identifier
      * @param array{
-     *   input: string|array{
-     *     description: string,
-     *     selector: string,
-     *     arguments?: list<string>,
-     *     backendNodeID?: float,
-     *     method?: string,
-     *   },
+     *   input: InputShape,
      *   frameID?: string,
-     *   options?: array{
-     *     model?: string|array{
-     *       modelName: string,
-     *       apiKey?: string,
-     *       baseURL?: string,
-     *       provider?: 'openai'|'anthropic'|'google'|'microsoft'|Provider,
-     *     },
-     *     timeout?: float,
-     *     variables?: array<string,string>,
-     *   },
-     *   xLanguage?: 'typescript'|'python'|'playground'|SessionActParams\XLanguage,
+     *   options?: SessionActParams\Options|OptionsShape1,
+     *   xLanguage?: XLanguage|value-of<XLanguage>,
      *   xSDKVersion?: string,
-     *   xSentAt?: string|\DateTimeInterface,
-     *   xStreamResponse?: 'true'|'false'|SessionActParams\XStreamResponse,
+     *   xSentAt?: \DateTimeInterface,
+     *   xStreamResponse?: XStreamResponse|value-of<XStreamResponse>,
      * }|SessionActParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<BaseStream<StreamEvent>>
      *
@@ -147,7 +131,7 @@ final class SessionsRawService implements SessionsRawContract
     public function actStream(
         string $id,
         array|SessionActParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = SessionActParams::parseRequest(
             $params,
@@ -193,11 +177,12 @@ final class SessionsRawService implements SessionsRawContract
      * @param string $id Path param: Unique session identifier
      * @param array{
      *   _forceBody?: mixed,
-     *   xLanguage?: 'typescript'|'python'|'playground'|XLanguage,
+     *   xLanguage?: SessionEndParams\XLanguage|value-of<SessionEndParams\XLanguage>,
      *   xSDKVersion?: string,
-     *   xSentAt?: string|\DateTimeInterface,
-     *   xStreamResponse?: 'true'|'false'|XStreamResponse,
+     *   xSentAt?: \DateTimeInterface,
+     *   xStreamResponse?: SessionEndParams\XStreamResponse|value-of<SessionEndParams\XStreamResponse>,
      * }|SessionEndParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<SessionEndResponse>
      *
@@ -206,7 +191,7 @@ final class SessionsRawService implements SessionsRawContract
     public function end(
         string $id,
         array|SessionEndParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = SessionEndParams::parseRequest(
             $params,
@@ -243,26 +228,15 @@ final class SessionsRawService implements SessionsRawContract
      *
      * @param string $id Path param: Unique session identifier
      * @param array{
-     *   agentConfig: array{
-     *     cua?: bool,
-     *     model?: string|array{
-     *       modelName: string,
-     *       apiKey?: string,
-     *       baseURL?: string,
-     *       provider?: 'openai'|'anthropic'|'google'|'microsoft'|Provider,
-     *     },
-     *     provider?: 'openai'|'anthropic'|'google'|'microsoft'|SessionExecuteParams\AgentConfig\Provider,
-     *     systemPrompt?: string,
-     *   },
-     *   executeOptions: array{
-     *     instruction: string, highlightCursor?: bool, maxSteps?: float
-     *   },
+     *   agentConfig: AgentConfig|AgentConfigShape,
+     *   executeOptions: ExecuteOptions|ExecuteOptionsShape,
      *   frameID?: string,
-     *   xLanguage?: 'typescript'|'python'|'playground'|SessionExecuteParams\XLanguage,
+     *   xLanguage?: SessionExecuteParams\XLanguage|value-of<SessionExecuteParams\XLanguage>,
      *   xSDKVersion?: string,
-     *   xSentAt?: string|\DateTimeInterface,
-     *   xStreamResponse?: 'true'|'false'|SessionExecuteParams\XStreamResponse,
+     *   xSentAt?: \DateTimeInterface,
+     *   xStreamResponse?: SessionExecuteParams\XStreamResponse|value-of<SessionExecuteParams\XStreamResponse>,
      * }|SessionExecuteParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<SessionExecuteResponse>
      *
@@ -271,7 +245,7 @@ final class SessionsRawService implements SessionsRawContract
     public function execute(
         string $id,
         array|SessionExecuteParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = SessionExecuteParams::parseRequest(
             $params,
@@ -306,26 +280,15 @@ final class SessionsRawService implements SessionsRawContract
      *
      * @param string $id Path param: Unique session identifier
      * @param array{
-     *   agentConfig: array{
-     *     cua?: bool,
-     *     model?: string|array{
-     *       modelName: string,
-     *       apiKey?: string,
-     *       baseURL?: string,
-     *       provider?: 'openai'|'anthropic'|'google'|'microsoft'|Provider,
-     *     },
-     *     provider?: 'openai'|'anthropic'|'google'|'microsoft'|SessionExecuteParams\AgentConfig\Provider,
-     *     systemPrompt?: string,
-     *   },
-     *   executeOptions: array{
-     *     instruction: string, highlightCursor?: bool, maxSteps?: float
-     *   },
+     *   agentConfig: AgentConfig|AgentConfigShape,
+     *   executeOptions: ExecuteOptions|ExecuteOptionsShape,
      *   frameID?: string,
-     *   xLanguage?: 'typescript'|'python'|'playground'|SessionExecuteParams\XLanguage,
+     *   xLanguage?: SessionExecuteParams\XLanguage|value-of<SessionExecuteParams\XLanguage>,
      *   xSDKVersion?: string,
-     *   xSentAt?: string|\DateTimeInterface,
-     *   xStreamResponse?: 'true'|'false'|SessionExecuteParams\XStreamResponse,
+     *   xSentAt?: \DateTimeInterface,
+     *   xStreamResponse?: SessionExecuteParams\XStreamResponse|value-of<SessionExecuteParams\XStreamResponse>,
      * }|SessionExecuteParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<BaseStream<StreamEvent>>
      *
@@ -334,7 +297,7 @@ final class SessionsRawService implements SessionsRawContract
     public function executeStream(
         string $id,
         array|SessionExecuteParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = SessionExecuteParams::parseRequest(
             $params,
@@ -381,22 +344,14 @@ final class SessionsRawService implements SessionsRawContract
      * @param array{
      *   frameID?: string,
      *   instruction?: string,
-     *   options?: array{
-     *     model?: string|array{
-     *       modelName: string,
-     *       apiKey?: string,
-     *       baseURL?: string,
-     *       provider?: 'openai'|'anthropic'|'google'|'microsoft'|Provider,
-     *     },
-     *     selector?: string,
-     *     timeout?: float,
-     *   },
+     *   options?: SessionExtractParams\Options|OptionsShape2,
      *   schema?: array<string,mixed>,
-     *   xLanguage?: 'typescript'|'python'|'playground'|SessionExtractParams\XLanguage,
+     *   xLanguage?: SessionExtractParams\XLanguage|value-of<SessionExtractParams\XLanguage>,
      *   xSDKVersion?: string,
-     *   xSentAt?: string|\DateTimeInterface,
-     *   xStreamResponse?: 'true'|'false'|SessionExtractParams\XStreamResponse,
+     *   xSentAt?: \DateTimeInterface,
+     *   xStreamResponse?: SessionExtractParams\XStreamResponse|value-of<SessionExtractParams\XStreamResponse>,
      * }|SessionExtractParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<SessionExtractResponse>
      *
@@ -405,7 +360,7 @@ final class SessionsRawService implements SessionsRawContract
     public function extract(
         string $id,
         array|SessionExtractParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = SessionExtractParams::parseRequest(
             $params,
@@ -442,22 +397,14 @@ final class SessionsRawService implements SessionsRawContract
      * @param array{
      *   frameID?: string,
      *   instruction?: string,
-     *   options?: array{
-     *     model?: string|array{
-     *       modelName: string,
-     *       apiKey?: string,
-     *       baseURL?: string,
-     *       provider?: 'openai'|'anthropic'|'google'|'microsoft'|Provider,
-     *     },
-     *     selector?: string,
-     *     timeout?: float,
-     *   },
+     *   options?: SessionExtractParams\Options|OptionsShape2,
      *   schema?: array<string,mixed>,
-     *   xLanguage?: 'typescript'|'python'|'playground'|SessionExtractParams\XLanguage,
+     *   xLanguage?: SessionExtractParams\XLanguage|value-of<SessionExtractParams\XLanguage>,
      *   xSDKVersion?: string,
-     *   xSentAt?: string|\DateTimeInterface,
-     *   xStreamResponse?: 'true'|'false'|SessionExtractParams\XStreamResponse,
+     *   xSentAt?: \DateTimeInterface,
+     *   xStreamResponse?: SessionExtractParams\XStreamResponse|value-of<SessionExtractParams\XStreamResponse>,
      * }|SessionExtractParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<BaseStream<StreamEvent>>
      *
@@ -466,7 +413,7 @@ final class SessionsRawService implements SessionsRawContract
     public function extractStream(
         string $id,
         array|SessionExtractParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = SessionExtractParams::parseRequest(
             $params,
@@ -513,17 +460,14 @@ final class SessionsRawService implements SessionsRawContract
      * @param array{
      *   url: string,
      *   frameID?: string,
-     *   options?: array{
-     *     referer?: string,
-     *     timeout?: float,
-     *     waitUntil?: 'load'|'domcontentloaded'|'networkidle'|WaitUntil,
-     *   },
+     *   options?: Options|OptionsShape,
      *   streamResponse?: bool,
-     *   xLanguage?: 'typescript'|'python'|'playground'|SessionNavigateParams\XLanguage,
+     *   xLanguage?: SessionNavigateParams\XLanguage|value-of<SessionNavigateParams\XLanguage>,
      *   xSDKVersion?: string,
-     *   xSentAt?: string|\DateTimeInterface,
-     *   xStreamResponse?: 'true'|'false'|SessionNavigateParams\XStreamResponse,
+     *   xSentAt?: \DateTimeInterface,
+     *   xStreamResponse?: SessionNavigateParams\XStreamResponse|value-of<SessionNavigateParams\XStreamResponse>,
      * }|SessionNavigateParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<SessionNavigateResponse>
      *
@@ -532,7 +476,7 @@ final class SessionsRawService implements SessionsRawContract
     public function navigate(
         string $id,
         array|SessionNavigateParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = SessionNavigateParams::parseRequest(
             $params,
@@ -571,21 +515,13 @@ final class SessionsRawService implements SessionsRawContract
      * @param array{
      *   frameID?: string,
      *   instruction?: string,
-     *   options?: array{
-     *     model?: string|array{
-     *       modelName: string,
-     *       apiKey?: string,
-     *       baseURL?: string,
-     *       provider?: 'openai'|'anthropic'|'google'|'microsoft'|Provider,
-     *     },
-     *     selector?: string,
-     *     timeout?: float,
-     *   },
-     *   xLanguage?: 'typescript'|'python'|'playground'|SessionObserveParams\XLanguage,
+     *   options?: SessionObserveParams\Options|OptionsShape3,
+     *   xLanguage?: SessionObserveParams\XLanguage|value-of<SessionObserveParams\XLanguage>,
      *   xSDKVersion?: string,
-     *   xSentAt?: string|\DateTimeInterface,
-     *   xStreamResponse?: 'true'|'false'|SessionObserveParams\XStreamResponse,
+     *   xSentAt?: \DateTimeInterface,
+     *   xStreamResponse?: SessionObserveParams\XStreamResponse|value-of<SessionObserveParams\XStreamResponse>,
      * }|SessionObserveParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<SessionObserveResponse>
      *
@@ -594,7 +530,7 @@ final class SessionsRawService implements SessionsRawContract
     public function observe(
         string $id,
         array|SessionObserveParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = SessionObserveParams::parseRequest(
             $params,
@@ -631,21 +567,13 @@ final class SessionsRawService implements SessionsRawContract
      * @param array{
      *   frameID?: string,
      *   instruction?: string,
-     *   options?: array{
-     *     model?: string|array{
-     *       modelName: string,
-     *       apiKey?: string,
-     *       baseURL?: string,
-     *       provider?: 'openai'|'anthropic'|'google'|'microsoft'|Provider,
-     *     },
-     *     selector?: string,
-     *     timeout?: float,
-     *   },
-     *   xLanguage?: 'typescript'|'python'|'playground'|SessionObserveParams\XLanguage,
+     *   options?: SessionObserveParams\Options|OptionsShape3,
+     *   xLanguage?: SessionObserveParams\XLanguage|value-of<SessionObserveParams\XLanguage>,
      *   xSDKVersion?: string,
-     *   xSentAt?: string|\DateTimeInterface,
-     *   xStreamResponse?: 'true'|'false'|SessionObserveParams\XStreamResponse,
+     *   xSentAt?: \DateTimeInterface,
+     *   xStreamResponse?: SessionObserveParams\XStreamResponse|value-of<SessionObserveParams\XStreamResponse>,
      * }|SessionObserveParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<BaseStream<StreamEvent>>
      *
@@ -654,7 +582,7 @@ final class SessionsRawService implements SessionsRawContract
     public function observeStream(
         string $id,
         array|SessionObserveParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = SessionObserveParams::parseRequest(
             $params,
@@ -700,59 +628,8 @@ final class SessionsRawService implements SessionsRawContract
      * @param array{
      *   modelName: string,
      *   actTimeoutMs?: float,
-     *   browser?: array{
-     *     cdpURL?: string,
-     *     launchOptions?: array{
-     *       acceptDownloads?: bool,
-     *       args?: list<string>,
-     *       cdpURL?: string,
-     *       chromiumSandbox?: bool,
-     *       connectTimeoutMs?: float,
-     *       deviceScaleFactor?: float,
-     *       devtools?: bool,
-     *       downloadsPath?: string,
-     *       executablePath?: string,
-     *       hasTouch?: bool,
-     *       headless?: bool,
-     *       ignoreDefaultArgs?: bool|list<string>,
-     *       ignoreHTTPSErrors?: bool,
-     *       locale?: string,
-     *       preserveUserDataDir?: bool,
-     *       proxy?: array{
-     *         server: string, bypass?: string, password?: string, username?: string
-     *       },
-     *       userDataDir?: string,
-     *       viewport?: array{height: float, width: float},
-     *     },
-     *     type?: 'local'|'browserbase'|Type,
-     *   },
-     *   browserbaseSessionCreateParams?: array{
-     *     browserSettings?: array{
-     *       advancedStealth?: bool,
-     *       blockAds?: bool,
-     *       context?: array{id: string, persist?: bool},
-     *       extensionID?: string,
-     *       fingerprint?: array{
-     *         browsers?: list<mixed>,
-     *         devices?: list<mixed>,
-     *         httpVersion?: '1'|'2'|HTTPVersion,
-     *         locales?: list<string>,
-     *         operatingSystems?: list<mixed>,
-     *         screen?: array<string,mixed>,
-     *       },
-     *       logSession?: bool,
-     *       recordSession?: bool,
-     *       solveCaptchas?: bool,
-     *       viewport?: array{height?: float, width?: float},
-     *     },
-     *     extensionID?: string,
-     *     keepAlive?: bool,
-     *     projectID?: string,
-     *     proxies?: bool|list<array<string,mixed>>,
-     *     region?: 'us-west-2'|'us-east-1'|'eu-central-1'|'ap-southeast-1'|Region,
-     *     timeout?: float,
-     *     userMetadata?: array<string,mixed>,
-     *   },
+     *   browser?: Browser|BrowserShape,
+     *   browserbaseSessionCreateParams?: BrowserbaseSessionCreateParams|BrowserbaseSessionCreateParamsShape,
      *   browserbaseSessionID?: string,
      *   domSettleTimeoutMs?: float,
      *   experimental?: bool,
@@ -760,11 +637,12 @@ final class SessionsRawService implements SessionsRawContract
      *   systemPrompt?: string,
      *   verbose?: float,
      *   waitForCaptchaSolves?: bool,
-     *   xLanguage?: 'typescript'|'python'|'playground'|SessionStartParams\XLanguage,
+     *   xLanguage?: SessionStartParams\XLanguage|value-of<SessionStartParams\XLanguage>,
      *   xSDKVersion?: string,
-     *   xSentAt?: string|\DateTimeInterface,
-     *   xStreamResponse?: 'true'|'false'|SessionStartParams\XStreamResponse,
+     *   xSentAt?: \DateTimeInterface,
+     *   xStreamResponse?: SessionStartParams\XStreamResponse|value-of<SessionStartParams\XStreamResponse>,
      * }|SessionStartParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<SessionStartResponse>
      *
@@ -772,7 +650,7 @@ final class SessionsRawService implements SessionsRawContract
      */
     public function start(
         array|SessionStartParams $params,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = SessionStartParams::parseRequest(
             $params,

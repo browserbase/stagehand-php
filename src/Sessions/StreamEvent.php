@@ -14,6 +14,7 @@ use Stagehand\Sessions\StreamEvent\Type;
 /**
  * Server-Sent Event emitted during streaming responses. Events are sent as `data: <JSON>\n\n`. Key order: data (with status first), type, id.
  *
+ * @phpstan-import-type DataVariants from \Stagehand\Sessions\StreamEvent\Data
  * @phpstan-import-type DataShape from \Stagehand\Sessions\StreamEvent\Data
  *
  * @phpstan-type StreamEventShape = array{
@@ -31,6 +32,7 @@ final class StreamEvent implements BaseModel
     #[Required]
     public string $id;
 
+    /** @var DataVariants $data */
     #[Required]
     public StreamEventSystemDataOutput|StreamEventLogDataOutput $data;
 

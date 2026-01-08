@@ -14,7 +14,8 @@ use Stagehand\Sessions\StreamEvent\Data\StreamEventSystemDataOutput;
  * @phpstan-import-type StreamEventSystemDataOutputShape from \Stagehand\Sessions\StreamEvent\Data\StreamEventSystemDataOutput
  * @phpstan-import-type StreamEventLogDataOutputShape from \Stagehand\Sessions\StreamEvent\Data\StreamEventLogDataOutput
  *
- * @phpstan-type DataShape = StreamEventSystemDataOutputShape|StreamEventLogDataOutputShape
+ * @phpstan-type DataVariants = StreamEventSystemDataOutput|StreamEventLogDataOutput
+ * @phpstan-type DataShape = DataVariants|StreamEventSystemDataOutputShape|StreamEventLogDataOutputShape
  */
 final class Data implements ConverterSource
 {

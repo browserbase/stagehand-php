@@ -18,6 +18,7 @@ use Stagehand\Sessions\SessionActParams\XStreamResponse;
  *
  * @see Stagehand\Services\SessionsService::act()
  *
+ * @phpstan-import-type InputVariants from \Stagehand\Sessions\SessionActParams\Input
  * @phpstan-import-type InputShape from \Stagehand\Sessions\SessionActParams\Input
  * @phpstan-import-type OptionsShape from \Stagehand\Sessions\SessionActParams\Options
  *
@@ -39,6 +40,8 @@ final class SessionActParams implements BaseModel
 
     /**
      * Natural language instruction or Action object.
+     *
+     * @var InputVariants $input
      */
     #[Required]
     public string|Action $input;

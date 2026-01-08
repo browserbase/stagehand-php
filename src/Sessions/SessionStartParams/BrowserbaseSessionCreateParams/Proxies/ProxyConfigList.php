@@ -14,7 +14,8 @@ use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Proxies
  * @phpstan-import-type BrowserbaseProxyConfigShape from \Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Proxies\ProxyConfigList\BrowserbaseProxyConfig
  * @phpstan-import-type ExternalProxyConfigShape from \Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Proxies\ProxyConfigList\ExternalProxyConfig
  *
- * @phpstan-type ProxyConfigListShape = BrowserbaseProxyConfigShape|ExternalProxyConfigShape
+ * @phpstan-type ProxyConfigListVariants = BrowserbaseProxyConfig|ExternalProxyConfig
+ * @phpstan-type ProxyConfigListShape = ProxyConfigListVariants|BrowserbaseProxyConfigShape|ExternalProxyConfigShape
  */
 final class ProxyConfigList implements ConverterSource
 {

@@ -11,8 +11,8 @@ use Stagehand\Core\Util;
 use Stagehand\Services\SessionsService;
 
 /**
- * @phpstan-import-type NormalizedRequest from \Stagehand\Core\BaseClient
  * @phpstan-import-type RequestOpts from \Stagehand\RequestOptions
+ * @phpstan-import-type NormalizedRequest from \Stagehand\Core\BaseClient
  */
 class Client extends BaseClient
 {

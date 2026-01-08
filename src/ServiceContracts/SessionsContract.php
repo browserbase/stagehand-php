@@ -7,94 +7,76 @@ namespace Stagehand\ServiceContracts;
 use Stagehand\Core\Contracts\BaseStream;
 use Stagehand\Core\Exceptions\APIException;
 use Stagehand\RequestOptions;
-use Stagehand\Sessions\ModelConfig\ModelConfigObject\Provider;
+use Stagehand\Sessions\Action;
+use Stagehand\Sessions\SessionActParams\Options;
 use Stagehand\Sessions\SessionActParams\XLanguage;
 use Stagehand\Sessions\SessionActParams\XStreamResponse;
 use Stagehand\Sessions\SessionActResponse;
 use Stagehand\Sessions\SessionEndResponse;
+use Stagehand\Sessions\SessionExecuteParams\AgentConfig;
+use Stagehand\Sessions\SessionExecuteParams\ExecuteOptions;
 use Stagehand\Sessions\SessionExecuteResponse;
 use Stagehand\Sessions\SessionExtractResponse;
-use Stagehand\Sessions\SessionNavigateParams\Options\WaitUntil;
 use Stagehand\Sessions\SessionNavigateResponse;
 use Stagehand\Sessions\SessionObserveResponse;
-use Stagehand\Sessions\SessionStartParams\Browser\Type;
-use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings\Fingerprint\Browser;
-use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings\Fingerprint\Device;
-use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings\Fingerprint\HTTPVersion;
-use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings\Fingerprint\OperatingSystem;
-use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Region;
+use Stagehand\Sessions\SessionStartParams\Browser;
+use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams;
 use Stagehand\Sessions\SessionStartResponse;
 use Stagehand\Sessions\StreamEvent;
 
+/**
+ * @phpstan-import-type OptionsShape from \Stagehand\Sessions\SessionNavigateParams\Options
+ * @phpstan-import-type BrowserShape from \Stagehand\Sessions\SessionStartParams\Browser
+ * @phpstan-import-type BrowserbaseSessionCreateParamsShape from \Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams
+ * @phpstan-import-type InputShape from \Stagehand\Sessions\SessionActParams\Input
+ * @phpstan-import-type OptionsShape from \Stagehand\Sessions\SessionActParams\Options as OptionsShape1
+ * @phpstan-import-type RequestOpts from \Stagehand\RequestOptions
+ * @phpstan-import-type AgentConfigShape from \Stagehand\Sessions\SessionExecuteParams\AgentConfig
+ * @phpstan-import-type ExecuteOptionsShape from \Stagehand\Sessions\SessionExecuteParams\ExecuteOptions
+ * @phpstan-import-type OptionsShape from \Stagehand\Sessions\SessionExtractParams\Options as OptionsShape2
+ * @phpstan-import-type OptionsShape from \Stagehand\Sessions\SessionObserveParams\Options as OptionsShape3
+ */
 interface SessionsContract
 {
     /**
      * @api
      *
      * @param string $id Path param: Unique session identifier
-     * @param string|array{
-     *   description: string,
-     *   selector: string,
-     *   arguments?: list<string>,
-     *   backendNodeID?: float,
-     *   method?: string,
-     * } $input Body param: Natural language instruction or Action object
+     * @param InputShape $input Body param: Natural language instruction or Action object
      * @param string $frameID Body param: Target frame ID for the action
-     * @param array{
-     *   model?: string|array{
-     *     modelName: string,
-     *     apiKey?: string,
-     *     baseURL?: string,
-     *     provider?: 'openai'|'anthropic'|'google'|'microsoft'|Provider,
-     *   },
-     *   timeout?: float,
-     *   variables?: array<string,string>,
-     * } $options Body param:
-     * @param 'typescript'|'python'|'playground'|XLanguage $xLanguage Header param: Client SDK language
+     * @param Options|OptionsShape1 $options Body param:
+     * @param XLanguage|value-of<XLanguage> $xLanguage Header param: Client SDK language
      * @param string $xSDKVersion Header param: Version of the Stagehand SDK
-     * @param string|\DateTimeInterface $xSentAt Header param: ISO timestamp when request was sent
-     * @param 'true'|'false'|XStreamResponse $xStreamResponse Header param: Whether to stream the response via SSE
+     * @param \DateTimeInterface $xSentAt Header param: ISO timestamp when request was sent
+     * @param XStreamResponse|value-of<XStreamResponse> $xStreamResponse Header param: Whether to stream the response via SSE
+     * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
      */
     public function act(
         string $id,
-        string|array $input,
+        string|Action|array $input,
         ?string $frameID = null,
-        ?array $options = null,
-        string|XLanguage|null $xLanguage = null,
+        Options|array|null $options = null,
+        XLanguage|string|null $xLanguage = null,
         ?string $xSDKVersion = null,
-        string|\DateTimeInterface|null $xSentAt = null,
-        string|XStreamResponse|null $xStreamResponse = null,
-        ?RequestOptions $requestOptions = null,
+        ?\DateTimeInterface $xSentAt = null,
+        XStreamResponse|string|null $xStreamResponse = null,
+        RequestOptions|array|null $requestOptions = null,
     ): SessionActResponse;
 
     /**
      * @api
      *
      * @param string $id Path param: Unique session identifier
-     * @param string|array{
-     *   description: string,
-     *   selector: string,
-     *   arguments?: list<string>,
-     *   backendNodeID?: float,
-     *   method?: string,
-     * } $input Body param: Natural language instruction or Action object
+     * @param InputShape $input Body param: Natural language instruction or Action object
      * @param string $frameID Body param: Target frame ID for the action
-     * @param array{
-     *   model?: string|array{
-     *     modelName: string,
-     *     apiKey?: string,
-     *     baseURL?: string,
-     *     provider?: 'openai'|'anthropic'|'google'|'microsoft'|Provider,
-     *   },
-     *   timeout?: float,
-     *   variables?: array<string,string>,
-     * } $options Body param:
-     * @param 'typescript'|'python'|'playground'|XLanguage $xLanguage Header param: Client SDK language
+     * @param Options|OptionsShape1 $options Body param:
+     * @param XLanguage|value-of<XLanguage> $xLanguage Header param: Client SDK language
      * @param string $xSDKVersion Header param: Version of the Stagehand SDK
-     * @param string|\DateTimeInterface $xSentAt Header param: ISO timestamp when request was sent
-     * @param 'true'|'false'|XStreamResponse $xStreamResponse Header param: Whether to stream the response via SSE
+     * @param \DateTimeInterface $xSentAt Header param: ISO timestamp when request was sent
+     * @param XStreamResponse|value-of<XStreamResponse> $xStreamResponse Header param: Whether to stream the response via SSE
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseStream<StreamEvent>
      *
@@ -102,14 +84,14 @@ interface SessionsContract
      */
     public function actStream(
         string $id,
-        string|array $input,
+        string|Action|array $input,
         ?string $frameID = null,
-        ?array $options = null,
-        string|XLanguage|null $xLanguage = null,
+        Options|array|null $options = null,
+        XLanguage|string|null $xLanguage = null,
         ?string $xSDKVersion = null,
-        string|\DateTimeInterface|null $xSentAt = null,
-        string|XStreamResponse|null $xStreamResponse = null,
-        ?RequestOptions $requestOptions = null,
+        ?\DateTimeInterface $xSentAt = null,
+        XStreamResponse|string|null $xStreamResponse = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseStream;
 
     /**
@@ -117,84 +99,63 @@ interface SessionsContract
      *
      * @param string $id Path param: Unique session identifier
      * @param mixed $_forceBody Body param:
-     * @param 'typescript'|'python'|'playground'|\Stagehand\Sessions\SessionEndParams\XLanguage $xLanguage Header param: Client SDK language
+     * @param \Stagehand\Sessions\SessionEndParams\XLanguage|value-of<\Stagehand\Sessions\SessionEndParams\XLanguage> $xLanguage Header param: Client SDK language
      * @param string $xSDKVersion Header param: Version of the Stagehand SDK
-     * @param string|\DateTimeInterface $xSentAt Header param: ISO timestamp when request was sent
-     * @param 'true'|'false'|\Stagehand\Sessions\SessionEndParams\XStreamResponse $xStreamResponse Header param: Whether to stream the response via SSE
+     * @param \DateTimeInterface $xSentAt Header param: ISO timestamp when request was sent
+     * @param \Stagehand\Sessions\SessionEndParams\XStreamResponse|value-of<\Stagehand\Sessions\SessionEndParams\XStreamResponse> $xStreamResponse Header param: Whether to stream the response via SSE
+     * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
      */
     public function end(
         string $id,
         mixed $_forceBody = null,
-        string|\Stagehand\Sessions\SessionEndParams\XLanguage|null $xLanguage = null,
+        \Stagehand\Sessions\SessionEndParams\XLanguage|string|null $xLanguage = null,
         ?string $xSDKVersion = null,
-        string|\DateTimeInterface|null $xSentAt = null,
-        string|\Stagehand\Sessions\SessionEndParams\XStreamResponse|null $xStreamResponse = null,
-        ?RequestOptions $requestOptions = null,
+        ?\DateTimeInterface $xSentAt = null,
+        \Stagehand\Sessions\SessionEndParams\XStreamResponse|string|null $xStreamResponse = null,
+        RequestOptions|array|null $requestOptions = null,
     ): SessionEndResponse;
 
     /**
      * @api
      *
      * @param string $id Path param: Unique session identifier
-     * @param array{
-     *   cua?: bool,
-     *   model?: string|array{
-     *     modelName: string,
-     *     apiKey?: string,
-     *     baseURL?: string,
-     *     provider?: 'openai'|'anthropic'|'google'|'microsoft'|Provider,
-     *   },
-     *   provider?: 'openai'|'anthropic'|'google'|'microsoft'|\Stagehand\Sessions\SessionExecuteParams\AgentConfig\Provider,
-     *   systemPrompt?: string,
-     * } $agentConfig Body param:
-     * @param array{
-     *   instruction: string, highlightCursor?: bool, maxSteps?: float
-     * } $executeOptions Body param:
+     * @param AgentConfig|AgentConfigShape $agentConfig Body param:
+     * @param ExecuteOptions|ExecuteOptionsShape $executeOptions Body param:
      * @param string $frameID Body param: Target frame ID for the agent
-     * @param 'typescript'|'python'|'playground'|\Stagehand\Sessions\SessionExecuteParams\XLanguage $xLanguage Header param: Client SDK language
+     * @param \Stagehand\Sessions\SessionExecuteParams\XLanguage|value-of<\Stagehand\Sessions\SessionExecuteParams\XLanguage> $xLanguage Header param: Client SDK language
      * @param string $xSDKVersion Header param: Version of the Stagehand SDK
-     * @param string|\DateTimeInterface $xSentAt Header param: ISO timestamp when request was sent
-     * @param 'true'|'false'|\Stagehand\Sessions\SessionExecuteParams\XStreamResponse $xStreamResponse Header param: Whether to stream the response via SSE
+     * @param \DateTimeInterface $xSentAt Header param: ISO timestamp when request was sent
+     * @param \Stagehand\Sessions\SessionExecuteParams\XStreamResponse|value-of<\Stagehand\Sessions\SessionExecuteParams\XStreamResponse> $xStreamResponse Header param: Whether to stream the response via SSE
+     * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
      */
     public function execute(
         string $id,
-        array $agentConfig,
-        array $executeOptions,
+        AgentConfig|array $agentConfig,
+        ExecuteOptions|array $executeOptions,
         ?string $frameID = null,
-        string|\Stagehand\Sessions\SessionExecuteParams\XLanguage|null $xLanguage = null,
+        \Stagehand\Sessions\SessionExecuteParams\XLanguage|string|null $xLanguage = null,
         ?string $xSDKVersion = null,
-        string|\DateTimeInterface|null $xSentAt = null,
-        string|\Stagehand\Sessions\SessionExecuteParams\XStreamResponse|null $xStreamResponse = null,
-        ?RequestOptions $requestOptions = null,
+        ?\DateTimeInterface $xSentAt = null,
+        \Stagehand\Sessions\SessionExecuteParams\XStreamResponse|string|null $xStreamResponse = null,
+        RequestOptions|array|null $requestOptions = null,
     ): SessionExecuteResponse;
 
     /**
      * @api
      *
      * @param string $id Path param: Unique session identifier
-     * @param array{
-     *   cua?: bool,
-     *   model?: string|array{
-     *     modelName: string,
-     *     apiKey?: string,
-     *     baseURL?: string,
-     *     provider?: 'openai'|'anthropic'|'google'|'microsoft'|Provider,
-     *   },
-     *   provider?: 'openai'|'anthropic'|'google'|'microsoft'|\Stagehand\Sessions\SessionExecuteParams\AgentConfig\Provider,
-     *   systemPrompt?: string,
-     * } $agentConfig Body param:
-     * @param array{
-     *   instruction: string, highlightCursor?: bool, maxSteps?: float
-     * } $executeOptions Body param:
+     * @param AgentConfig|AgentConfigShape $agentConfig Body param:
+     * @param ExecuteOptions|ExecuteOptionsShape $executeOptions Body param:
      * @param string $frameID Body param: Target frame ID for the agent
-     * @param 'typescript'|'python'|'playground'|\Stagehand\Sessions\SessionExecuteParams\XLanguage $xLanguage Header param: Client SDK language
+     * @param \Stagehand\Sessions\SessionExecuteParams\XLanguage|value-of<\Stagehand\Sessions\SessionExecuteParams\XLanguage> $xLanguage Header param: Client SDK language
      * @param string $xSDKVersion Header param: Version of the Stagehand SDK
-     * @param string|\DateTimeInterface $xSentAt Header param: ISO timestamp when request was sent
-     * @param 'true'|'false'|\Stagehand\Sessions\SessionExecuteParams\XStreamResponse $xStreamResponse Header param: Whether to stream the response via SSE
+     * @param \DateTimeInterface $xSentAt Header param: ISO timestamp when request was sent
+     * @param \Stagehand\Sessions\SessionExecuteParams\XStreamResponse|value-of<\Stagehand\Sessions\SessionExecuteParams\XStreamResponse> $xStreamResponse Header param: Whether to stream the response via SSE
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseStream<StreamEvent>
      *
@@ -202,14 +163,14 @@ interface SessionsContract
      */
     public function executeStream(
         string $id,
-        array $agentConfig,
-        array $executeOptions,
+        AgentConfig|array $agentConfig,
+        ExecuteOptions|array $executeOptions,
         ?string $frameID = null,
-        string|\Stagehand\Sessions\SessionExecuteParams\XLanguage|null $xLanguage = null,
+        \Stagehand\Sessions\SessionExecuteParams\XLanguage|string|null $xLanguage = null,
         ?string $xSDKVersion = null,
-        string|\DateTimeInterface|null $xSentAt = null,
-        string|\Stagehand\Sessions\SessionExecuteParams\XStreamResponse|null $xStreamResponse = null,
-        ?RequestOptions $requestOptions = null,
+        ?\DateTimeInterface $xSentAt = null,
+        \Stagehand\Sessions\SessionExecuteParams\XStreamResponse|string|null $xStreamResponse = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseStream;
 
     /**
@@ -218,21 +179,13 @@ interface SessionsContract
      * @param string $id Path param: Unique session identifier
      * @param string $frameID Body param: Target frame ID for the extraction
      * @param string $instruction Body param: Natural language instruction for what to extract
-     * @param array{
-     *   model?: string|array{
-     *     modelName: string,
-     *     apiKey?: string,
-     *     baseURL?: string,
-     *     provider?: 'openai'|'anthropic'|'google'|'microsoft'|Provider,
-     *   },
-     *   selector?: string,
-     *   timeout?: float,
-     * } $options Body param:
+     * @param \Stagehand\Sessions\SessionExtractParams\Options|OptionsShape2 $options Body param:
      * @param array<string,mixed> $schema Body param: JSON Schema defining the structure of data to extract
-     * @param 'typescript'|'python'|'playground'|\Stagehand\Sessions\SessionExtractParams\XLanguage $xLanguage Header param: Client SDK language
+     * @param \Stagehand\Sessions\SessionExtractParams\XLanguage|value-of<\Stagehand\Sessions\SessionExtractParams\XLanguage> $xLanguage Header param: Client SDK language
      * @param string $xSDKVersion Header param: Version of the Stagehand SDK
-     * @param string|\DateTimeInterface $xSentAt Header param: ISO timestamp when request was sent
-     * @param 'true'|'false'|\Stagehand\Sessions\SessionExtractParams\XStreamResponse $xStreamResponse Header param: Whether to stream the response via SSE
+     * @param \DateTimeInterface $xSentAt Header param: ISO timestamp when request was sent
+     * @param \Stagehand\Sessions\SessionExtractParams\XStreamResponse|value-of<\Stagehand\Sessions\SessionExtractParams\XStreamResponse> $xStreamResponse Header param: Whether to stream the response via SSE
+     * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
      */
@@ -240,13 +193,13 @@ interface SessionsContract
         string $id,
         ?string $frameID = null,
         ?string $instruction = null,
-        ?array $options = null,
+        \Stagehand\Sessions\SessionExtractParams\Options|array|null $options = null,
         ?array $schema = null,
-        string|\Stagehand\Sessions\SessionExtractParams\XLanguage|null $xLanguage = null,
+        \Stagehand\Sessions\SessionExtractParams\XLanguage|string|null $xLanguage = null,
         ?string $xSDKVersion = null,
-        string|\DateTimeInterface|null $xSentAt = null,
-        string|\Stagehand\Sessions\SessionExtractParams\XStreamResponse|null $xStreamResponse = null,
-        ?RequestOptions $requestOptions = null,
+        ?\DateTimeInterface $xSentAt = null,
+        \Stagehand\Sessions\SessionExtractParams\XStreamResponse|string|null $xStreamResponse = null,
+        RequestOptions|array|null $requestOptions = null,
     ): SessionExtractResponse;
 
     /**
@@ -255,21 +208,13 @@ interface SessionsContract
      * @param string $id Path param: Unique session identifier
      * @param string $frameID Body param: Target frame ID for the extraction
      * @param string $instruction Body param: Natural language instruction for what to extract
-     * @param array{
-     *   model?: string|array{
-     *     modelName: string,
-     *     apiKey?: string,
-     *     baseURL?: string,
-     *     provider?: 'openai'|'anthropic'|'google'|'microsoft'|Provider,
-     *   },
-     *   selector?: string,
-     *   timeout?: float,
-     * } $options Body param:
+     * @param \Stagehand\Sessions\SessionExtractParams\Options|OptionsShape2 $options Body param:
      * @param array<string,mixed> $schema Body param: JSON Schema defining the structure of data to extract
-     * @param 'typescript'|'python'|'playground'|\Stagehand\Sessions\SessionExtractParams\XLanguage $xLanguage Header param: Client SDK language
+     * @param \Stagehand\Sessions\SessionExtractParams\XLanguage|value-of<\Stagehand\Sessions\SessionExtractParams\XLanguage> $xLanguage Header param: Client SDK language
      * @param string $xSDKVersion Header param: Version of the Stagehand SDK
-     * @param string|\DateTimeInterface $xSentAt Header param: ISO timestamp when request was sent
-     * @param 'true'|'false'|\Stagehand\Sessions\SessionExtractParams\XStreamResponse $xStreamResponse Header param: Whether to stream the response via SSE
+     * @param \DateTimeInterface $xSentAt Header param: ISO timestamp when request was sent
+     * @param \Stagehand\Sessions\SessionExtractParams\XStreamResponse|value-of<\Stagehand\Sessions\SessionExtractParams\XStreamResponse> $xStreamResponse Header param: Whether to stream the response via SSE
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseStream<StreamEvent>
      *
@@ -279,13 +224,13 @@ interface SessionsContract
         string $id,
         ?string $frameID = null,
         ?string $instruction = null,
-        ?array $options = null,
+        \Stagehand\Sessions\SessionExtractParams\Options|array|null $options = null,
         ?array $schema = null,
-        string|\Stagehand\Sessions\SessionExtractParams\XLanguage|null $xLanguage = null,
+        \Stagehand\Sessions\SessionExtractParams\XLanguage|string|null $xLanguage = null,
         ?string $xSDKVersion = null,
-        string|\DateTimeInterface|null $xSentAt = null,
-        string|\Stagehand\Sessions\SessionExtractParams\XStreamResponse|null $xStreamResponse = null,
-        ?RequestOptions $requestOptions = null,
+        ?\DateTimeInterface $xSentAt = null,
+        \Stagehand\Sessions\SessionExtractParams\XStreamResponse|string|null $xStreamResponse = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseStream;
 
     /**
@@ -294,16 +239,13 @@ interface SessionsContract
      * @param string $id Path param: Unique session identifier
      * @param string $url Body param: URL to navigate to
      * @param string $frameID Body param: Target frame ID for the navigation
-     * @param array{
-     *   referer?: string,
-     *   timeout?: float,
-     *   waitUntil?: 'load'|'domcontentloaded'|'networkidle'|WaitUntil,
-     * } $options Body param:
+     * @param \Stagehand\Sessions\SessionNavigateParams\Options|OptionsShape $options Body param:
      * @param bool $streamResponse Body param: Whether to stream the response via SSE
-     * @param 'typescript'|'python'|'playground'|\Stagehand\Sessions\SessionNavigateParams\XLanguage $xLanguage Header param: Client SDK language
+     * @param \Stagehand\Sessions\SessionNavigateParams\XLanguage|value-of<\Stagehand\Sessions\SessionNavigateParams\XLanguage> $xLanguage Header param: Client SDK language
      * @param string $xSDKVersion Header param: Version of the Stagehand SDK
-     * @param string|\DateTimeInterface $xSentAt Header param: ISO timestamp when request was sent
-     * @param 'true'|'false'|\Stagehand\Sessions\SessionNavigateParams\XStreamResponse $xStreamResponse Header param: Whether to stream the response via SSE
+     * @param \DateTimeInterface $xSentAt Header param: ISO timestamp when request was sent
+     * @param \Stagehand\Sessions\SessionNavigateParams\XStreamResponse|value-of<\Stagehand\Sessions\SessionNavigateParams\XStreamResponse> $xStreamResponse Header param: Whether to stream the response via SSE
+     * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
      */
@@ -311,13 +253,13 @@ interface SessionsContract
         string $id,
         string $url,
         ?string $frameID = null,
-        ?array $options = null,
+        \Stagehand\Sessions\SessionNavigateParams\Options|array|null $options = null,
         ?bool $streamResponse = null,
-        string|\Stagehand\Sessions\SessionNavigateParams\XLanguage|null $xLanguage = null,
+        \Stagehand\Sessions\SessionNavigateParams\XLanguage|string|null $xLanguage = null,
         ?string $xSDKVersion = null,
-        string|\DateTimeInterface|null $xSentAt = null,
-        string|\Stagehand\Sessions\SessionNavigateParams\XStreamResponse|null $xStreamResponse = null,
-        ?RequestOptions $requestOptions = null,
+        ?\DateTimeInterface $xSentAt = null,
+        \Stagehand\Sessions\SessionNavigateParams\XStreamResponse|string|null $xStreamResponse = null,
+        RequestOptions|array|null $requestOptions = null,
     ): SessionNavigateResponse;
 
     /**
@@ -326,20 +268,12 @@ interface SessionsContract
      * @param string $id Path param: Unique session identifier
      * @param string $frameID Body param: Target frame ID for the observation
      * @param string $instruction Body param: Natural language instruction for what actions to find
-     * @param array{
-     *   model?: string|array{
-     *     modelName: string,
-     *     apiKey?: string,
-     *     baseURL?: string,
-     *     provider?: 'openai'|'anthropic'|'google'|'microsoft'|Provider,
-     *   },
-     *   selector?: string,
-     *   timeout?: float,
-     * } $options Body param:
-     * @param 'typescript'|'python'|'playground'|\Stagehand\Sessions\SessionObserveParams\XLanguage $xLanguage Header param: Client SDK language
+     * @param \Stagehand\Sessions\SessionObserveParams\Options|OptionsShape3 $options Body param:
+     * @param \Stagehand\Sessions\SessionObserveParams\XLanguage|value-of<\Stagehand\Sessions\SessionObserveParams\XLanguage> $xLanguage Header param: Client SDK language
      * @param string $xSDKVersion Header param: Version of the Stagehand SDK
-     * @param string|\DateTimeInterface $xSentAt Header param: ISO timestamp when request was sent
-     * @param 'true'|'false'|\Stagehand\Sessions\SessionObserveParams\XStreamResponse $xStreamResponse Header param: Whether to stream the response via SSE
+     * @param \DateTimeInterface $xSentAt Header param: ISO timestamp when request was sent
+     * @param \Stagehand\Sessions\SessionObserveParams\XStreamResponse|value-of<\Stagehand\Sessions\SessionObserveParams\XStreamResponse> $xStreamResponse Header param: Whether to stream the response via SSE
+     * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
      */
@@ -347,12 +281,12 @@ interface SessionsContract
         string $id,
         ?string $frameID = null,
         ?string $instruction = null,
-        ?array $options = null,
-        string|\Stagehand\Sessions\SessionObserveParams\XLanguage|null $xLanguage = null,
+        \Stagehand\Sessions\SessionObserveParams\Options|array|null $options = null,
+        \Stagehand\Sessions\SessionObserveParams\XLanguage|string|null $xLanguage = null,
         ?string $xSDKVersion = null,
-        string|\DateTimeInterface|null $xSentAt = null,
-        string|\Stagehand\Sessions\SessionObserveParams\XStreamResponse|null $xStreamResponse = null,
-        ?RequestOptions $requestOptions = null,
+        ?\DateTimeInterface $xSentAt = null,
+        \Stagehand\Sessions\SessionObserveParams\XStreamResponse|string|null $xStreamResponse = null,
+        RequestOptions|array|null $requestOptions = null,
     ): SessionObserveResponse;
 
     /**
@@ -361,20 +295,12 @@ interface SessionsContract
      * @param string $id Path param: Unique session identifier
      * @param string $frameID Body param: Target frame ID for the observation
      * @param string $instruction Body param: Natural language instruction for what actions to find
-     * @param array{
-     *   model?: string|array{
-     *     modelName: string,
-     *     apiKey?: string,
-     *     baseURL?: string,
-     *     provider?: 'openai'|'anthropic'|'google'|'microsoft'|Provider,
-     *   },
-     *   selector?: string,
-     *   timeout?: float,
-     * } $options Body param:
-     * @param 'typescript'|'python'|'playground'|\Stagehand\Sessions\SessionObserveParams\XLanguage $xLanguage Header param: Client SDK language
+     * @param \Stagehand\Sessions\SessionObserveParams\Options|OptionsShape3 $options Body param:
+     * @param \Stagehand\Sessions\SessionObserveParams\XLanguage|value-of<\Stagehand\Sessions\SessionObserveParams\XLanguage> $xLanguage Header param: Client SDK language
      * @param string $xSDKVersion Header param: Version of the Stagehand SDK
-     * @param string|\DateTimeInterface $xSentAt Header param: ISO timestamp when request was sent
-     * @param 'true'|'false'|\Stagehand\Sessions\SessionObserveParams\XStreamResponse $xStreamResponse Header param: Whether to stream the response via SSE
+     * @param \DateTimeInterface $xSentAt Header param: ISO timestamp when request was sent
+     * @param \Stagehand\Sessions\SessionObserveParams\XStreamResponse|value-of<\Stagehand\Sessions\SessionObserveParams\XStreamResponse> $xStreamResponse Header param: Whether to stream the response via SSE
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseStream<StreamEvent>
      *
@@ -384,12 +310,12 @@ interface SessionsContract
         string $id,
         ?string $frameID = null,
         ?string $instruction = null,
-        ?array $options = null,
-        string|\Stagehand\Sessions\SessionObserveParams\XLanguage|null $xLanguage = null,
+        \Stagehand\Sessions\SessionObserveParams\Options|array|null $options = null,
+        \Stagehand\Sessions\SessionObserveParams\XLanguage|string|null $xLanguage = null,
         ?string $xSDKVersion = null,
-        string|\DateTimeInterface|null $xSentAt = null,
-        string|\Stagehand\Sessions\SessionObserveParams\XStreamResponse|null $xStreamResponse = null,
-        ?RequestOptions $requestOptions = null,
+        ?\DateTimeInterface $xSentAt = null,
+        \Stagehand\Sessions\SessionObserveParams\XStreamResponse|string|null $xStreamResponse = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseStream;
 
     /**
@@ -397,61 +323,8 @@ interface SessionsContract
      *
      * @param string $modelName Body param: Model name to use for AI operations
      * @param float $actTimeoutMs Body param: Timeout in ms for act operations (deprecated, v2 only)
-     * @param array{
-     *   cdpURL?: string,
-     *   launchOptions?: array{
-     *     acceptDownloads?: bool,
-     *     args?: list<string>,
-     *     cdpURL?: string,
-     *     chromiumSandbox?: bool,
-     *     connectTimeoutMs?: float,
-     *     deviceScaleFactor?: float,
-     *     devtools?: bool,
-     *     downloadsPath?: string,
-     *     executablePath?: string,
-     *     hasTouch?: bool,
-     *     headless?: bool,
-     *     ignoreDefaultArgs?: bool|list<string>,
-     *     ignoreHTTPSErrors?: bool,
-     *     locale?: string,
-     *     preserveUserDataDir?: bool,
-     *     proxy?: array{
-     *       server: string, bypass?: string, password?: string, username?: string
-     *     },
-     *     userDataDir?: string,
-     *     viewport?: array{height: float, width: float},
-     *   },
-     *   type?: 'local'|'browserbase'|Type,
-     * } $browser Body param:
-     * @param array{
-     *   browserSettings?: array{
-     *     advancedStealth?: bool,
-     *     blockAds?: bool,
-     *     context?: array{id: string, persist?: bool},
-     *     extensionID?: string,
-     *     fingerprint?: array{
-     *       browsers?: list<'chrome'|'edge'|'firefox'|'safari'|Browser>,
-     *       devices?: list<'desktop'|'mobile'|Device>,
-     *       httpVersion?: '1'|'2'|HTTPVersion,
-     *       locales?: list<string>,
-     *       operatingSystems?: list<'android'|'ios'|'linux'|'macos'|'windows'|OperatingSystem>,
-     *       screen?: array{
-     *         maxHeight?: float, maxWidth?: float, minHeight?: float, minWidth?: float
-     *       },
-     *     },
-     *     logSession?: bool,
-     *     recordSession?: bool,
-     *     solveCaptchas?: bool,
-     *     viewport?: array{height?: float, width?: float},
-     *   },
-     *   extensionID?: string,
-     *   keepAlive?: bool,
-     *   projectID?: string,
-     *   proxies?: bool|list<array<string,mixed>>,
-     *   region?: 'us-west-2'|'us-east-1'|'eu-central-1'|'ap-southeast-1'|Region,
-     *   timeout?: float,
-     *   userMetadata?: array<string,mixed>,
-     * } $browserbaseSessionCreateParams Body param:
+     * @param Browser|BrowserShape $browser Body param:
+     * @param BrowserbaseSessionCreateParams|BrowserbaseSessionCreateParamsShape $browserbaseSessionCreateParams Body param:
      * @param string $browserbaseSessionID Body param: Existing Browserbase session ID to resume
      * @param float $domSettleTimeoutMs Body param: Timeout in ms to wait for DOM to settle
      * @param bool $experimental Body param:
@@ -459,18 +332,19 @@ interface SessionsContract
      * @param string $systemPrompt Body param: Custom system prompt for AI operations
      * @param float $verbose Body param: Logging verbosity level (0=quiet, 1=normal, 2=debug)
      * @param bool $waitForCaptchaSolves Body param: Wait for captcha solves (deprecated, v2 only)
-     * @param 'typescript'|'python'|'playground'|\Stagehand\Sessions\SessionStartParams\XLanguage $xLanguage Header param: Client SDK language
+     * @param \Stagehand\Sessions\SessionStartParams\XLanguage|value-of<\Stagehand\Sessions\SessionStartParams\XLanguage> $xLanguage Header param: Client SDK language
      * @param string $xSDKVersion Header param: Version of the Stagehand SDK
-     * @param string|\DateTimeInterface $xSentAt Header param: ISO timestamp when request was sent
-     * @param 'true'|'false'|\Stagehand\Sessions\SessionStartParams\XStreamResponse $xStreamResponse Header param: Whether to stream the response via SSE
+     * @param \DateTimeInterface $xSentAt Header param: ISO timestamp when request was sent
+     * @param \Stagehand\Sessions\SessionStartParams\XStreamResponse|value-of<\Stagehand\Sessions\SessionStartParams\XStreamResponse> $xStreamResponse Header param: Whether to stream the response via SSE
+     * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
      */
     public function start(
         string $modelName,
         ?float $actTimeoutMs = null,
-        ?array $browser = null,
-        ?array $browserbaseSessionCreateParams = null,
+        Browser|array|null $browser = null,
+        BrowserbaseSessionCreateParams|array|null $browserbaseSessionCreateParams = null,
         ?string $browserbaseSessionID = null,
         ?float $domSettleTimeoutMs = null,
         ?bool $experimental = null,
@@ -478,10 +352,10 @@ interface SessionsContract
         ?string $systemPrompt = null,
         ?float $verbose = null,
         ?bool $waitForCaptchaSolves = null,
-        string|\Stagehand\Sessions\SessionStartParams\XLanguage|null $xLanguage = null,
+        \Stagehand\Sessions\SessionStartParams\XLanguage|string|null $xLanguage = null,
         ?string $xSDKVersion = null,
-        string|\DateTimeInterface|null $xSentAt = null,
-        string|\Stagehand\Sessions\SessionStartParams\XStreamResponse|null $xStreamResponse = null,
-        ?RequestOptions $requestOptions = null,
+        ?\DateTimeInterface $xSentAt = null,
+        \Stagehand\Sessions\SessionStartParams\XStreamResponse|string|null $xStreamResponse = null,
+        RequestOptions|array|null $requestOptions = null,
     ): SessionStartResponse;
 }

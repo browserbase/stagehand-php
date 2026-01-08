@@ -9,11 +9,10 @@ use Stagehand\Core\Concerns\SdkModel;
 use Stagehand\Core\Contracts\BaseModel;
 use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings;
 use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Proxies;
-use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Proxies\ProxyConfigList\BrowserbaseProxyConfig;
-use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Proxies\ProxyConfigList\ExternalProxyConfig;
 use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Region;
 
 /**
+ * @phpstan-import-type ProxiesVariants from \Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Proxies
  * @phpstan-import-type BrowserSettingsShape from \Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings
  * @phpstan-import-type ProxiesShape from \Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Proxies
  *
@@ -45,7 +44,7 @@ final class BrowserbaseSessionCreateParams implements BaseModel
     #[Optional('projectId')]
     public ?string $projectID;
 
-    /** @var bool|list<BrowserbaseProxyConfig|ExternalProxyConfig>|null $proxies */
+    /** @var ProxiesVariants|null $proxies */
     #[Optional(union: Proxies::class)]
     public bool|array|null $proxies;
 

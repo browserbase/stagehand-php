@@ -14,7 +14,8 @@ use Stagehand\Sessions\ModelConfig\ModelConfigObject;
  *
  * @phpstan-import-type ModelConfigObjectShape from \Stagehand\Sessions\ModelConfig\ModelConfigObject
  *
- * @phpstan-type ModelConfigShape = string|ModelConfigObjectShape
+ * @phpstan-type ModelConfigVariants = string|ModelConfigObject
+ * @phpstan-type ModelConfigShape = ModelConfigVariants|ModelConfigObjectShape
  */
 final class ModelConfig implements ConverterSource
 {

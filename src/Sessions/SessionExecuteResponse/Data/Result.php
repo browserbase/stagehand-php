@@ -16,7 +16,7 @@ use Stagehand\Sessions\SessionExecuteResponse\Data\Result\Usage;
  * @phpstan-import-type UsageShape from \Stagehand\Sessions\SessionExecuteResponse\Data\Result\Usage
  *
  * @phpstan-type ResultShape = array{
- *   actions: list<ActionShape>,
+ *   actions: list<Action|ActionShape>,
  *   completed: bool,
  *   message: string,
  *   success: bool,
@@ -86,7 +86,7 @@ final class Result implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
-     * @param list<ActionShape> $actions
+     * @param list<Action|ActionShape> $actions
      * @param array<string,mixed>|null $metadata
      * @param Usage|UsageShape|null $usage
      */
@@ -112,7 +112,7 @@ final class Result implements BaseModel
     }
 
     /**
-     * @param list<ActionShape> $actions
+     * @param list<Action|ActionShape> $actions
      */
     public function withActions(array $actions): self
     {

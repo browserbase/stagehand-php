@@ -14,7 +14,8 @@ use Stagehand\Sessions\Action;
  *
  * @phpstan-import-type ActionShape from \Stagehand\Sessions\Action
  *
- * @phpstan-type InputShape = string|ActionShape
+ * @phpstan-type InputVariants = string|Action
+ * @phpstan-type InputShape = InputVariants|ActionShape
  */
 final class Input implements ConverterSource
 {

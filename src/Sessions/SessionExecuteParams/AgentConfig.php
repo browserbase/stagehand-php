@@ -11,6 +11,7 @@ use Stagehand\Sessions\ModelConfig\ModelConfigObject;
 use Stagehand\Sessions\SessionExecuteParams\AgentConfig\Provider;
 
 /**
+ * @phpstan-import-type ModelConfigVariants from \Stagehand\Sessions\ModelConfig
  * @phpstan-import-type ModelConfigShape from \Stagehand\Sessions\ModelConfig
  *
  * @phpstan-type AgentConfigShape = array{
@@ -33,6 +34,8 @@ final class AgentConfig implements BaseModel
 
     /**
      * Model name string with provider prefix (e.g., 'openai/gpt-5-nano', 'anthropic/claude-4.5-opus').
+     *
+     * @var ModelConfigVariants|null $model
      */
     #[Optional]
     public string|ModelConfigObject|null $model;
