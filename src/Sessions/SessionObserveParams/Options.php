@@ -10,6 +10,7 @@ use Stagehand\Core\Contracts\BaseModel;
 use Stagehand\Sessions\ModelConfig\ModelConfigObject;
 
 /**
+ * @phpstan-import-type ModelConfigVariants from \Stagehand\Sessions\ModelConfig
  * @phpstan-import-type ModelConfigShape from \Stagehand\Sessions\ModelConfig
  *
  * @phpstan-type OptionsShape = array{
@@ -23,6 +24,8 @@ final class Options implements BaseModel
 
     /**
      * Model name string with provider prefix (e.g., 'openai/gpt-5-nano', 'anthropic/claude-4.5-opus').
+     *
+     * @var ModelConfigVariants|null $model
      */
     #[Optional]
     public string|ModelConfigObject|null $model;

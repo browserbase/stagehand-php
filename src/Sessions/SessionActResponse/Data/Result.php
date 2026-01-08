@@ -14,7 +14,7 @@ use Stagehand\Sessions\SessionActResponse\Data\Result\Action;
  *
  * @phpstan-type ResultShape = array{
  *   actionDescription: string,
- *   actions: list<ActionShape>,
+ *   actions: list<Action|ActionShape>,
  *   message: string,
  *   success: bool,
  * }
@@ -78,7 +78,7 @@ final class Result implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
-     * @param list<ActionShape> $actions
+     * @param list<Action|ActionShape> $actions
      */
     public static function with(
         string $actionDescription,
@@ -110,7 +110,7 @@ final class Result implements BaseModel
     /**
      * List of actions that were executed.
      *
-     * @param list<ActionShape> $actions
+     * @param list<Action|ActionShape> $actions
      */
     public function withActions(array $actions): self
     {

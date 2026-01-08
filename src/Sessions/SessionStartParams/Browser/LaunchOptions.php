@@ -12,6 +12,7 @@ use Stagehand\Sessions\SessionStartParams\Browser\LaunchOptions\Proxy;
 use Stagehand\Sessions\SessionStartParams\Browser\LaunchOptions\Viewport;
 
 /**
+ * @phpstan-import-type IgnoreDefaultArgsVariants from \Stagehand\Sessions\SessionStartParams\Browser\LaunchOptions\IgnoreDefaultArgs
  * @phpstan-import-type IgnoreDefaultArgsShape from \Stagehand\Sessions\SessionStartParams\Browser\LaunchOptions\IgnoreDefaultArgs
  * @phpstan-import-type ProxyShape from \Stagehand\Sessions\SessionStartParams\Browser\LaunchOptions\Proxy
  * @phpstan-import-type ViewportShape from \Stagehand\Sessions\SessionStartParams\Browser\LaunchOptions\Viewport
@@ -76,7 +77,7 @@ final class LaunchOptions implements BaseModel
     #[Optional]
     public ?bool $headless;
 
-    /** @var bool|list<string>|null $ignoreDefaultArgs */
+    /** @var IgnoreDefaultArgsVariants|null $ignoreDefaultArgs */
     #[Optional(union: IgnoreDefaultArgs::class)]
     public bool|array|null $ignoreDefaultArgs;
 

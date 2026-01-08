@@ -14,7 +14,7 @@ use Stagehand\Sessions\SessionObserveResponse\Data\Result;
  * @phpstan-import-type ResultShape from \Stagehand\Sessions\SessionObserveResponse\Data\Result
  *
  * @phpstan-type DataShape = array{
- *   result: list<ResultShape>, actionID?: string|null
+ *   result: list<Result|ResultShape>, actionID?: string|null
  * }
  */
 final class Data implements BaseModel
@@ -56,7 +56,7 @@ final class Data implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
-     * @param list<ResultShape> $result
+     * @param list<Result|ResultShape> $result
      */
     public static function with(array $result, ?string $actionID = null): self
     {
@@ -70,7 +70,7 @@ final class Data implements BaseModel
     }
 
     /**
-     * @param list<ResultShape> $result
+     * @param list<Result|ResultShape> $result
      */
     public function withResult(array $result): self
     {

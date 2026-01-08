@@ -24,6 +24,9 @@ use Stagehand\Sessions\SessionStartParams;
 use Stagehand\Sessions\SessionStartResponse;
 use Stagehand\Sessions\StreamEvent;
 
+/**
+ * @phpstan-import-type RequestOpts from \Stagehand\RequestOptions
+ */
 interface SessionsRawContract
 {
     /**
@@ -31,6 +34,7 @@ interface SessionsRawContract
      *
      * @param string $id Path param: Unique session identifier
      * @param array<string,mixed>|SessionActParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<SessionActResponse>
      *
@@ -39,7 +43,7 @@ interface SessionsRawContract
     public function act(
         string $id,
         array|SessionActParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
@@ -47,6 +51,7 @@ interface SessionsRawContract
      *
      * @param string $id Path param: Unique session identifier
      * @param array<string,mixed>|SessionActParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<BaseStream<StreamEvent>>
      *
@@ -55,7 +60,7 @@ interface SessionsRawContract
     public function actStream(
         string $id,
         array|SessionActParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
@@ -63,6 +68,7 @@ interface SessionsRawContract
      *
      * @param string $id Path param: Unique session identifier
      * @param array<string,mixed>|SessionEndParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<SessionEndResponse>
      *
@@ -71,7 +77,7 @@ interface SessionsRawContract
     public function end(
         string $id,
         array|SessionEndParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
@@ -79,6 +85,7 @@ interface SessionsRawContract
      *
      * @param string $id Path param: Unique session identifier
      * @param array<string,mixed>|SessionExecuteParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<SessionExecuteResponse>
      *
@@ -87,7 +94,7 @@ interface SessionsRawContract
     public function execute(
         string $id,
         array|SessionExecuteParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
@@ -95,6 +102,7 @@ interface SessionsRawContract
      *
      * @param string $id Path param: Unique session identifier
      * @param array<string,mixed>|SessionExecuteParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<BaseStream<StreamEvent>>
      *
@@ -103,7 +111,7 @@ interface SessionsRawContract
     public function executeStream(
         string $id,
         array|SessionExecuteParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
@@ -111,6 +119,7 @@ interface SessionsRawContract
      *
      * @param string $id Path param: Unique session identifier
      * @param array<string,mixed>|SessionExtractParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<SessionExtractResponse>
      *
@@ -119,7 +128,7 @@ interface SessionsRawContract
     public function extract(
         string $id,
         array|SessionExtractParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
@@ -127,6 +136,7 @@ interface SessionsRawContract
      *
      * @param string $id Path param: Unique session identifier
      * @param array<string,mixed>|SessionExtractParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<BaseStream<StreamEvent>>
      *
@@ -135,7 +145,7 @@ interface SessionsRawContract
     public function extractStream(
         string $id,
         array|SessionExtractParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
@@ -143,6 +153,7 @@ interface SessionsRawContract
      *
      * @param string $id Path param: Unique session identifier
      * @param array<string,mixed>|SessionNavigateParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<SessionNavigateResponse>
      *
@@ -151,7 +162,7 @@ interface SessionsRawContract
     public function navigate(
         string $id,
         array|SessionNavigateParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
@@ -159,6 +170,7 @@ interface SessionsRawContract
      *
      * @param string $id Path param: Unique session identifier
      * @param array<string,mixed>|SessionObserveParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<SessionObserveResponse>
      *
@@ -167,7 +179,7 @@ interface SessionsRawContract
     public function observe(
         string $id,
         array|SessionObserveParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
@@ -175,6 +187,7 @@ interface SessionsRawContract
      *
      * @param string $id Path param: Unique session identifier
      * @param array<string,mixed>|SessionObserveParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<BaseStream<StreamEvent>>
      *
@@ -183,13 +196,14 @@ interface SessionsRawContract
     public function observeStream(
         string $id,
         array|SessionObserveParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
      * @api
      *
      * @param array<string,mixed>|SessionStartParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<SessionStartResponse>
      *
@@ -197,6 +211,6 @@ interface SessionsRawContract
      */
     public function start(
         array|SessionStartParams $params,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 }

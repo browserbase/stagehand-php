@@ -10,7 +10,8 @@ use Stagehand\Core\Conversion\Contracts\ConverterSource;
 use Stagehand\Core\Conversion\ListOf;
 
 /**
- * @phpstan-type IgnoreDefaultArgsShape = bool|list<string>
+ * @phpstan-type IgnoreDefaultArgsVariants = bool|list<string>
+ * @phpstan-type IgnoreDefaultArgsShape = IgnoreDefaultArgsVariants
  */
 final class IgnoreDefaultArgs implements ConverterSource
 {
