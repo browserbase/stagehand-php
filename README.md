@@ -147,15 +147,13 @@ You can use the `maxRetries` option to configure or disable this:
 <?php
 
 use Stagehand\Client;
-use Stagehand\RequestOptions;
 
 // Configure the default for all requests:
-$client = new Client(maxRetries: 0);
+$client = new Client(requestOptions: ['maxRetries' => 0]);
 
 // Or, configure per-request:
 $result = $client->sessions->start(
-  modelName: 'openai/gpt-5-nano',
-  requestOptions: RequestOptions::with(maxRetries: 5),
+  modelName: 'openai/gpt-5-nano', requestOptions: ['maxRetries' => 5]
 );
 ```
 
@@ -172,15 +170,13 @@ Note: the `extra*` parameters of the same name overrides the documented paramete
 ```php
 <?php
 
-use Stagehand\RequestOptions;
-
 $response = $client->sessions->start(
   modelName: 'openai/gpt-5-nano',
-  requestOptions: RequestOptions::with(
-    extraQueryParams: ['my_query_parameter' => 'value'],
-    extraBodyParams: ['my_body_parameter' => 'value'],
-    extraHeaders: ['my-header' => 'value'],
-  ),
+  requestOptions: [
+    'extraQueryParams' => ['my_query_parameter' => 'value'],
+    'extraBodyParams' => ['my_body_parameter' => 'value'],
+    'extraHeaders' => ['my-header' => 'value'],
+  ],
 );
 ```
 
