@@ -9,7 +9,6 @@ use Stagehand\Core\Concerns\SdkModel;
 use Stagehand\Core\Concerns\SdkParams;
 use Stagehand\Core\Contracts\BaseModel;
 use Stagehand\Sessions\SessionObserveParams\Options;
-use Stagehand\Sessions\SessionObserveParams\XLanguage;
 use Stagehand\Sessions\SessionObserveParams\XStreamResponse;
 
 /**
@@ -23,8 +22,6 @@ use Stagehand\Sessions\SessionObserveParams\XStreamResponse;
  *   frameID?: string|null,
  *   instruction?: string|null,
  *   options?: null|Options|OptionsShape,
- *   xLanguage?: null|XLanguage|value-of<XLanguage>,
- *   xSDKVersion?: string|null,
  *   xSentAt?: \DateTimeInterface|null,
  *   xStreamResponse?: null|XStreamResponse|value-of<XStreamResponse>,
  * }
@@ -51,20 +48,6 @@ final class SessionObserveParams implements BaseModel
     public ?Options $options;
 
     /**
-     * Client SDK language.
-     *
-     * @var value-of<XLanguage>|null $xLanguage
-     */
-    #[Optional(enum: XLanguage::class)]
-    public ?string $xLanguage;
-
-    /**
-     * Version of the Stagehand SDK.
-     */
-    #[Optional]
-    public ?string $xSDKVersion;
-
-    /**
      * ISO timestamp when request was sent.
      */
     #[Optional]
@@ -89,15 +72,12 @@ final class SessionObserveParams implements BaseModel
      * You must use named parameters to construct any parameters with a default value.
      *
      * @param Options|OptionsShape|null $options
-     * @param XLanguage|value-of<XLanguage>|null $xLanguage
      * @param XStreamResponse|value-of<XStreamResponse>|null $xStreamResponse
      */
     public static function with(
         ?string $frameID = null,
         ?string $instruction = null,
         Options|array|null $options = null,
-        XLanguage|string|null $xLanguage = null,
-        ?string $xSDKVersion = null,
         ?\DateTimeInterface $xSentAt = null,
         XStreamResponse|string|null $xStreamResponse = null,
     ): self {
@@ -106,8 +86,6 @@ final class SessionObserveParams implements BaseModel
         null !== $frameID && $self['frameID'] = $frameID;
         null !== $instruction && $self['instruction'] = $instruction;
         null !== $options && $self['options'] = $options;
-        null !== $xLanguage && $self['xLanguage'] = $xLanguage;
-        null !== $xSDKVersion && $self['xSDKVersion'] = $xSDKVersion;
         null !== $xSentAt && $self['xSentAt'] = $xSentAt;
         null !== $xStreamResponse && $self['xStreamResponse'] = $xStreamResponse;
 
@@ -143,30 +121,6 @@ final class SessionObserveParams implements BaseModel
     {
         $self = clone $this;
         $self['options'] = $options;
-
-        return $self;
-    }
-
-    /**
-     * Client SDK language.
-     *
-     * @param XLanguage|value-of<XLanguage> $xLanguage
-     */
-    public function withXLanguage(XLanguage|string $xLanguage): self
-    {
-        $self = clone $this;
-        $self['xLanguage'] = $xLanguage;
-
-        return $self;
-    }
-
-    /**
-     * Version of the Stagehand SDK.
-     */
-    public function withXSDKVersion(string $xSDKVersion): self
-    {
-        $self = clone $this;
-        $self['xSDKVersion'] = $xSDKVersion;
 
         return $self;
     }

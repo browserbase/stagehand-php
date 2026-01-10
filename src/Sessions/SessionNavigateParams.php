@@ -10,7 +10,6 @@ use Stagehand\Core\Concerns\SdkModel;
 use Stagehand\Core\Concerns\SdkParams;
 use Stagehand\Core\Contracts\BaseModel;
 use Stagehand\Sessions\SessionNavigateParams\Options;
-use Stagehand\Sessions\SessionNavigateParams\XLanguage;
 use Stagehand\Sessions\SessionNavigateParams\XStreamResponse;
 
 /**
@@ -25,8 +24,6 @@ use Stagehand\Sessions\SessionNavigateParams\XStreamResponse;
  *   frameID?: string|null,
  *   options?: null|Options|OptionsShape,
  *   streamResponse?: bool|null,
- *   xLanguage?: null|XLanguage|value-of<XLanguage>,
- *   xSDKVersion?: string|null,
  *   xSentAt?: \DateTimeInterface|null,
  *   xStreamResponse?: null|XStreamResponse|value-of<XStreamResponse>,
  * }
@@ -57,20 +54,6 @@ final class SessionNavigateParams implements BaseModel
      */
     #[Optional]
     public ?bool $streamResponse;
-
-    /**
-     * Client SDK language.
-     *
-     * @var value-of<XLanguage>|null $xLanguage
-     */
-    #[Optional(enum: XLanguage::class)]
-    public ?string $xLanguage;
-
-    /**
-     * Version of the Stagehand SDK.
-     */
-    #[Optional]
-    public ?string $xSDKVersion;
 
     /**
      * ISO timestamp when request was sent.
@@ -111,7 +94,6 @@ final class SessionNavigateParams implements BaseModel
      * You must use named parameters to construct any parameters with a default value.
      *
      * @param Options|OptionsShape|null $options
-     * @param XLanguage|value-of<XLanguage>|null $xLanguage
      * @param XStreamResponse|value-of<XStreamResponse>|null $xStreamResponse
      */
     public static function with(
@@ -119,8 +101,6 @@ final class SessionNavigateParams implements BaseModel
         ?string $frameID = null,
         Options|array|null $options = null,
         ?bool $streamResponse = null,
-        XLanguage|string|null $xLanguage = null,
-        ?string $xSDKVersion = null,
         ?\DateTimeInterface $xSentAt = null,
         XStreamResponse|string|null $xStreamResponse = null,
     ): self {
@@ -131,8 +111,6 @@ final class SessionNavigateParams implements BaseModel
         null !== $frameID && $self['frameID'] = $frameID;
         null !== $options && $self['options'] = $options;
         null !== $streamResponse && $self['streamResponse'] = $streamResponse;
-        null !== $xLanguage && $self['xLanguage'] = $xLanguage;
-        null !== $xSDKVersion && $self['xSDKVersion'] = $xSDKVersion;
         null !== $xSentAt && $self['xSentAt'] = $xSentAt;
         null !== $xStreamResponse && $self['xStreamResponse'] = $xStreamResponse;
 
@@ -179,30 +157,6 @@ final class SessionNavigateParams implements BaseModel
     {
         $self = clone $this;
         $self['streamResponse'] = $streamResponse;
-
-        return $self;
-    }
-
-    /**
-     * Client SDK language.
-     *
-     * @param XLanguage|value-of<XLanguage> $xLanguage
-     */
-    public function withXLanguage(XLanguage|string $xLanguage): self
-    {
-        $self = clone $this;
-        $self['xLanguage'] = $xLanguage;
-
-        return $self;
-    }
-
-    /**
-     * Version of the Stagehand SDK.
-     */
-    public function withXSDKVersion(string $xSDKVersion): self
-    {
-        $self = clone $this;
-        $self['xSDKVersion'] = $xSDKVersion;
 
         return $self;
     }

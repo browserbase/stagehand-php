@@ -11,7 +11,6 @@ use Stagehand\Core\Concerns\SdkParams;
 use Stagehand\Core\Contracts\BaseModel;
 use Stagehand\Sessions\SessionStartParams\Browser;
 use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams;
-use Stagehand\Sessions\SessionStartParams\XLanguage;
 use Stagehand\Sessions\SessionStartParams\XStreamResponse;
 
 /**
@@ -34,8 +33,6 @@ use Stagehand\Sessions\SessionStartParams\XStreamResponse;
  *   systemPrompt?: string|null,
  *   verbose?: float|null,
  *   waitForCaptchaSolves?: bool|null,
- *   xLanguage?: null|XLanguage|value-of<XLanguage>,
- *   xSDKVersion?: string|null,
  *   xSentAt?: \DateTimeInterface|null,
  *   xStreamResponse?: null|XStreamResponse|value-of<XStreamResponse>,
  * }
@@ -104,20 +101,6 @@ final class SessionStartParams implements BaseModel
     public ?bool $waitForCaptchaSolves;
 
     /**
-     * Client SDK language.
-     *
-     * @var value-of<XLanguage>|null $xLanguage
-     */
-    #[Optional(enum: XLanguage::class)]
-    public ?string $xLanguage;
-
-    /**
-     * Version of the Stagehand SDK.
-     */
-    #[Optional]
-    public ?string $xSDKVersion;
-
-    /**
      * ISO timestamp when request was sent.
      */
     #[Optional]
@@ -157,7 +140,6 @@ final class SessionStartParams implements BaseModel
      *
      * @param Browser|BrowserShape|null $browser
      * @param BrowserbaseSessionCreateParams|BrowserbaseSessionCreateParamsShape|null $browserbaseSessionCreateParams
-     * @param XLanguage|value-of<XLanguage>|null $xLanguage
      * @param XStreamResponse|value-of<XStreamResponse>|null $xStreamResponse
      */
     public static function with(
@@ -172,8 +154,6 @@ final class SessionStartParams implements BaseModel
         ?string $systemPrompt = null,
         ?float $verbose = null,
         ?bool $waitForCaptchaSolves = null,
-        XLanguage|string|null $xLanguage = null,
-        ?string $xSDKVersion = null,
         ?\DateTimeInterface $xSentAt = null,
         XStreamResponse|string|null $xStreamResponse = null,
     ): self {
@@ -191,8 +171,6 @@ final class SessionStartParams implements BaseModel
         null !== $systemPrompt && $self['systemPrompt'] = $systemPrompt;
         null !== $verbose && $self['verbose'] = $verbose;
         null !== $waitForCaptchaSolves && $self['waitForCaptchaSolves'] = $waitForCaptchaSolves;
-        null !== $xLanguage && $self['xLanguage'] = $xLanguage;
-        null !== $xSDKVersion && $self['xSDKVersion'] = $xSDKVersion;
         null !== $xSentAt && $self['xSentAt'] = $xSentAt;
         null !== $xStreamResponse && $self['xStreamResponse'] = $xStreamResponse;
 
@@ -314,30 +292,6 @@ final class SessionStartParams implements BaseModel
     {
         $self = clone $this;
         $self['waitForCaptchaSolves'] = $waitForCaptchaSolves;
-
-        return $self;
-    }
-
-    /**
-     * Client SDK language.
-     *
-     * @param XLanguage|value-of<XLanguage> $xLanguage
-     */
-    public function withXLanguage(XLanguage|string $xLanguage): self
-    {
-        $self = clone $this;
-        $self['xLanguage'] = $xLanguage;
-
-        return $self;
-    }
-
-    /**
-     * Version of the Stagehand SDK.
-     */
-    public function withXSDKVersion(string $xSDKVersion): self
-    {
-        $self = clone $this;
-        $self['xSDKVersion'] = $xSDKVersion;
 
         return $self;
     }
