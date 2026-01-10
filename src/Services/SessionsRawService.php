@@ -12,7 +12,6 @@ use Stagehand\Core\Util;
 use Stagehand\RequestOptions;
 use Stagehand\ServiceContracts\SessionsRawContract;
 use Stagehand\Sessions\SessionActParams;
-use Stagehand\Sessions\SessionActParams\XLanguage;
 use Stagehand\Sessions\SessionActParams\XStreamResponse;
 use Stagehand\Sessions\SessionActResponse;
 use Stagehand\Sessions\SessionEndParams;
@@ -65,8 +64,6 @@ final class SessionsRawService implements SessionsRawContract
      *   input: InputShape,
      *   frameID?: string,
      *   options?: SessionActParams\Options|OptionsShape1,
-     *   xLanguage?: XLanguage|value-of<XLanguage>,
-     *   xSDKVersion?: string,
      *   xSentAt?: \DateTimeInterface,
      *   xStreamResponse?: XStreamResponse|value-of<XStreamResponse>,
      * }|SessionActParams $params
@@ -86,10 +83,7 @@ final class SessionsRawService implements SessionsRawContract
             $requestOptions,
         );
         $header_params = [
-            'xLanguage' => 'x-language',
-            'xSDKVersion' => 'x-sdk-version',
-            'xSentAt' => 'x-sent-at',
-            'xStreamResponse' => 'x-stream-response',
+            'xSentAt' => 'x-sent-at', 'xStreamResponse' => 'x-stream-response',
         ];
 
         // @phpstan-ignore-next-line return.type
@@ -117,8 +111,6 @@ final class SessionsRawService implements SessionsRawContract
      *   input: InputShape,
      *   frameID?: string,
      *   options?: SessionActParams\Options|OptionsShape1,
-     *   xLanguage?: XLanguage|value-of<XLanguage>,
-     *   xSDKVersion?: string,
      *   xSentAt?: \DateTimeInterface,
      *   xStreamResponse?: XStreamResponse|value-of<XStreamResponse>,
      * }|SessionActParams $params
@@ -139,10 +131,7 @@ final class SessionsRawService implements SessionsRawContract
         );
         $parsed['streamResponse'] = true;
         $header_params = [
-            'xLanguage' => 'x-language',
-            'xSDKVersion' => 'x-sdk-version',
-            'xSentAt' => 'x-sent-at',
-            'xStreamResponse' => 'x-stream-response',
+            'xSentAt' => 'x-sent-at', 'xStreamResponse' => 'x-stream-response',
         ];
 
         // @phpstan-ignore-next-line return.type
@@ -177,8 +166,6 @@ final class SessionsRawService implements SessionsRawContract
      * @param string $id Path param: Unique session identifier
      * @param array{
      *   _forceBody?: mixed,
-     *   xLanguage?: SessionEndParams\XLanguage|value-of<SessionEndParams\XLanguage>,
-     *   xSDKVersion?: string,
      *   xSentAt?: \DateTimeInterface,
      *   xStreamResponse?: SessionEndParams\XStreamResponse|value-of<SessionEndParams\XStreamResponse>,
      * }|SessionEndParams $params
@@ -198,10 +185,7 @@ final class SessionsRawService implements SessionsRawContract
             $requestOptions,
         );
         $header_params = [
-            'xLanguage' => 'x-language',
-            'xSDKVersion' => 'x-sdk-version',
-            'xSentAt' => 'x-sent-at',
-            'xStreamResponse' => 'x-stream-response',
+            'xSentAt' => 'x-sent-at', 'xStreamResponse' => 'x-stream-response',
         ];
 
         // @phpstan-ignore-next-line return.type
@@ -231,8 +215,6 @@ final class SessionsRawService implements SessionsRawContract
      *   agentConfig: AgentConfig|AgentConfigShape,
      *   executeOptions: ExecuteOptions|ExecuteOptionsShape,
      *   frameID?: string,
-     *   xLanguage?: SessionExecuteParams\XLanguage|value-of<SessionExecuteParams\XLanguage>,
-     *   xSDKVersion?: string,
      *   xSentAt?: \DateTimeInterface,
      *   xStreamResponse?: SessionExecuteParams\XStreamResponse|value-of<SessionExecuteParams\XStreamResponse>,
      * }|SessionExecuteParams $params
@@ -252,10 +234,7 @@ final class SessionsRawService implements SessionsRawContract
             $requestOptions,
         );
         $header_params = [
-            'xLanguage' => 'x-language',
-            'xSDKVersion' => 'x-sdk-version',
-            'xSentAt' => 'x-sent-at',
-            'xStreamResponse' => 'x-stream-response',
+            'xSentAt' => 'x-sent-at', 'xStreamResponse' => 'x-stream-response',
         ];
 
         // @phpstan-ignore-next-line return.type
@@ -283,8 +262,6 @@ final class SessionsRawService implements SessionsRawContract
      *   agentConfig: AgentConfig|AgentConfigShape,
      *   executeOptions: ExecuteOptions|ExecuteOptionsShape,
      *   frameID?: string,
-     *   xLanguage?: SessionExecuteParams\XLanguage|value-of<SessionExecuteParams\XLanguage>,
-     *   xSDKVersion?: string,
      *   xSentAt?: \DateTimeInterface,
      *   xStreamResponse?: SessionExecuteParams\XStreamResponse|value-of<SessionExecuteParams\XStreamResponse>,
      * }|SessionExecuteParams $params
@@ -305,10 +282,7 @@ final class SessionsRawService implements SessionsRawContract
         );
         $parsed['streamResponse'] = true;
         $header_params = [
-            'xLanguage' => 'x-language',
-            'xSDKVersion' => 'x-sdk-version',
-            'xSentAt' => 'x-sent-at',
-            'xStreamResponse' => 'x-stream-response',
+            'xSentAt' => 'x-sent-at', 'xStreamResponse' => 'x-stream-response',
         ];
 
         // @phpstan-ignore-next-line return.type
@@ -346,8 +320,6 @@ final class SessionsRawService implements SessionsRawContract
      *   instruction?: string,
      *   options?: SessionExtractParams\Options|OptionsShape2,
      *   schema?: array<string,mixed>,
-     *   xLanguage?: SessionExtractParams\XLanguage|value-of<SessionExtractParams\XLanguage>,
-     *   xSDKVersion?: string,
      *   xSentAt?: \DateTimeInterface,
      *   xStreamResponse?: SessionExtractParams\XStreamResponse|value-of<SessionExtractParams\XStreamResponse>,
      * }|SessionExtractParams $params
@@ -367,10 +339,7 @@ final class SessionsRawService implements SessionsRawContract
             $requestOptions,
         );
         $header_params = [
-            'xLanguage' => 'x-language',
-            'xSDKVersion' => 'x-sdk-version',
-            'xSentAt' => 'x-sent-at',
-            'xStreamResponse' => 'x-stream-response',
+            'xSentAt' => 'x-sent-at', 'xStreamResponse' => 'x-stream-response',
         ];
 
         // @phpstan-ignore-next-line return.type
@@ -399,8 +368,6 @@ final class SessionsRawService implements SessionsRawContract
      *   instruction?: string,
      *   options?: SessionExtractParams\Options|OptionsShape2,
      *   schema?: array<string,mixed>,
-     *   xLanguage?: SessionExtractParams\XLanguage|value-of<SessionExtractParams\XLanguage>,
-     *   xSDKVersion?: string,
      *   xSentAt?: \DateTimeInterface,
      *   xStreamResponse?: SessionExtractParams\XStreamResponse|value-of<SessionExtractParams\XStreamResponse>,
      * }|SessionExtractParams $params
@@ -421,10 +388,7 @@ final class SessionsRawService implements SessionsRawContract
         );
         $parsed['streamResponse'] = true;
         $header_params = [
-            'xLanguage' => 'x-language',
-            'xSDKVersion' => 'x-sdk-version',
-            'xSentAt' => 'x-sent-at',
-            'xStreamResponse' => 'x-stream-response',
+            'xSentAt' => 'x-sent-at', 'xStreamResponse' => 'x-stream-response',
         ];
 
         // @phpstan-ignore-next-line return.type
@@ -462,8 +426,6 @@ final class SessionsRawService implements SessionsRawContract
      *   frameID?: string,
      *   options?: Options|OptionsShape,
      *   streamResponse?: bool,
-     *   xLanguage?: SessionNavigateParams\XLanguage|value-of<SessionNavigateParams\XLanguage>,
-     *   xSDKVersion?: string,
      *   xSentAt?: \DateTimeInterface,
      *   xStreamResponse?: SessionNavigateParams\XStreamResponse|value-of<SessionNavigateParams\XStreamResponse>,
      * }|SessionNavigateParams $params
@@ -483,10 +445,7 @@ final class SessionsRawService implements SessionsRawContract
             $requestOptions,
         );
         $header_params = [
-            'xLanguage' => 'x-language',
-            'xSDKVersion' => 'x-sdk-version',
-            'xSentAt' => 'x-sent-at',
-            'xStreamResponse' => 'x-stream-response',
+            'xSentAt' => 'x-sent-at', 'xStreamResponse' => 'x-stream-response',
         ];
 
         // @phpstan-ignore-next-line return.type
@@ -516,8 +475,6 @@ final class SessionsRawService implements SessionsRawContract
      *   frameID?: string,
      *   instruction?: string,
      *   options?: SessionObserveParams\Options|OptionsShape3,
-     *   xLanguage?: SessionObserveParams\XLanguage|value-of<SessionObserveParams\XLanguage>,
-     *   xSDKVersion?: string,
      *   xSentAt?: \DateTimeInterface,
      *   xStreamResponse?: SessionObserveParams\XStreamResponse|value-of<SessionObserveParams\XStreamResponse>,
      * }|SessionObserveParams $params
@@ -537,10 +494,7 @@ final class SessionsRawService implements SessionsRawContract
             $requestOptions,
         );
         $header_params = [
-            'xLanguage' => 'x-language',
-            'xSDKVersion' => 'x-sdk-version',
-            'xSentAt' => 'x-sent-at',
-            'xStreamResponse' => 'x-stream-response',
+            'xSentAt' => 'x-sent-at', 'xStreamResponse' => 'x-stream-response',
         ];
 
         // @phpstan-ignore-next-line return.type
@@ -568,8 +522,6 @@ final class SessionsRawService implements SessionsRawContract
      *   frameID?: string,
      *   instruction?: string,
      *   options?: SessionObserveParams\Options|OptionsShape3,
-     *   xLanguage?: SessionObserveParams\XLanguage|value-of<SessionObserveParams\XLanguage>,
-     *   xSDKVersion?: string,
      *   xSentAt?: \DateTimeInterface,
      *   xStreamResponse?: SessionObserveParams\XStreamResponse|value-of<SessionObserveParams\XStreamResponse>,
      * }|SessionObserveParams $params
@@ -590,10 +542,7 @@ final class SessionsRawService implements SessionsRawContract
         );
         $parsed['streamResponse'] = true;
         $header_params = [
-            'xLanguage' => 'x-language',
-            'xSDKVersion' => 'x-sdk-version',
-            'xSentAt' => 'x-sent-at',
-            'xStreamResponse' => 'x-stream-response',
+            'xSentAt' => 'x-sent-at', 'xStreamResponse' => 'x-stream-response',
         ];
 
         // @phpstan-ignore-next-line return.type
@@ -637,8 +586,6 @@ final class SessionsRawService implements SessionsRawContract
      *   systemPrompt?: string,
      *   verbose?: float,
      *   waitForCaptchaSolves?: bool,
-     *   xLanguage?: SessionStartParams\XLanguage|value-of<SessionStartParams\XLanguage>,
-     *   xSDKVersion?: string,
      *   xSentAt?: \DateTimeInterface,
      *   xStreamResponse?: SessionStartParams\XStreamResponse|value-of<SessionStartParams\XStreamResponse>,
      * }|SessionStartParams $params
@@ -657,10 +604,7 @@ final class SessionsRawService implements SessionsRawContract
             $requestOptions,
         );
         $header_params = [
-            'xLanguage' => 'x-language',
-            'xSDKVersion' => 'x-sdk-version',
-            'xSentAt' => 'x-sent-at',
-            'xStreamResponse' => 'x-stream-response',
+            'xSentAt' => 'x-sent-at', 'xStreamResponse' => 'x-stream-response',
         ];
 
         // @phpstan-ignore-next-line return.type

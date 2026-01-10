@@ -8,7 +8,6 @@ use Stagehand\Core\Attributes\Optional;
 use Stagehand\Core\Concerns\SdkModel;
 use Stagehand\Core\Concerns\SdkParams;
 use Stagehand\Core\Contracts\BaseModel;
-use Stagehand\Sessions\SessionEndParams\XLanguage;
 use Stagehand\Sessions\SessionEndParams\XStreamResponse;
 
 /**
@@ -18,8 +17,6 @@ use Stagehand\Sessions\SessionEndParams\XStreamResponse;
  *
  * @phpstan-type SessionEndParamsShape = array{
  *   _forceBody?: mixed,
- *   xLanguage?: null|XLanguage|value-of<XLanguage>,
- *   xSDKVersion?: string|null,
  *   xSentAt?: \DateTimeInterface|null,
  *   xStreamResponse?: null|XStreamResponse|value-of<XStreamResponse>,
  * }
@@ -32,20 +29,6 @@ final class SessionEndParams implements BaseModel
 
     #[Optional]
     public mixed $_forceBody;
-
-    /**
-     * Client SDK language.
-     *
-     * @var value-of<XLanguage>|null $xLanguage
-     */
-    #[Optional(enum: XLanguage::class)]
-    public ?string $xLanguage;
-
-    /**
-     * Version of the Stagehand SDK.
-     */
-    #[Optional]
-    public ?string $xSDKVersion;
 
     /**
      * ISO timestamp when request was sent.
@@ -71,21 +54,16 @@ final class SessionEndParams implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
-     * @param XLanguage|value-of<XLanguage>|null $xLanguage
      * @param XStreamResponse|value-of<XStreamResponse>|null $xStreamResponse
      */
     public static function with(
         mixed $_forceBody = null,
-        XLanguage|string|null $xLanguage = null,
-        ?string $xSDKVersion = null,
         ?\DateTimeInterface $xSentAt = null,
         XStreamResponse|string|null $xStreamResponse = null,
     ): self {
         $self = new self;
 
         null !== $_forceBody && $self['_forceBody'] = $_forceBody;
-        null !== $xLanguage && $self['xLanguage'] = $xLanguage;
-        null !== $xSDKVersion && $self['xSDKVersion'] = $xSDKVersion;
         null !== $xSentAt && $self['xSentAt'] = $xSentAt;
         null !== $xStreamResponse && $self['xStreamResponse'] = $xStreamResponse;
 
@@ -96,30 +74,6 @@ final class SessionEndParams implements BaseModel
     {
         $self = clone $this;
         $self['_forceBody'] = $_forceBody;
-
-        return $self;
-    }
-
-    /**
-     * Client SDK language.
-     *
-     * @param XLanguage|value-of<XLanguage> $xLanguage
-     */
-    public function withXLanguage(XLanguage|string $xLanguage): self
-    {
-        $self = clone $this;
-        $self['xLanguage'] = $xLanguage;
-
-        return $self;
-    }
-
-    /**
-     * Version of the Stagehand SDK.
-     */
-    public function withXSDKVersion(string $xSDKVersion): self
-    {
-        $self = clone $this;
-        $self['xSDKVersion'] = $xSDKVersion;
 
         return $self;
     }

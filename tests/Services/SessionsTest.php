@@ -70,8 +70,6 @@ final class SessionsTest extends TestCase
                 'timeout' => 30000,
                 'variables' => ['username' => 'john_doe'],
             ],
-            xLanguage: 'typescript',
-            xSDKVersion: '3.0.6',
             xSentAt: new \DateTimeImmutable('2025-01-15T10:30:00Z'),
             xStreamResponse: 'true',
         );
@@ -135,8 +133,6 @@ final class SessionsTest extends TestCase
                 'maxSteps' => 20,
             ],
             frameID: 'frameId',
-            xLanguage: 'typescript',
-            xSDKVersion: '3.0.6',
             xSentAt: new \DateTimeImmutable('2025-01-15T10:30:00Z'),
             xStreamResponse: 'true',
         );
@@ -191,8 +187,6 @@ final class SessionsTest extends TestCase
                 'referer' => 'referer', 'timeout' => 30000, 'waitUntil' => 'networkidle',
             ],
             streamResponse: true,
-            xLanguage: 'typescript',
-            xSDKVersion: '3.0.6',
             xSentAt: new \DateTimeImmutable('2025-01-15T10:30:00Z'),
             xStreamResponse: 'true',
         );
@@ -307,8 +301,6 @@ final class SessionsTest extends TestCase
             systemPrompt: 'systemPrompt',
             verbose: 1,
             waitForCaptchaSolves: true,
-            xLanguage: 'typescript',
-            xSDKVersion: '3.0.6',
             xSentAt: new \DateTimeImmutable('2025-01-15T10:30:00Z'),
             xStreamResponse: 'true',
         );

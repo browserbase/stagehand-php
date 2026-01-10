@@ -12,7 +12,6 @@ use Stagehand\RequestOptions;
 use Stagehand\ServiceContracts\SessionsContract;
 use Stagehand\Sessions\Action;
 use Stagehand\Sessions\SessionActParams\Options;
-use Stagehand\Sessions\SessionActParams\XLanguage;
 use Stagehand\Sessions\SessionActParams\XStreamResponse;
 use Stagehand\Sessions\SessionActResponse;
 use Stagehand\Sessions\SessionEndResponse;
@@ -63,8 +62,6 @@ final class SessionsService implements SessionsContract
      * @param InputShape $input Body param: Natural language instruction or Action object
      * @param string $frameID Body param: Target frame ID for the action
      * @param Options|OptionsShape1 $options Body param:
-     * @param XLanguage|value-of<XLanguage> $xLanguage Header param: Client SDK language
-     * @param string $xSDKVersion Header param: Version of the Stagehand SDK
      * @param \DateTimeInterface $xSentAt Header param: ISO timestamp when request was sent
      * @param XStreamResponse|value-of<XStreamResponse> $xStreamResponse Header param: Whether to stream the response via SSE
      * @param RequestOpts|null $requestOptions
@@ -76,8 +73,6 @@ final class SessionsService implements SessionsContract
         string|Action|array $input,
         ?string $frameID = null,
         Options|array|null $options = null,
-        XLanguage|string|null $xLanguage = null,
-        ?string $xSDKVersion = null,
         ?\DateTimeInterface $xSentAt = null,
         XStreamResponse|string|null $xStreamResponse = null,
         RequestOptions|array|null $requestOptions = null,
@@ -87,8 +82,6 @@ final class SessionsService implements SessionsContract
                 'input' => $input,
                 'frameID' => $frameID,
                 'options' => $options,
-                'xLanguage' => $xLanguage,
-                'xSDKVersion' => $xSDKVersion,
                 'xSentAt' => $xSentAt,
                 'xStreamResponse' => $xStreamResponse,
             ],
@@ -107,8 +100,6 @@ final class SessionsService implements SessionsContract
      * @param InputShape $input Body param: Natural language instruction or Action object
      * @param string $frameID Body param: Target frame ID for the action
      * @param Options|OptionsShape1 $options Body param:
-     * @param XLanguage|value-of<XLanguage> $xLanguage Header param: Client SDK language
-     * @param string $xSDKVersion Header param: Version of the Stagehand SDK
      * @param \DateTimeInterface $xSentAt Header param: ISO timestamp when request was sent
      * @param XStreamResponse|value-of<XStreamResponse> $xStreamResponse Header param: Whether to stream the response via SSE
      * @param RequestOpts|null $requestOptions
@@ -122,8 +113,6 @@ final class SessionsService implements SessionsContract
         string|Action|array $input,
         ?string $frameID = null,
         Options|array|null $options = null,
-        XLanguage|string|null $xLanguage = null,
-        ?string $xSDKVersion = null,
         ?\DateTimeInterface $xSentAt = null,
         XStreamResponse|string|null $xStreamResponse = null,
         RequestOptions|array|null $requestOptions = null,
@@ -133,8 +122,6 @@ final class SessionsService implements SessionsContract
                 'input' => $input,
                 'frameID' => $frameID,
                 'options' => $options,
-                'xLanguage' => $xLanguage,
-                'xSDKVersion' => $xSDKVersion,
                 'xSentAt' => $xSentAt,
                 'xStreamResponse' => $xStreamResponse,
             ],
@@ -153,8 +140,6 @@ final class SessionsService implements SessionsContract
      *
      * @param string $id Path param: Unique session identifier
      * @param mixed $_forceBody Body param:
-     * @param \Stagehand\Sessions\SessionEndParams\XLanguage|value-of<\Stagehand\Sessions\SessionEndParams\XLanguage> $xLanguage Header param: Client SDK language
-     * @param string $xSDKVersion Header param: Version of the Stagehand SDK
      * @param \DateTimeInterface $xSentAt Header param: ISO timestamp when request was sent
      * @param \Stagehand\Sessions\SessionEndParams\XStreamResponse|value-of<\Stagehand\Sessions\SessionEndParams\XStreamResponse> $xStreamResponse Header param: Whether to stream the response via SSE
      * @param RequestOpts|null $requestOptions
@@ -164,8 +149,6 @@ final class SessionsService implements SessionsContract
     public function end(
         string $id,
         mixed $_forceBody = null,
-        \Stagehand\Sessions\SessionEndParams\XLanguage|string|null $xLanguage = null,
-        ?string $xSDKVersion = null,
         ?\DateTimeInterface $xSentAt = null,
         \Stagehand\Sessions\SessionEndParams\XStreamResponse|string|null $xStreamResponse = null,
         RequestOptions|array|null $requestOptions = null,
@@ -173,8 +156,6 @@ final class SessionsService implements SessionsContract
         $params = Util::removeNulls(
             [
                 '_forceBody' => $_forceBody,
-                'xLanguage' => $xLanguage,
-                'xSDKVersion' => $xSDKVersion,
                 'xSentAt' => $xSentAt,
                 'xStreamResponse' => $xStreamResponse,
             ],
@@ -195,8 +176,6 @@ final class SessionsService implements SessionsContract
      * @param AgentConfig|AgentConfigShape $agentConfig Body param:
      * @param ExecuteOptions|ExecuteOptionsShape $executeOptions Body param:
      * @param string $frameID Body param: Target frame ID for the agent
-     * @param \Stagehand\Sessions\SessionExecuteParams\XLanguage|value-of<\Stagehand\Sessions\SessionExecuteParams\XLanguage> $xLanguage Header param: Client SDK language
-     * @param string $xSDKVersion Header param: Version of the Stagehand SDK
      * @param \DateTimeInterface $xSentAt Header param: ISO timestamp when request was sent
      * @param \Stagehand\Sessions\SessionExecuteParams\XStreamResponse|value-of<\Stagehand\Sessions\SessionExecuteParams\XStreamResponse> $xStreamResponse Header param: Whether to stream the response via SSE
      * @param RequestOpts|null $requestOptions
@@ -208,8 +187,6 @@ final class SessionsService implements SessionsContract
         AgentConfig|array $agentConfig,
         ExecuteOptions|array $executeOptions,
         ?string $frameID = null,
-        \Stagehand\Sessions\SessionExecuteParams\XLanguage|string|null $xLanguage = null,
-        ?string $xSDKVersion = null,
         ?\DateTimeInterface $xSentAt = null,
         \Stagehand\Sessions\SessionExecuteParams\XStreamResponse|string|null $xStreamResponse = null,
         RequestOptions|array|null $requestOptions = null,
@@ -219,8 +196,6 @@ final class SessionsService implements SessionsContract
                 'agentConfig' => $agentConfig,
                 'executeOptions' => $executeOptions,
                 'frameID' => $frameID,
-                'xLanguage' => $xLanguage,
-                'xSDKVersion' => $xSDKVersion,
                 'xSentAt' => $xSentAt,
                 'xStreamResponse' => $xStreamResponse,
             ],
@@ -239,8 +214,6 @@ final class SessionsService implements SessionsContract
      * @param AgentConfig|AgentConfigShape $agentConfig Body param:
      * @param ExecuteOptions|ExecuteOptionsShape $executeOptions Body param:
      * @param string $frameID Body param: Target frame ID for the agent
-     * @param \Stagehand\Sessions\SessionExecuteParams\XLanguage|value-of<\Stagehand\Sessions\SessionExecuteParams\XLanguage> $xLanguage Header param: Client SDK language
-     * @param string $xSDKVersion Header param: Version of the Stagehand SDK
      * @param \DateTimeInterface $xSentAt Header param: ISO timestamp when request was sent
      * @param \Stagehand\Sessions\SessionExecuteParams\XStreamResponse|value-of<\Stagehand\Sessions\SessionExecuteParams\XStreamResponse> $xStreamResponse Header param: Whether to stream the response via SSE
      * @param RequestOpts|null $requestOptions
@@ -254,8 +227,6 @@ final class SessionsService implements SessionsContract
         AgentConfig|array $agentConfig,
         ExecuteOptions|array $executeOptions,
         ?string $frameID = null,
-        \Stagehand\Sessions\SessionExecuteParams\XLanguage|string|null $xLanguage = null,
-        ?string $xSDKVersion = null,
         ?\DateTimeInterface $xSentAt = null,
         \Stagehand\Sessions\SessionExecuteParams\XStreamResponse|string|null $xStreamResponse = null,
         RequestOptions|array|null $requestOptions = null,
@@ -265,8 +236,6 @@ final class SessionsService implements SessionsContract
                 'agentConfig' => $agentConfig,
                 'executeOptions' => $executeOptions,
                 'frameID' => $frameID,
-                'xLanguage' => $xLanguage,
-                'xSDKVersion' => $xSDKVersion,
                 'xSentAt' => $xSentAt,
                 'xStreamResponse' => $xStreamResponse,
             ],
@@ -288,8 +257,6 @@ final class SessionsService implements SessionsContract
      * @param string $instruction Body param: Natural language instruction for what to extract
      * @param \Stagehand\Sessions\SessionExtractParams\Options|OptionsShape2 $options Body param:
      * @param array<string,mixed> $schema Body param: JSON Schema defining the structure of data to extract
-     * @param \Stagehand\Sessions\SessionExtractParams\XLanguage|value-of<\Stagehand\Sessions\SessionExtractParams\XLanguage> $xLanguage Header param: Client SDK language
-     * @param string $xSDKVersion Header param: Version of the Stagehand SDK
      * @param \DateTimeInterface $xSentAt Header param: ISO timestamp when request was sent
      * @param \Stagehand\Sessions\SessionExtractParams\XStreamResponse|value-of<\Stagehand\Sessions\SessionExtractParams\XStreamResponse> $xStreamResponse Header param: Whether to stream the response via SSE
      * @param RequestOpts|null $requestOptions
@@ -302,8 +269,6 @@ final class SessionsService implements SessionsContract
         ?string $instruction = null,
         \Stagehand\Sessions\SessionExtractParams\Options|array|null $options = null,
         ?array $schema = null,
-        \Stagehand\Sessions\SessionExtractParams\XLanguage|string|null $xLanguage = null,
-        ?string $xSDKVersion = null,
         ?\DateTimeInterface $xSentAt = null,
         \Stagehand\Sessions\SessionExtractParams\XStreamResponse|string|null $xStreamResponse = null,
         RequestOptions|array|null $requestOptions = null,
@@ -314,8 +279,6 @@ final class SessionsService implements SessionsContract
                 'instruction' => $instruction,
                 'options' => $options,
                 'schema' => $schema,
-                'xLanguage' => $xLanguage,
-                'xSDKVersion' => $xSDKVersion,
                 'xSentAt' => $xSentAt,
                 'xStreamResponse' => $xStreamResponse,
             ],
@@ -335,8 +298,6 @@ final class SessionsService implements SessionsContract
      * @param string $instruction Body param: Natural language instruction for what to extract
      * @param \Stagehand\Sessions\SessionExtractParams\Options|OptionsShape2 $options Body param:
      * @param array<string,mixed> $schema Body param: JSON Schema defining the structure of data to extract
-     * @param \Stagehand\Sessions\SessionExtractParams\XLanguage|value-of<\Stagehand\Sessions\SessionExtractParams\XLanguage> $xLanguage Header param: Client SDK language
-     * @param string $xSDKVersion Header param: Version of the Stagehand SDK
      * @param \DateTimeInterface $xSentAt Header param: ISO timestamp when request was sent
      * @param \Stagehand\Sessions\SessionExtractParams\XStreamResponse|value-of<\Stagehand\Sessions\SessionExtractParams\XStreamResponse> $xStreamResponse Header param: Whether to stream the response via SSE
      * @param RequestOpts|null $requestOptions
@@ -351,8 +312,6 @@ final class SessionsService implements SessionsContract
         ?string $instruction = null,
         \Stagehand\Sessions\SessionExtractParams\Options|array|null $options = null,
         ?array $schema = null,
-        \Stagehand\Sessions\SessionExtractParams\XLanguage|string|null $xLanguage = null,
-        ?string $xSDKVersion = null,
         ?\DateTimeInterface $xSentAt = null,
         \Stagehand\Sessions\SessionExtractParams\XStreamResponse|string|null $xStreamResponse = null,
         RequestOptions|array|null $requestOptions = null,
@@ -363,8 +322,6 @@ final class SessionsService implements SessionsContract
                 'instruction' => $instruction,
                 'options' => $options,
                 'schema' => $schema,
-                'xLanguage' => $xLanguage,
-                'xSDKVersion' => $xSDKVersion,
                 'xSentAt' => $xSentAt,
                 'xStreamResponse' => $xStreamResponse,
             ],
@@ -386,8 +343,6 @@ final class SessionsService implements SessionsContract
      * @param string $frameID Body param: Target frame ID for the navigation
      * @param \Stagehand\Sessions\SessionNavigateParams\Options|OptionsShape $options Body param:
      * @param bool $streamResponse Body param: Whether to stream the response via SSE
-     * @param \Stagehand\Sessions\SessionNavigateParams\XLanguage|value-of<\Stagehand\Sessions\SessionNavigateParams\XLanguage> $xLanguage Header param: Client SDK language
-     * @param string $xSDKVersion Header param: Version of the Stagehand SDK
      * @param \DateTimeInterface $xSentAt Header param: ISO timestamp when request was sent
      * @param \Stagehand\Sessions\SessionNavigateParams\XStreamResponse|value-of<\Stagehand\Sessions\SessionNavigateParams\XStreamResponse> $xStreamResponse Header param: Whether to stream the response via SSE
      * @param RequestOpts|null $requestOptions
@@ -400,8 +355,6 @@ final class SessionsService implements SessionsContract
         ?string $frameID = null,
         \Stagehand\Sessions\SessionNavigateParams\Options|array|null $options = null,
         ?bool $streamResponse = null,
-        \Stagehand\Sessions\SessionNavigateParams\XLanguage|string|null $xLanguage = null,
-        ?string $xSDKVersion = null,
         ?\DateTimeInterface $xSentAt = null,
         \Stagehand\Sessions\SessionNavigateParams\XStreamResponse|string|null $xStreamResponse = null,
         RequestOptions|array|null $requestOptions = null,
@@ -412,8 +365,6 @@ final class SessionsService implements SessionsContract
                 'frameID' => $frameID,
                 'options' => $options,
                 'streamResponse' => $streamResponse,
-                'xLanguage' => $xLanguage,
-                'xSDKVersion' => $xSDKVersion,
                 'xSentAt' => $xSentAt,
                 'xStreamResponse' => $xStreamResponse,
             ],
@@ -434,8 +385,6 @@ final class SessionsService implements SessionsContract
      * @param string $frameID Body param: Target frame ID for the observation
      * @param string $instruction Body param: Natural language instruction for what actions to find
      * @param \Stagehand\Sessions\SessionObserveParams\Options|OptionsShape3 $options Body param:
-     * @param \Stagehand\Sessions\SessionObserveParams\XLanguage|value-of<\Stagehand\Sessions\SessionObserveParams\XLanguage> $xLanguage Header param: Client SDK language
-     * @param string $xSDKVersion Header param: Version of the Stagehand SDK
      * @param \DateTimeInterface $xSentAt Header param: ISO timestamp when request was sent
      * @param \Stagehand\Sessions\SessionObserveParams\XStreamResponse|value-of<\Stagehand\Sessions\SessionObserveParams\XStreamResponse> $xStreamResponse Header param: Whether to stream the response via SSE
      * @param RequestOpts|null $requestOptions
@@ -447,8 +396,6 @@ final class SessionsService implements SessionsContract
         ?string $frameID = null,
         ?string $instruction = null,
         \Stagehand\Sessions\SessionObserveParams\Options|array|null $options = null,
-        \Stagehand\Sessions\SessionObserveParams\XLanguage|string|null $xLanguage = null,
-        ?string $xSDKVersion = null,
         ?\DateTimeInterface $xSentAt = null,
         \Stagehand\Sessions\SessionObserveParams\XStreamResponse|string|null $xStreamResponse = null,
         RequestOptions|array|null $requestOptions = null,
@@ -458,8 +405,6 @@ final class SessionsService implements SessionsContract
                 'frameID' => $frameID,
                 'instruction' => $instruction,
                 'options' => $options,
-                'xLanguage' => $xLanguage,
-                'xSDKVersion' => $xSDKVersion,
                 'xSentAt' => $xSentAt,
                 'xStreamResponse' => $xStreamResponse,
             ],
@@ -478,8 +423,6 @@ final class SessionsService implements SessionsContract
      * @param string $frameID Body param: Target frame ID for the observation
      * @param string $instruction Body param: Natural language instruction for what actions to find
      * @param \Stagehand\Sessions\SessionObserveParams\Options|OptionsShape3 $options Body param:
-     * @param \Stagehand\Sessions\SessionObserveParams\XLanguage|value-of<\Stagehand\Sessions\SessionObserveParams\XLanguage> $xLanguage Header param: Client SDK language
-     * @param string $xSDKVersion Header param: Version of the Stagehand SDK
      * @param \DateTimeInterface $xSentAt Header param: ISO timestamp when request was sent
      * @param \Stagehand\Sessions\SessionObserveParams\XStreamResponse|value-of<\Stagehand\Sessions\SessionObserveParams\XStreamResponse> $xStreamResponse Header param: Whether to stream the response via SSE
      * @param RequestOpts|null $requestOptions
@@ -493,8 +436,6 @@ final class SessionsService implements SessionsContract
         ?string $frameID = null,
         ?string $instruction = null,
         \Stagehand\Sessions\SessionObserveParams\Options|array|null $options = null,
-        \Stagehand\Sessions\SessionObserveParams\XLanguage|string|null $xLanguage = null,
-        ?string $xSDKVersion = null,
         ?\DateTimeInterface $xSentAt = null,
         \Stagehand\Sessions\SessionObserveParams\XStreamResponse|string|null $xStreamResponse = null,
         RequestOptions|array|null $requestOptions = null,
@@ -504,8 +445,6 @@ final class SessionsService implements SessionsContract
                 'frameID' => $frameID,
                 'instruction' => $instruction,
                 'options' => $options,
-                'xLanguage' => $xLanguage,
-                'xSDKVersion' => $xSDKVersion,
                 'xSentAt' => $xSentAt,
                 'xStreamResponse' => $xStreamResponse,
             ],
@@ -533,8 +472,6 @@ final class SessionsService implements SessionsContract
      * @param string $systemPrompt Body param: Custom system prompt for AI operations
      * @param float $verbose Body param: Logging verbosity level (0=quiet, 1=normal, 2=debug)
      * @param bool $waitForCaptchaSolves Body param: Wait for captcha solves (deprecated, v2 only)
-     * @param \Stagehand\Sessions\SessionStartParams\XLanguage|value-of<\Stagehand\Sessions\SessionStartParams\XLanguage> $xLanguage Header param: Client SDK language
-     * @param string $xSDKVersion Header param: Version of the Stagehand SDK
      * @param \DateTimeInterface $xSentAt Header param: ISO timestamp when request was sent
      * @param \Stagehand\Sessions\SessionStartParams\XStreamResponse|value-of<\Stagehand\Sessions\SessionStartParams\XStreamResponse> $xStreamResponse Header param: Whether to stream the response via SSE
      * @param RequestOpts|null $requestOptions
@@ -553,8 +490,6 @@ final class SessionsService implements SessionsContract
         ?string $systemPrompt = null,
         ?float $verbose = null,
         ?bool $waitForCaptchaSolves = null,
-        \Stagehand\Sessions\SessionStartParams\XLanguage|string|null $xLanguage = null,
-        ?string $xSDKVersion = null,
         ?\DateTimeInterface $xSentAt = null,
         \Stagehand\Sessions\SessionStartParams\XStreamResponse|string|null $xStreamResponse = null,
         RequestOptions|array|null $requestOptions = null,
@@ -572,8 +507,6 @@ final class SessionsService implements SessionsContract
                 'systemPrompt' => $systemPrompt,
                 'verbose' => $verbose,
                 'waitForCaptchaSolves' => $waitForCaptchaSolves,
-                'xLanguage' => $xLanguage,
-                'xSDKVersion' => $xSDKVersion,
                 'xSentAt' => $xSentAt,
                 'xStreamResponse' => $xStreamResponse,
             ],

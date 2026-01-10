@@ -9,7 +9,6 @@ use Stagehand\Core\Concerns\SdkModel;
 use Stagehand\Core\Concerns\SdkParams;
 use Stagehand\Core\Contracts\BaseModel;
 use Stagehand\Sessions\SessionExtractParams\Options;
-use Stagehand\Sessions\SessionExtractParams\XLanguage;
 use Stagehand\Sessions\SessionExtractParams\XStreamResponse;
 
 /**
@@ -24,8 +23,6 @@ use Stagehand\Sessions\SessionExtractParams\XStreamResponse;
  *   instruction?: string|null,
  *   options?: null|Options|OptionsShape,
  *   schema?: array<string,mixed>|null,
- *   xLanguage?: null|XLanguage|value-of<XLanguage>,
- *   xSDKVersion?: string|null,
  *   xSentAt?: \DateTimeInterface|null,
  *   xStreamResponse?: null|XStreamResponse|value-of<XStreamResponse>,
  * }
@@ -60,20 +57,6 @@ final class SessionExtractParams implements BaseModel
     public ?array $schema;
 
     /**
-     * Client SDK language.
-     *
-     * @var value-of<XLanguage>|null $xLanguage
-     */
-    #[Optional(enum: XLanguage::class)]
-    public ?string $xLanguage;
-
-    /**
-     * Version of the Stagehand SDK.
-     */
-    #[Optional]
-    public ?string $xSDKVersion;
-
-    /**
      * ISO timestamp when request was sent.
      */
     #[Optional]
@@ -99,7 +82,6 @@ final class SessionExtractParams implements BaseModel
      *
      * @param Options|OptionsShape|null $options
      * @param array<string,mixed>|null $schema
-     * @param XLanguage|value-of<XLanguage>|null $xLanguage
      * @param XStreamResponse|value-of<XStreamResponse>|null $xStreamResponse
      */
     public static function with(
@@ -107,8 +89,6 @@ final class SessionExtractParams implements BaseModel
         ?string $instruction = null,
         Options|array|null $options = null,
         ?array $schema = null,
-        XLanguage|string|null $xLanguage = null,
-        ?string $xSDKVersion = null,
         ?\DateTimeInterface $xSentAt = null,
         XStreamResponse|string|null $xStreamResponse = null,
     ): self {
@@ -118,8 +98,6 @@ final class SessionExtractParams implements BaseModel
         null !== $instruction && $self['instruction'] = $instruction;
         null !== $options && $self['options'] = $options;
         null !== $schema && $self['schema'] = $schema;
-        null !== $xLanguage && $self['xLanguage'] = $xLanguage;
-        null !== $xSDKVersion && $self['xSDKVersion'] = $xSDKVersion;
         null !== $xSentAt && $self['xSentAt'] = $xSentAt;
         null !== $xStreamResponse && $self['xStreamResponse'] = $xStreamResponse;
 
@@ -168,30 +146,6 @@ final class SessionExtractParams implements BaseModel
     {
         $self = clone $this;
         $self['schema'] = $schema;
-
-        return $self;
-    }
-
-    /**
-     * Client SDK language.
-     *
-     * @param XLanguage|value-of<XLanguage> $xLanguage
-     */
-    public function withXLanguage(XLanguage|string $xLanguage): self
-    {
-        $self = clone $this;
-        $self['xLanguage'] = $xLanguage;
-
-        return $self;
-    }
-
-    /**
-     * Version of the Stagehand SDK.
-     */
-    public function withXSDKVersion(string $xSDKVersion): self
-    {
-        $self = clone $this;
-        $self['xSDKVersion'] = $xSDKVersion;
 
         return $self;
     }
