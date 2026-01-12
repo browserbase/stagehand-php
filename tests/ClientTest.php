@@ -34,7 +34,7 @@ class ClientTest extends TestCase
             requestOptions: ['transporter' => $transporter],
         );
 
-        $client->sessions->start(modelName: 'gpt-4o');
+        $client->sessions->start(modelName: 'openai/gpt-4o');
 
         $this->assertNotFalse($requested = $transporter->getRequests()[0] ?? false);
 
