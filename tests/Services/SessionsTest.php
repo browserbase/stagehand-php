@@ -217,7 +217,7 @@ final class SessionsTest extends TestCase
             $this->markTestSkipped('Prism tests are disabled');
         }
 
-        $result = $this->client->sessions->start(modelName: 'gpt-4o');
+        $result = $this->client->sessions->start(modelName: 'openai/gpt-4o');
 
         // @phpstan-ignore-next-line method.alreadyNarrowedType
         $this->assertInstanceOf(SessionStartResponse::class, $result);
@@ -231,7 +231,7 @@ final class SessionsTest extends TestCase
         }
 
         $result = $this->client->sessions->start(
-            modelName: 'gpt-4o',
+            modelName: 'openai/gpt-4o',
             actTimeoutMs: 0,
             browser: [
                 'cdpURL' => 'ws://localhost:9222',

@@ -24,7 +24,7 @@ final class ModelConfigObject implements BaseModel
     use SdkModel;
 
     /**
-     * Model name string without prefix (e.g., 'gpt-5-nano', 'claude-4.5-opus').
+     * Model name string (e.g., 'openai/gpt-5-nano', 'anthropic/claude-4.5-opus').
      */
     #[Required]
     public string $modelName;
@@ -93,7 +93,7 @@ final class ModelConfigObject implements BaseModel
     }
 
     /**
-     * Model name string without prefix (e.g., 'gpt-5-nano', 'claude-4.5-opus').
+     * Model name string (e.g., 'openai/gpt-5-nano', 'anthropic/claude-4.5-opus').
      */
     public function withModelName(string $modelName): self
     {
