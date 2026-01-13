@@ -62,7 +62,6 @@ final class SessionsTest extends TestCase
         $result = $this->client->sessions->act(
             '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
             input: 'click the sign in button',
-            frameID: 'frameId',
             options: [
                 'model' => [
                     'apiKey' => 'apiKey',
@@ -132,7 +131,6 @@ final class SessionsTest extends TestCase
                 'highlightCursor' => true,
                 'maxSteps' => 10,
             ],
-            frameID: 'frameId',
             xStreamResponse: 'true',
         );
 
@@ -181,7 +179,6 @@ final class SessionsTest extends TestCase
         $result = $this->client->sessions->navigate(
             '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
             url: 'https://example.com',
-            frameID: 'frameId',
             options: ['waitUntil' => 'load'],
             xStreamResponse: 'true',
         );
