@@ -12,19 +12,19 @@ use Stagehand\Sessions\SessionExtractParams\Options;
 use Stagehand\Sessions\SessionExtractParams\XStreamResponse;
 
 /**
- * Extracts data from the current page using natural language instructions
- * and optional JSON schema for structured output.
+ * Extracts structured data from the current page using AI-powered analysis.
  *
  * @see Stagehand\Services\SessionsService::extract()
  *
+ * @phpstan-import-type OptionsShape from \Stagehand\Sessions\SessionExtractParams\Options
+ *
  * @phpstan-type SessionExtractParamsShape = array{
- *   frameID?: string,
- *   instruction?: string,
- *   options?: Options|array{
- *     model?: ModelConfig|null, selector?: string|null, timeout?: int|null
- *   },
- *   schema?: array<string,mixed>,
- *   xStreamResponse?: XStreamResponse|value-of<XStreamResponse>,
+ *   frameID?: string|null,
+ *   instruction?: string|null,
+ *   options?: null|Options|OptionsShape,
+ *   schema?: array<string,mixed>|null,
+ *   xSentAt?: \DateTimeInterface|null,
+ *   xStreamResponse?: null|XStreamResponse|value-of<XStreamResponse>,
  * }
  */
 final class SessionExtractParams implements BaseModel
@@ -34,13 +34,13 @@ final class SessionExtractParams implements BaseModel
     use SdkParams;
 
     /**
-     * Frame ID to extract from.
+     * Target frame ID for the extraction.
      */
     #[Optional('frameId')]
     public ?string $frameID;
 
     /**
-     * Natural language instruction for extraction.
+     * Natural language instruction for what to extract.
      */
     #[Optional]
     public ?string $instruction;
@@ -49,14 +49,24 @@ final class SessionExtractParams implements BaseModel
     public ?Options $options;
 
     /**
-     * JSON Schema for structured output.
+     * JSON Schema defining the structure of data to extract.
      *
      * @var array<string,mixed>|null $schema
      */
     #[Optional(map: 'mixed')]
     public ?array $schema;
 
-    /** @var value-of<XStreamResponse>|null $xStreamResponse */
+    /**
+     * ISO timestamp when request was sent.
+     */
+    #[Optional]
+    public ?\DateTimeInterface $xSentAt;
+
+    /**
+     * Whether to stream the response via SSE.
+     *
+     * @var value-of<XStreamResponse>|null $xStreamResponse
+     */
     #[Optional(enum: XStreamResponse::class)]
     public ?string $xStreamResponse;
 
@@ -70,17 +80,16 @@ final class SessionExtractParams implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
-     * @param Options|array{
-     *   model?: ModelConfig|null, selector?: string|null, timeout?: int|null
-     * } $options
-     * @param array<string,mixed> $schema
-     * @param XStreamResponse|value-of<XStreamResponse> $xStreamResponse
+     * @param Options|OptionsShape|null $options
+     * @param array<string,mixed>|null $schema
+     * @param XStreamResponse|value-of<XStreamResponse>|null $xStreamResponse
      */
     public static function with(
         ?string $frameID = null,
         ?string $instruction = null,
         Options|array|null $options = null,
         ?array $schema = null,
+        ?\DateTimeInterface $xSentAt = null,
         XStreamResponse|string|null $xStreamResponse = null,
     ): self {
         $self = new self;
@@ -89,13 +98,14 @@ final class SessionExtractParams implements BaseModel
         null !== $instruction && $self['instruction'] = $instruction;
         null !== $options && $self['options'] = $options;
         null !== $schema && $self['schema'] = $schema;
+        null !== $xSentAt && $self['xSentAt'] = $xSentAt;
         null !== $xStreamResponse && $self['xStreamResponse'] = $xStreamResponse;
 
         return $self;
     }
 
     /**
-     * Frame ID to extract from.
+     * Target frame ID for the extraction.
      */
     public function withFrameID(string $frameID): self
     {
@@ -106,7 +116,7 @@ final class SessionExtractParams implements BaseModel
     }
 
     /**
-     * Natural language instruction for extraction.
+     * Natural language instruction for what to extract.
      */
     public function withInstruction(string $instruction): self
     {
@@ -117,9 +127,7 @@ final class SessionExtractParams implements BaseModel
     }
 
     /**
-     * @param Options|array{
-     *   model?: ModelConfig|null, selector?: string|null, timeout?: int|null
-     * } $options
+     * @param Options|OptionsShape $options
      */
     public function withOptions(Options|array $options): self
     {
@@ -130,7 +138,7 @@ final class SessionExtractParams implements BaseModel
     }
 
     /**
-     * JSON Schema for structured output.
+     * JSON Schema defining the structure of data to extract.
      *
      * @param array<string,mixed> $schema
      */
@@ -143,6 +151,19 @@ final class SessionExtractParams implements BaseModel
     }
 
     /**
+     * ISO timestamp when request was sent.
+     */
+    public function withXSentAt(\DateTimeInterface $xSentAt): self
+    {
+        $self = clone $this;
+        $self['xSentAt'] = $xSentAt;
+
+        return $self;
+    }
+
+    /**
+     * Whether to stream the response via SSE.
+     *
      * @param XStreamResponse|value-of<XStreamResponse> $xStreamResponse
      */
     public function withXStreamResponse(

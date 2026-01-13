@@ -7,12 +7,14 @@ namespace Stagehand\Sessions\SessionObserveParams;
 use Stagehand\Core\Attributes\Optional;
 use Stagehand\Core\Concerns\SdkModel;
 use Stagehand\Core\Contracts\BaseModel;
-use Stagehand\Sessions\ModelConfig;
-use Stagehand\Sessions\ModelConfig\Provider;
+use Stagehand\Sessions\ModelConfig\ModelConfigObject;
 
 /**
+ * @phpstan-import-type ModelConfigVariants from \Stagehand\Sessions\ModelConfig
+ * @phpstan-import-type ModelConfigShape from \Stagehand\Sessions\ModelConfig
+ *
  * @phpstan-type OptionsShape = array{
- *   model?: ModelConfig|null, selector?: string|null, timeout?: int|null
+ *   model?: ModelConfigShape|null, selector?: string|null, timeout?: float|null
  * }
  */
 final class Options implements BaseModel
@@ -20,17 +22,25 @@ final class Options implements BaseModel
     /** @use SdkModel<OptionsShape> */
     use SdkModel;
 
+    /**
+     * Model name string with provider prefix (e.g., 'openai/gpt-5-nano', 'anthropic/claude-4.5-opus').
+     *
+     * @var ModelConfigVariants|null $model
+     */
     #[Optional]
-    public ?ModelConfig $model;
+    public string|ModelConfigObject|null $model;
 
     /**
-     * Observe only elements matching this selector.
+     * CSS selector to scope observation to a specific element.
      */
     #[Optional]
     public ?string $selector;
 
+    /**
+     * Timeout in ms for the observation.
+     */
     #[Optional]
-    public ?int $timeout;
+    public ?float $timeout;
 
     public function __construct()
     {
@@ -42,17 +52,12 @@ final class Options implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
-     * @param ModelConfig|array{
-     *   apiKey?: string|null,
-     *   baseURL?: string|null,
-     *   model?: string|null,
-     *   provider?: value-of<Provider>|null,
-     * } $model
+     * @param ModelConfigShape|null $model
      */
     public static function with(
-        ModelConfig|array|null $model = null,
+        string|ModelConfigObject|array|null $model = null,
         ?string $selector = null,
-        ?int $timeout = null,
+        ?float $timeout = null,
     ): self {
         $self = new self;
 
@@ -64,14 +69,11 @@ final class Options implements BaseModel
     }
 
     /**
-     * @param ModelConfig|array{
-     *   apiKey?: string|null,
-     *   baseURL?: string|null,
-     *   model?: string|null,
-     *   provider?: value-of<Provider>|null,
-     * } $model
+     * Model name string with provider prefix (e.g., 'openai/gpt-5-nano', 'anthropic/claude-4.5-opus').
+     *
+     * @param ModelConfigShape $model
      */
-    public function withModel(ModelConfig|array $model): self
+    public function withModel(string|ModelConfigObject|array $model): self
     {
         $self = clone $this;
         $self['model'] = $model;
@@ -80,7 +82,7 @@ final class Options implements BaseModel
     }
 
     /**
-     * Observe only elements matching this selector.
+     * CSS selector to scope observation to a specific element.
      */
     public function withSelector(string $selector): self
     {
@@ -90,7 +92,10 @@ final class Options implements BaseModel
         return $self;
     }
 
-    public function withTimeout(int $timeout): self
+    /**
+     * Timeout in ms for the observation.
+     */
+    public function withTimeout(float $timeout): self
     {
         $self = clone $this;
         $self['timeout'] = $timeout;

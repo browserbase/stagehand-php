@@ -2,14 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Stagehand\Sessions\SessionExecuteAgentParams\AgentConfig;
+namespace Stagehand\Sessions\SessionStartParams\Browser\LaunchOptions;
 
 use Stagehand\Core\Concerns\SdkUnion;
 use Stagehand\Core\Conversion\Contracts\Converter;
 use Stagehand\Core\Conversion\Contracts\ConverterSource;
-use Stagehand\Sessions\ModelConfig;
+use Stagehand\Core\Conversion\ListOf;
 
-final class Model implements ConverterSource
+/**
+ * @phpstan-type IgnoreDefaultArgsVariants = bool|list<string>
+ * @phpstan-type IgnoreDefaultArgsShape = IgnoreDefaultArgsVariants
+ */
+final class IgnoreDefaultArgs implements ConverterSource
 {
     use SdkUnion;
 
@@ -18,6 +22,6 @@ final class Model implements ConverterSource
      */
     public static function variants(): array
     {
-        return ['string', ModelConfig::class];
+        return ['bool', new ListOf('string')];
     }
 }

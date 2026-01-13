@@ -224,10 +224,37 @@ echo "Session ended\n";
 
 ### Value Objects
 
-It is recommended to use the static `with` constructor `Action::with(arguments: ['string'], ...)`
+It is recommended to use the static `with` constructor `Action::with(description: 'Click the submit button', ...)`
 and named parameters to initialize value objects.
 
-However, builders are also provided `(new Action)->withArguments(['string'])`.
+However, builders are also provided `(new Action)->withDescription('Click the submit button')`.
+
+### Streaming
+
+We provide support for streaming responses using Server-Sent Events (SSE).
+
+```php
+<?php
+
+use Stagehand\Client;
+
+$client = new Client(
+  browserbaseAPIKey: getenv('BROWSERBASE_API_KEY') ?: 'My Browserbase API Key',
+  browserbaseProjectID: getenv(
+    'BROWSERBASE_PROJECT_ID'
+  ) ?: 'My Browserbase Project ID',
+  modelAPIKey: getenv('MODEL_API_KEY') ?: 'My Model API Key',
+);
+
+$stream = $client->sessions->actStream(
+  '00000000-your-session-id-000000000000',
+  input: 'click the first link on the page',
+);
+
+foreach ($stream as $response) {
+  var_dump($response);
+}
+```
 
 ### Handling errors
 
@@ -237,18 +264,17 @@ When the library is unable to connect to the API, or if the API returns a non-su
 <?php
 
 use Stagehand\Core\Exceptions\APIConnectionException;
+use Stagehand\Core\Exceptions\RateLimitException;
+use Stagehand\Core\Exceptions\APIStatusException;
 
 try {
-  $response = $client->sessions->start(
-    browserbaseAPIKey: 'your Browserbase API key',
-    browserbaseProjectID: 'your Browserbase Project ID',
-  );
+  $response = $client->sessions->start(modelName: 'openai/gpt-5-nano');
 } catch (APIConnectionException $e) {
   echo "The server could not be reached", PHP_EOL;
   var_dump($e->getPrevious());
-} catch (RateLimitError $e) {
+} catch (RateLimitException $e) {
   echo "A 429 status code was received; we should back off a bit.", PHP_EOL;
-} catch (APIStatusError $e) {
+} catch (APIStatusException $e) {
   echo "Another non-200-range status code was received", PHP_EOL;
   echo $e->getMessage();
 }
@@ -282,16 +308,13 @@ You can use the `maxRetries` option to configure or disable this:
 <?php
 
 use Stagehand\Client;
-use Stagehand\RequestOptions;
 
 // Configure the default for all requests:
-$client = new Client(maxRetries: 0);
+$client = new Client(requestOptions: ['maxRetries' => 0]);
 
 // Or, configure per-request:
 $result = $client->sessions->start(
-  browserbaseAPIKey: 'your Browserbase API key',
-  browserbaseProjectID: 'your Browserbase Project ID',
-  requestOptions: RequestOptions::with(maxRetries: 5),
+  modelName: 'openai/gpt-5-nano', requestOptions: ['maxRetries' => 5]
 );
 ```
 
@@ -308,16 +331,13 @@ Note: the `extra*` parameters of the same name overrides the documented paramete
 ```php
 <?php
 
-use Stagehand\RequestOptions;
-
 $response = $client->sessions->start(
-  browserbaseAPIKey: 'your Browserbase API key',
-  browserbaseProjectID: 'your Browserbase Project ID',
-  requestOptions: RequestOptions::with(
-    extraQueryParams: ['my_query_parameter' => 'value'],
-    extraBodyParams: ['my_body_parameter' => 'value'],
-    extraHeaders: ['my-header' => 'value'],
-  ),
+  modelName: 'openai/gpt-5-nano',
+  requestOptions: [
+    'extraQueryParams' => ['my_query_parameter' => 'value'],
+    'extraBodyParams' => ['my_body_parameter' => 'value'],
+    'extraHeaders' => ['my-header' => 'value'],
+  ],
 );
 ```
 

@@ -10,7 +10,12 @@ use Stagehand\Core\Conversion\Contracts\ConverterSource;
 use Stagehand\Sessions\Action;
 
 /**
- * Natural language instruction.
+ * Natural language instruction or Action object.
+ *
+ * @phpstan-import-type ActionShape from \Stagehand\Sessions\Action
+ *
+ * @phpstan-type InputVariants = string|Action
+ * @phpstan-type InputShape = InputVariants|ActionShape
  */
 final class Input implements ConverterSource
 {

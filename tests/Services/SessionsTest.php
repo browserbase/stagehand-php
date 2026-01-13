@@ -8,8 +8,10 @@ use PHPUnit\Framework\TestCase;
 use Stagehand\Client;
 use Stagehand\Sessions\SessionActResponse;
 use Stagehand\Sessions\SessionEndResponse;
-use Stagehand\Sessions\SessionExecuteAgentResponse;
+use Stagehand\Sessions\SessionExecuteResponse;
+use Stagehand\Sessions\SessionExtractResponse;
 use Stagehand\Sessions\SessionNavigateResponse;
+use Stagehand\Sessions\SessionObserveResponse;
 use Stagehand\Sessions\SessionStartResponse;
 use Tests\UnsupportedMockTests;
 
@@ -44,8 +46,8 @@ final class SessionsTest extends TestCase
         }
 
         $result = $this->client->sessions->act(
-            '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-            input: 'click the sign in button'
+            'c4dbf3a9-9a58-4b22-8a1c-9f20f9f9e123',
+            input: 'Click the login button'
         );
 
         // @phpstan-ignore-next-line method.alreadyNarrowedType
@@ -63,15 +65,11 @@ final class SessionsTest extends TestCase
             '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
             input: 'click the sign in button',
             options: [
-                'model' => [
-                    'apiKey' => 'apiKey',
-                    'baseURL' => 'https://example.com',
-                    'model' => 'model',
-                    'provider' => 'openai',
-                ],
-                'timeout' => 0,
-                'variables' => ['foo' => 'string'],
+                'model' => 'openai/gpt-5-nano',
+                'timeout' => 30000,
+                'variables' => ['username' => 'john_doe'],
             ],
+            xSentAt: new \DateTimeImmutable('2025-01-15T10:30:00Z'),
             xStreamResponse: 'true',
         );
 
@@ -87,7 +85,7 @@ final class SessionsTest extends TestCase
         }
 
         $result = $this->client->sessions->end(
-            '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'
+            'c4dbf3a9-9a58-4b22-8a1c-9f20f9f9e123'
         );
 
         // @phpstan-ignore-next-line method.alreadyNarrowedType
@@ -95,47 +93,49 @@ final class SessionsTest extends TestCase
     }
 
     #[Test]
-    public function testExecuteAgent(): void
+    public function testExecute(): void
     {
         if (UnsupportedMockTests::$skip) {
             $this->markTestSkipped('Prism tests are disabled');
         }
 
-        $result = $this->client->sessions->executeAgent(
-            '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+        $result = $this->client->sessions->execute(
+            'c4dbf3a9-9a58-4b22-8a1c-9f20f9f9e123',
             agentConfig: [],
-            executeOptions: ['instruction' => 'Find and click the first product'],
+            executeOptions: [
+                'instruction' => 'Log in with username \'demo\' and password \'test123\', then navigate to settings',
+            ],
         );
 
         // @phpstan-ignore-next-line method.alreadyNarrowedType
-        $this->assertInstanceOf(SessionExecuteAgentResponse::class, $result);
+        $this->assertInstanceOf(SessionExecuteResponse::class, $result);
     }
 
     #[Test]
-    public function testExecuteAgentWithOptionalParams(): void
+    public function testExecuteWithOptionalParams(): void
     {
         if (UnsupportedMockTests::$skip) {
             $this->markTestSkipped('Prism tests are disabled');
         }
 
-        $result = $this->client->sessions->executeAgent(
-            '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+        $result = $this->client->sessions->execute(
+            'c4dbf3a9-9a58-4b22-8a1c-9f20f9f9e123',
             agentConfig: [
                 'cua' => true,
-                'model' => 'openai/gpt-4o',
+                'model' => 'openai/gpt-5-nano',
                 'provider' => 'openai',
                 'systemPrompt' => 'systemPrompt',
             ],
             executeOptions: [
-                'instruction' => 'Find and click the first product',
+                'instruction' => 'Log in with username \'demo\' and password \'test123\', then navigate to settings',
                 'highlightCursor' => true,
-                'maxSteps' => 10,
+                'maxSteps' => 20,
             ],
             xStreamResponse: 'true',
         );
 
         // @phpstan-ignore-next-line method.alreadyNarrowedType
-        $this->assertInstanceOf(SessionExecuteAgentResponse::class, $result);
+        $this->assertInstanceOf(SessionExecuteResponse::class, $result);
     }
 
     #[Test]
@@ -146,11 +146,11 @@ final class SessionsTest extends TestCase
         }
 
         $result = $this->client->sessions->extract(
-            '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'
+            'c4dbf3a9-9a58-4b22-8a1c-9f20f9f9e123'
         );
 
         // @phpstan-ignore-next-line method.alreadyNarrowedType
-        $this->assertNotNull($result);
+        $this->assertInstanceOf(SessionExtractResponse::class, $result);
     }
 
     #[Test]
@@ -161,7 +161,7 @@ final class SessionsTest extends TestCase
         }
 
         $result = $this->client->sessions->navigate(
-            '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+            'c4dbf3a9-9a58-4b22-8a1c-9f20f9f9e123',
             url: 'https://example.com'
         );
 
@@ -177,7 +177,7 @@ final class SessionsTest extends TestCase
         }
 
         $result = $this->client->sessions->navigate(
-            '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+            'c4dbf3a9-9a58-4b22-8a1c-9f20f9f9e123',
             url: 'https://example.com',
             options: ['waitUntil' => 'load'],
             xStreamResponse: 'true',
@@ -195,11 +195,11 @@ final class SessionsTest extends TestCase
         }
 
         $result = $this->client->sessions->observe(
-            '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e'
+            'c4dbf3a9-9a58-4b22-8a1c-9f20f9f9e123'
         );
 
         // @phpstan-ignore-next-line method.alreadyNarrowedType
-        $this->assertIsList($result);
+        $this->assertInstanceOf(SessionObserveResponse::class, $result);
     }
 
     #[Test]
@@ -209,10 +209,7 @@ final class SessionsTest extends TestCase
             $this->markTestSkipped('Prism tests are disabled');
         }
 
-        $result = $this->client->sessions->start(
-            browserbaseAPIKey: 'BROWSERBASE_API_KEY',
-            browserbaseProjectID: 'BROWSERBASE_PROJECT_ID',
-        );
+        $result = $this->client->sessions->start(modelName: 'openai/gpt-4o');
 
         // @phpstan-ignore-next-line method.alreadyNarrowedType
         $this->assertInstanceOf(SessionStartResponse::class, $result);
@@ -226,13 +223,78 @@ final class SessionsTest extends TestCase
         }
 
         $result = $this->client->sessions->start(
-            browserbaseAPIKey: 'BROWSERBASE_API_KEY',
-            browserbaseProjectID: 'BROWSERBASE_PROJECT_ID',
-            domSettleTimeout: 0,
-            model: 'openai/gpt-4o',
+            modelName: 'openai/gpt-4o',
+            actTimeoutMs: 0,
+            browser: [
+                'cdpURL' => 'ws://localhost:9222',
+                'launchOptions' => [
+                    'acceptDownloads' => true,
+                    'args' => ['string'],
+                    'cdpURL' => 'cdpUrl',
+                    'chromiumSandbox' => true,
+                    'connectTimeoutMs' => 0,
+                    'deviceScaleFactor' => 0,
+                    'devtools' => true,
+                    'downloadsPath' => 'downloadsPath',
+                    'executablePath' => 'executablePath',
+                    'hasTouch' => true,
+                    'headless' => true,
+                    'ignoreDefaultArgs' => true,
+                    'ignoreHTTPSErrors' => true,
+                    'locale' => 'locale',
+                    'preserveUserDataDir' => true,
+                    'proxy' => [
+                        'server' => 'server',
+                        'bypass' => 'bypass',
+                        'password' => 'password',
+                        'username' => 'username',
+                    ],
+                    'userDataDir' => 'userDataDir',
+                    'viewport' => ['height' => 0, 'width' => 0],
+                ],
+                'type' => 'local',
+            ],
+            browserbaseSessionCreateParams: [
+                'browserSettings' => [
+                    'advancedStealth' => true,
+                    'blockAds' => true,
+                    'context' => ['id' => 'id', 'persist' => true],
+                    'extensionID' => 'extensionId',
+                    'fingerprint' => [
+                        'browsers' => ['chrome'],
+                        'devices' => ['desktop'],
+                        'httpVersion' => '1',
+                        'locales' => ['string'],
+                        'operatingSystems' => ['android'],
+                        'screen' => [
+                            'maxHeight' => 0,
+                            'maxWidth' => 0,
+                            'minHeight' => 0,
+                            'minWidth' => 0,
+                        ],
+                    ],
+                    'logSession' => true,
+                    'recordSession' => true,
+                    'solveCaptchas' => true,
+                    'viewport' => ['height' => 0, 'width' => 0],
+                ],
+                'extensionID' => 'extensionId',
+                'keepAlive' => true,
+                'projectID' => 'projectId',
+                'proxies' => true,
+                'region' => 'us-west-2',
+                'timeout' => 0,
+                'userMetadata' => ['foo' => 'bar'],
+            ],
+            browserbaseSessionID: 'browserbaseSessionID',
+            domSettleTimeoutMs: 5000,
+            experimental: true,
             selfHeal: true,
             systemPrompt: 'systemPrompt',
             verbose: 1,
+            waitForCaptchaSolves: true,
+            xSentAt: new \DateTimeImmutable('2025-01-15T10:30:00Z'),
+            xStreamResponse: 'true',
         );
 
         // @phpstan-ignore-next-line method.alreadyNarrowedType

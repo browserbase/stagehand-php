@@ -9,21 +9,32 @@ use Stagehand\Core\Attributes\Required;
 use Stagehand\Core\Concerns\SdkModel;
 use Stagehand\Core\Concerns\SdkParams;
 use Stagehand\Core\Contracts\BaseModel;
+use Stagehand\Sessions\SessionStartParams\Browser;
+use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams;
+use Stagehand\Sessions\SessionStartParams\XStreamResponse;
 
 /**
- * Initializes a new Stagehand session with a browser instance.
- * Returns a session ID that must be used for all subsequent requests.
+ * Creates a new browser session with the specified configuration. Returns a session ID used for all subsequent operations.
  *
  * @see Stagehand\Services\SessionsService::start()
  *
+ * @phpstan-import-type BrowserShape from \Stagehand\Sessions\SessionStartParams\Browser
+ * @phpstan-import-type BrowserbaseSessionCreateParamsShape from \Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams
+ *
  * @phpstan-type SessionStartParamsShape = array{
- *   browserbaseAPIKey: string,
- *   browserbaseProjectID: string,
- *   domSettleTimeout?: int,
- *   model?: string,
- *   selfHeal?: bool,
- *   systemPrompt?: string,
- *   verbose?: int,
+ *   modelName: string,
+ *   actTimeoutMs?: float|null,
+ *   browser?: null|Browser|BrowserShape,
+ *   browserbaseSessionCreateParams?: null|BrowserbaseSessionCreateParams|BrowserbaseSessionCreateParamsShape,
+ *   browserbaseSessionID?: string|null,
+ *   domSettleTimeoutMs?: float|null,
+ *   experimental?: bool|null,
+ *   selfHeal?: bool|null,
+ *   systemPrompt?: string|null,
+ *   verbose?: float|null,
+ *   waitForCaptchaSolves?: bool|null,
+ *   xSentAt?: \DateTimeInterface|null,
+ *   xStreamResponse?: null|XStreamResponse|value-of<XStreamResponse>,
  * }
  */
 final class SessionStartParams implements BaseModel
@@ -33,28 +44,37 @@ final class SessionStartParams implements BaseModel
     use SdkParams;
 
     /**
-     * API key for Browserbase Cloud.
+     * Model name to use for AI operations.
      */
-    #[Required('BROWSERBASE_API_KEY')]
-    public string $browserbaseAPIKey;
+    #[Required]
+    public string $modelName;
 
     /**
-     * Project ID for Browserbase.
+     * Timeout in ms for act operations (deprecated, v2 only).
      */
-    #[Required('BROWSERBASE_PROJECT_ID')]
-    public string $browserbaseProjectID;
+    #[Optional]
+    public ?float $actTimeoutMs;
+
+    #[Optional]
+    public ?Browser $browser;
+
+    #[Optional]
+    public ?BrowserbaseSessionCreateParams $browserbaseSessionCreateParams;
+
+    /**
+     * Existing Browserbase session ID to resume.
+     */
+    #[Optional]
+    public ?string $browserbaseSessionID;
 
     /**
      * Timeout in ms to wait for DOM to settle.
      */
     #[Optional]
-    public ?int $domSettleTimeout;
+    public ?float $domSettleTimeoutMs;
 
-    /**
-     * AI model to use for actions (must be prefixed with provider/).
-     */
     #[Optional]
-    public ?string $model;
+    public ?bool $experimental;
 
     /**
      * Enable self-healing for failed actions.
@@ -63,31 +83,49 @@ final class SessionStartParams implements BaseModel
     public ?bool $selfHeal;
 
     /**
-     * Custom system prompt for AI actions.
+     * Custom system prompt for AI operations.
      */
     #[Optional]
     public ?string $systemPrompt;
 
     /**
-     * Logging verbosity level.
+     * Logging verbosity level (0=quiet, 1=normal, 2=debug).
      */
     #[Optional]
-    public ?int $verbose;
+    public ?float $verbose;
+
+    /**
+     * Wait for captcha solves (deprecated, v2 only).
+     */
+    #[Optional]
+    public ?bool $waitForCaptchaSolves;
+
+    /**
+     * ISO timestamp when request was sent.
+     */
+    #[Optional]
+    public ?\DateTimeInterface $xSentAt;
+
+    /**
+     * Whether to stream the response via SSE.
+     *
+     * @var value-of<XStreamResponse>|null $xStreamResponse
+     */
+    #[Optional(enum: XStreamResponse::class)]
+    public ?string $xStreamResponse;
 
     /**
      * `new SessionStartParams()` is missing required properties by the API.
      *
      * To enforce required parameters use
      * ```
-     * SessionStartParams::with(browserbaseAPIKey: ..., browserbaseProjectID: ...)
+     * SessionStartParams::with(modelName: ...)
      * ```
      *
      * Otherwise ensure the following setters are called
      *
      * ```
-     * (new SessionStartParams)
-     *   ->withBrowserbaseAPIKey(...)
-     *   ->withBrowserbaseProjectID(...)
+     * (new SessionStartParams)->withModelName(...)
      * ```
      */
     public function __construct()
@@ -99,48 +137,98 @@ final class SessionStartParams implements BaseModel
      * Construct an instance from the required parameters.
      *
      * You must use named parameters to construct any parameters with a default value.
+     *
+     * @param Browser|BrowserShape|null $browser
+     * @param BrowserbaseSessionCreateParams|BrowserbaseSessionCreateParamsShape|null $browserbaseSessionCreateParams
+     * @param XStreamResponse|value-of<XStreamResponse>|null $xStreamResponse
      */
     public static function with(
-        string $browserbaseAPIKey,
-        string $browserbaseProjectID,
-        ?int $domSettleTimeout = null,
-        ?string $model = null,
+        string $modelName,
+        ?float $actTimeoutMs = null,
+        Browser|array|null $browser = null,
+        BrowserbaseSessionCreateParams|array|null $browserbaseSessionCreateParams = null,
+        ?string $browserbaseSessionID = null,
+        ?float $domSettleTimeoutMs = null,
+        ?bool $experimental = null,
         ?bool $selfHeal = null,
         ?string $systemPrompt = null,
-        ?int $verbose = null,
+        ?float $verbose = null,
+        ?bool $waitForCaptchaSolves = null,
+        ?\DateTimeInterface $xSentAt = null,
+        XStreamResponse|string|null $xStreamResponse = null,
     ): self {
         $self = new self;
 
-        $self['browserbaseAPIKey'] = $browserbaseAPIKey;
-        $self['browserbaseProjectID'] = $browserbaseProjectID;
+        $self['modelName'] = $modelName;
 
-        null !== $domSettleTimeout && $self['domSettleTimeout'] = $domSettleTimeout;
-        null !== $model && $self['model'] = $model;
+        null !== $actTimeoutMs && $self['actTimeoutMs'] = $actTimeoutMs;
+        null !== $browser && $self['browser'] = $browser;
+        null !== $browserbaseSessionCreateParams && $self['browserbaseSessionCreateParams'] = $browserbaseSessionCreateParams;
+        null !== $browserbaseSessionID && $self['browserbaseSessionID'] = $browserbaseSessionID;
+        null !== $domSettleTimeoutMs && $self['domSettleTimeoutMs'] = $domSettleTimeoutMs;
+        null !== $experimental && $self['experimental'] = $experimental;
         null !== $selfHeal && $self['selfHeal'] = $selfHeal;
         null !== $systemPrompt && $self['systemPrompt'] = $systemPrompt;
         null !== $verbose && $self['verbose'] = $verbose;
+        null !== $waitForCaptchaSolves && $self['waitForCaptchaSolves'] = $waitForCaptchaSolves;
+        null !== $xSentAt && $self['xSentAt'] = $xSentAt;
+        null !== $xStreamResponse && $self['xStreamResponse'] = $xStreamResponse;
 
         return $self;
     }
 
     /**
-     * API key for Browserbase Cloud.
+     * Model name to use for AI operations.
      */
-    public function withBrowserbaseAPIKey(string $browserbaseAPIKey): self
+    public function withModelName(string $modelName): self
     {
         $self = clone $this;
-        $self['browserbaseAPIKey'] = $browserbaseAPIKey;
+        $self['modelName'] = $modelName;
 
         return $self;
     }
 
     /**
-     * Project ID for Browserbase.
+     * Timeout in ms for act operations (deprecated, v2 only).
      */
-    public function withBrowserbaseProjectID(string $browserbaseProjectID): self
+    public function withActTimeoutMs(float $actTimeoutMs): self
     {
         $self = clone $this;
-        $self['browserbaseProjectID'] = $browserbaseProjectID;
+        $self['actTimeoutMs'] = $actTimeoutMs;
+
+        return $self;
+    }
+
+    /**
+     * @param Browser|BrowserShape $browser
+     */
+    public function withBrowser(Browser|array $browser): self
+    {
+        $self = clone $this;
+        $self['browser'] = $browser;
+
+        return $self;
+    }
+
+    /**
+     * @param BrowserbaseSessionCreateParams|BrowserbaseSessionCreateParamsShape $browserbaseSessionCreateParams
+     */
+    public function withBrowserbaseSessionCreateParams(
+        BrowserbaseSessionCreateParams|array $browserbaseSessionCreateParams
+    ): self {
+        $self = clone $this;
+        $self['browserbaseSessionCreateParams'] = $browserbaseSessionCreateParams;
+
+        return $self;
+    }
+
+    /**
+     * Existing Browserbase session ID to resume.
+     */
+    public function withBrowserbaseSessionID(string $browserbaseSessionID): self
+    {
+        $self = clone $this;
+        $self['browserbaseSessionID'] = $browserbaseSessionID;
 
         return $self;
     }
@@ -148,21 +236,18 @@ final class SessionStartParams implements BaseModel
     /**
      * Timeout in ms to wait for DOM to settle.
      */
-    public function withDomSettleTimeout(int $domSettleTimeout): self
+    public function withDomSettleTimeoutMs(float $domSettleTimeoutMs): self
     {
         $self = clone $this;
-        $self['domSettleTimeout'] = $domSettleTimeout;
+        $self['domSettleTimeoutMs'] = $domSettleTimeoutMs;
 
         return $self;
     }
 
-    /**
-     * AI model to use for actions (must be prefixed with provider/).
-     */
-    public function withModel(string $model): self
+    public function withExperimental(bool $experimental): self
     {
         $self = clone $this;
-        $self['model'] = $model;
+        $self['experimental'] = $experimental;
 
         return $self;
     }
@@ -179,7 +264,7 @@ final class SessionStartParams implements BaseModel
     }
 
     /**
-     * Custom system prompt for AI actions.
+     * Custom system prompt for AI operations.
      */
     public function withSystemPrompt(string $systemPrompt): self
     {
@@ -190,12 +275,48 @@ final class SessionStartParams implements BaseModel
     }
 
     /**
-     * Logging verbosity level.
+     * Logging verbosity level (0=quiet, 1=normal, 2=debug).
      */
-    public function withVerbose(int $verbose): self
+    public function withVerbose(float $verbose): self
     {
         $self = clone $this;
         $self['verbose'] = $verbose;
+
+        return $self;
+    }
+
+    /**
+     * Wait for captcha solves (deprecated, v2 only).
+     */
+    public function withWaitForCaptchaSolves(bool $waitForCaptchaSolves): self
+    {
+        $self = clone $this;
+        $self['waitForCaptchaSolves'] = $waitForCaptchaSolves;
+
+        return $self;
+    }
+
+    /**
+     * ISO timestamp when request was sent.
+     */
+    public function withXSentAt(\DateTimeInterface $xSentAt): self
+    {
+        $self = clone $this;
+        $self['xSentAt'] = $xSentAt;
+
+        return $self;
+    }
+
+    /**
+     * Whether to stream the response via SSE.
+     *
+     * @param XStreamResponse|value-of<XStreamResponse> $xStreamResponse
+     */
+    public function withXStreamResponse(
+        XStreamResponse|string $xStreamResponse
+    ): self {
+        $self = clone $this;
+        $self['xStreamResponse'] = $xStreamResponse;
 
         return $self;
     }

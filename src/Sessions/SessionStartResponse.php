@@ -7,10 +7,13 @@ namespace Stagehand\Sessions;
 use Stagehand\Core\Attributes\Required;
 use Stagehand\Core\Concerns\SdkModel;
 use Stagehand\Core\Contracts\BaseModel;
+use Stagehand\Sessions\SessionStartResponse\Data;
 
 /**
+ * @phpstan-import-type DataShape from \Stagehand\Sessions\SessionStartResponse\Data
+ *
  * @phpstan-type SessionStartResponseShape = array{
- *   available: bool, sessionID: string
+ *   data: Data|DataShape, success: bool
  * }
  */
 final class SessionStartResponse implements BaseModel
@@ -18,30 +21,27 @@ final class SessionStartResponse implements BaseModel
     /** @use SdkModel<SessionStartResponseShape> */
     use SdkModel;
 
-    /**
-     * Whether the session is ready to use.
-     */
     #[Required]
-    public bool $available;
+    public Data $data;
 
     /**
-     * Unique identifier for the session.
+     * Indicates whether the request was successful.
      */
-    #[Required('sessionId')]
-    public string $sessionID;
+    #[Required]
+    public bool $success;
 
     /**
      * `new SessionStartResponse()` is missing required properties by the API.
      *
      * To enforce required parameters use
      * ```
-     * SessionStartResponse::with(available: ..., sessionID: ...)
+     * SessionStartResponse::with(data: ..., success: ...)
      * ```
      *
      * Otherwise ensure the following setters are called
      *
      * ```
-     * (new SessionStartResponse)->withAvailable(...)->withSessionID(...)
+     * (new SessionStartResponse)->withData(...)->withSuccess(...)
      * ```
      */
     public function __construct()
@@ -53,35 +53,37 @@ final class SessionStartResponse implements BaseModel
      * Construct an instance from the required parameters.
      *
      * You must use named parameters to construct any parameters with a default value.
+     *
+     * @param Data|DataShape $data
      */
-    public static function with(bool $available, string $sessionID): self
+    public static function with(Data|array $data, bool $success): self
     {
         $self = new self;
 
-        $self['available'] = $available;
-        $self['sessionID'] = $sessionID;
+        $self['data'] = $data;
+        $self['success'] = $success;
 
         return $self;
     }
 
     /**
-     * Whether the session is ready to use.
+     * @param Data|DataShape $data
      */
-    public function withAvailable(bool $available): self
+    public function withData(Data|array $data): self
     {
         $self = clone $this;
-        $self['available'] = $available;
+        $self['data'] = $data;
 
         return $self;
     }
 
     /**
-     * Unique identifier for the session.
+     * Indicates whether the request was successful.
      */
-    public function withSessionID(string $sessionID): self
+    public function withSuccess(bool $success): self
     {
         $self = clone $this;
-        $self['sessionID'] = $sessionID;
+        $self['success'] = $success;
 
         return $self;
     }

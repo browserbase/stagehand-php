@@ -7,13 +7,15 @@ namespace Stagehand\Sessions\SessionActParams;
 use Stagehand\Core\Attributes\Optional;
 use Stagehand\Core\Concerns\SdkModel;
 use Stagehand\Core\Contracts\BaseModel;
-use Stagehand\Sessions\ModelConfig;
-use Stagehand\Sessions\ModelConfig\Provider;
+use Stagehand\Sessions\ModelConfig\ModelConfigObject;
 
 /**
+ * @phpstan-import-type ModelConfigVariants from \Stagehand\Sessions\ModelConfig
+ * @phpstan-import-type ModelConfigShape from \Stagehand\Sessions\ModelConfig
+ *
  * @phpstan-type OptionsShape = array{
- *   model?: ModelConfig|null,
- *   timeout?: int|null,
+ *   model?: ModelConfigShape|null,
+ *   timeout?: float|null,
  *   variables?: array<string,string>|null,
  * }
  */
@@ -22,17 +24,22 @@ final class Options implements BaseModel
     /** @use SdkModel<OptionsShape> */
     use SdkModel;
 
-    #[Optional]
-    public ?ModelConfig $model;
-
     /**
-     * Timeout in milliseconds.
+     * Model name string with provider prefix (e.g., 'openai/gpt-5-nano', 'anthropic/claude-4.5-opus').
+     *
+     * @var ModelConfigVariants|null $model
      */
     #[Optional]
-    public ?int $timeout;
+    public string|ModelConfigObject|null $model;
 
     /**
-     * Template variables for instruction.
+     * Timeout in ms for the action.
+     */
+    #[Optional]
+    public ?float $timeout;
+
+    /**
+     * Variables to substitute in the action instruction.
      *
      * @var array<string,string>|null $variables
      */
@@ -49,17 +56,12 @@ final class Options implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
-     * @param ModelConfig|array{
-     *   apiKey?: string|null,
-     *   baseURL?: string|null,
-     *   model?: string|null,
-     *   provider?: value-of<Provider>|null,
-     * } $model
-     * @param array<string,string> $variables
+     * @param ModelConfigShape|null $model
+     * @param array<string,string>|null $variables
      */
     public static function with(
-        ModelConfig|array|null $model = null,
-        ?int $timeout = null,
+        string|ModelConfigObject|array|null $model = null,
+        ?float $timeout = null,
         ?array $variables = null,
     ): self {
         $self = new self;
@@ -72,14 +74,11 @@ final class Options implements BaseModel
     }
 
     /**
-     * @param ModelConfig|array{
-     *   apiKey?: string|null,
-     *   baseURL?: string|null,
-     *   model?: string|null,
-     *   provider?: value-of<Provider>|null,
-     * } $model
+     * Model name string with provider prefix (e.g., 'openai/gpt-5-nano', 'anthropic/claude-4.5-opus').
+     *
+     * @param ModelConfigShape $model
      */
-    public function withModel(ModelConfig|array $model): self
+    public function withModel(string|ModelConfigObject|array $model): self
     {
         $self = clone $this;
         $self['model'] = $model;
@@ -88,9 +87,9 @@ final class Options implements BaseModel
     }
 
     /**
-     * Timeout in milliseconds.
+     * Timeout in ms for the action.
      */
-    public function withTimeout(int $timeout): self
+    public function withTimeout(float $timeout): self
     {
         $self = clone $this;
         $self['timeout'] = $timeout;
@@ -99,7 +98,7 @@ final class Options implements BaseModel
     }
 
     /**
-     * Template variables for instruction.
+     * Variables to substitute in the action instruction.
      *
      * @param array<string,string> $variables
      */

@@ -10,12 +10,28 @@ use Stagehand\Core\Contracts\BaseModel;
 use Stagehand\Sessions\SessionNavigateParams\Options\WaitUntil;
 
 /**
- * @phpstan-type OptionsShape = array{waitUntil?: value-of<WaitUntil>|null}
+ * @phpstan-type OptionsShape = array{
+ *   referer?: string|null,
+ *   timeout?: float|null,
+ *   waitUntil?: null|WaitUntil|value-of<WaitUntil>,
+ * }
  */
 final class Options implements BaseModel
 {
     /** @use SdkModel<OptionsShape> */
     use SdkModel;
+
+    /**
+     * Referer header to send with the request.
+     */
+    #[Optional]
+    public ?string $referer;
+
+    /**
+     * Timeout in ms for the navigation.
+     */
+    #[Optional]
+    public ?float $timeout;
 
     /**
      * When to consider navigation complete.
@@ -35,13 +51,40 @@ final class Options implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
-     * @param WaitUntil|value-of<WaitUntil> $waitUntil
+     * @param WaitUntil|value-of<WaitUntil>|null $waitUntil
      */
-    public static function with(WaitUntil|string|null $waitUntil = null): self
-    {
+    public static function with(
+        ?string $referer = null,
+        ?float $timeout = null,
+        WaitUntil|string|null $waitUntil = null,
+    ): self {
         $self = new self;
 
+        null !== $referer && $self['referer'] = $referer;
+        null !== $timeout && $self['timeout'] = $timeout;
         null !== $waitUntil && $self['waitUntil'] = $waitUntil;
+
+        return $self;
+    }
+
+    /**
+     * Referer header to send with the request.
+     */
+    public function withReferer(string $referer): self
+    {
+        $self = clone $this;
+        $self['referer'] = $referer;
+
+        return $self;
+    }
+
+    /**
+     * Timeout in ms for the navigation.
+     */
+    public function withTimeout(float $timeout): self
+    {
+        $self = clone $this;
+        $self['timeout'] = $timeout;
 
         return $self;
     }

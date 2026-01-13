@@ -12,12 +12,9 @@ use Stagehand\Core\Attributes\Optional;
 use Stagehand\Core\Attributes\Required as Property;
 use Stagehand\Core\Concerns\SdkModel;
 use Stagehand\Core\Contracts\BaseModel;
-use Stagehand\Core\Implementation\Omit;
-
-use const Stagehand\Core\OMIT as omit;
 
 /**
- * @phpstan-type request_options = array{
+ * @phpstan-type RequestOptionShape = array{
  *   timeout?: float|null,
  *   maxRetries?: int|null,
  *   initialRetryDelay?: float|null,
@@ -30,11 +27,11 @@ use const Stagehand\Core\OMIT as omit;
  *   streamFactory?: StreamFactoryInterface|null,
  *   requestFactory?: RequestFactoryInterface|null,
  * }
- * @phpstan-type request_opts = null|RequestOptions|request_options
+ * @phpstan-type RequestOpts = null|RequestOptions|RequestOptionShape
  */
 final class RequestOptions implements BaseModel
 {
-    /** @use SdkModel<request_options> */
+    /** @use SdkModel<RequestOptionShape> */
     use SdkModel;
 
     #[Property]
@@ -78,7 +75,7 @@ final class RequestOptions implements BaseModel
     }
 
     /**
-     * @param request_opts|null $options
+     * @param RequestOpts|null $options
      */
     public static function parse(RequestOptions|array|null ...$options): self
     {
@@ -91,7 +88,6 @@ final class RequestOptions implements BaseModel
     /**
      * @param array<string,string|int|list<string|int>|null>|null $extraHeaders
      * @param array<string,mixed>|null $extraQueryParams
-     * @param mixed|Omit $extraBodyParams
      */
     public static function with(
         ?float $timeout = null,
@@ -100,7 +96,7 @@ final class RequestOptions implements BaseModel
         ?float $maxRetryDelay = null,
         ?array $extraHeaders = null,
         ?array $extraQueryParams = null,
-        mixed $extraBodyParams = omit,
+        mixed $extraBodyParams = null,
         ?ClientInterface $transporter = null,
         ?UriFactoryInterface $uriFactory = null,
         ?StreamFactoryInterface $streamFactory = null,
@@ -116,7 +112,7 @@ final class RequestOptions implements BaseModel
         null !== $maxRetryDelay && $self->maxRetryDelay = $maxRetryDelay;
         null !== $extraHeaders && $self->extraHeaders = $extraHeaders;
         null !== $extraQueryParams && $self->extraQueryParams = $extraQueryParams;
-        omit !== $extraBodyParams && $self->extraBodyParams = $extraBodyParams;
+        null !== $extraBodyParams && $self->extraBodyParams = $extraBodyParams;
         null !== $transporter && $self->transporter = $transporter;
         null !== $uriFactory && $self->uriFactory = $uriFactory;
         null !== $streamFactory && $self->streamFactory = $streamFactory;

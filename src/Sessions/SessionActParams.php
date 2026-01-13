@@ -13,26 +13,20 @@ use Stagehand\Sessions\SessionActParams\Options;
 use Stagehand\Sessions\SessionActParams\XStreamResponse;
 
 /**
- * Performs a browser action based on natural language instruction or
- * a specific action object returned by observe().
+ * Executes a browser action using natural language instructions or a predefined Action object.
  *
  * @see Stagehand\Services\SessionsService::act()
  *
+ * @phpstan-import-type InputVariants from \Stagehand\Sessions\SessionActParams\Input
+ * @phpstan-import-type InputShape from \Stagehand\Sessions\SessionActParams\Input
+ * @phpstan-import-type OptionsShape from \Stagehand\Sessions\SessionActParams\Options
+ *
  * @phpstan-type SessionActParamsShape = array{
- *   input: string|Action|array{
- *     arguments: list<string>,
- *     description: string,
- *     method: string,
- *     selector: string,
- *     backendNodeID?: int|null,
- *   },
- *   frameID?: string,
- *   options?: Options|array{
- *     model?: ModelConfig|null,
- *     timeout?: int|null,
- *     variables?: array<string,string>|null,
- *   },
- *   xStreamResponse?: XStreamResponse|value-of<XStreamResponse>,
+ *   input: InputShape,
+ *   frameID?: string|null,
+ *   options?: null|Options|OptionsShape,
+ *   xSentAt?: \DateTimeInterface|null,
+ *   xStreamResponse?: null|XStreamResponse|value-of<XStreamResponse>,
  * }
  */
 final class SessionActParams implements BaseModel
@@ -42,13 +36,15 @@ final class SessionActParams implements BaseModel
     use SdkParams;
 
     /**
-     * Natural language instruction.
+     * Natural language instruction or Action object.
+     *
+     * @var InputVariants $input
      */
     #[Required]
     public string|Action $input;
 
     /**
-     * Frame ID to act on (optional).
+     * Target frame ID for the action.
      */
     #[Optional('frameId')]
     public ?string $frameID;
@@ -56,7 +52,17 @@ final class SessionActParams implements BaseModel
     #[Optional]
     public ?Options $options;
 
-    /** @var value-of<XStreamResponse>|null $xStreamResponse */
+    /**
+     * ISO timestamp when request was sent.
+     */
+    #[Optional]
+    public ?\DateTimeInterface $xSentAt;
+
+    /**
+     * Whether to stream the response via SSE.
+     *
+     * @var value-of<XStreamResponse>|null $xStreamResponse
+     */
     #[Optional(enum: XStreamResponse::class)]
     public ?string $xStreamResponse;
 
@@ -84,24 +90,15 @@ final class SessionActParams implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
-     * @param string|Action|array{
-     *   arguments: list<string>,
-     *   description: string,
-     *   method: string,
-     *   selector: string,
-     *   backendNodeID?: int|null,
-     * } $input
-     * @param Options|array{
-     *   model?: ModelConfig|null,
-     *   timeout?: int|null,
-     *   variables?: array<string,string>|null,
-     * } $options
-     * @param XStreamResponse|value-of<XStreamResponse> $xStreamResponse
+     * @param InputShape $input
+     * @param Options|OptionsShape|null $options
+     * @param XStreamResponse|value-of<XStreamResponse>|null $xStreamResponse
      */
     public static function with(
         string|Action|array $input,
         ?string $frameID = null,
         Options|array|null $options = null,
+        ?\DateTimeInterface $xSentAt = null,
         XStreamResponse|string|null $xStreamResponse = null,
     ): self {
         $self = new self;
@@ -110,21 +107,16 @@ final class SessionActParams implements BaseModel
 
         null !== $frameID && $self['frameID'] = $frameID;
         null !== $options && $self['options'] = $options;
+        null !== $xSentAt && $self['xSentAt'] = $xSentAt;
         null !== $xStreamResponse && $self['xStreamResponse'] = $xStreamResponse;
 
         return $self;
     }
 
     /**
-     * Natural language instruction.
+     * Natural language instruction or Action object.
      *
-     * @param string|Action|array{
-     *   arguments: list<string>,
-     *   description: string,
-     *   method: string,
-     *   selector: string,
-     *   backendNodeID?: int|null,
-     * } $input
+     * @param InputShape $input
      */
     public function withInput(string|Action|array $input): self
     {
@@ -135,7 +127,7 @@ final class SessionActParams implements BaseModel
     }
 
     /**
-     * Frame ID to act on (optional).
+     * Target frame ID for the action.
      */
     public function withFrameID(string $frameID): self
     {
@@ -146,11 +138,7 @@ final class SessionActParams implements BaseModel
     }
 
     /**
-     * @param Options|array{
-     *   model?: ModelConfig|null,
-     *   timeout?: int|null,
-     *   variables?: array<string,string>|null,
-     * } $options
+     * @param Options|OptionsShape $options
      */
     public function withOptions(Options|array $options): self
     {
@@ -161,6 +149,19 @@ final class SessionActParams implements BaseModel
     }
 
     /**
+     * ISO timestamp when request was sent.
+     */
+    public function withXSentAt(\DateTimeInterface $xSentAt): self
+    {
+        $self = clone $this;
+        $self['xSentAt'] = $xSentAt;
+
+        return $self;
+    }
+
+    /**
+     * Whether to stream the response via SSE.
+     *
      * @param XStreamResponse|value-of<XStreamResponse> $xStreamResponse
      */
     public function withXStreamResponse(

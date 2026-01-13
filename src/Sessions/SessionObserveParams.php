@@ -12,18 +12,18 @@ use Stagehand\Sessions\SessionObserveParams\Options;
 use Stagehand\Sessions\SessionObserveParams\XStreamResponse;
 
 /**
- * Returns a list of candidate actions that can be performed on the page,
- * optionally filtered by natural language instruction.
+ * Identifies and returns available actions on the current page that match the given instruction.
  *
  * @see Stagehand\Services\SessionsService::observe()
  *
+ * @phpstan-import-type OptionsShape from \Stagehand\Sessions\SessionObserveParams\Options
+ *
  * @phpstan-type SessionObserveParamsShape = array{
- *   frameID?: string,
- *   instruction?: string,
- *   options?: Options|array{
- *     model?: ModelConfig|null, selector?: string|null, timeout?: int|null
- *   },
- *   xStreamResponse?: XStreamResponse|value-of<XStreamResponse>,
+ *   frameID?: string|null,
+ *   instruction?: string|null,
+ *   options?: null|Options|OptionsShape,
+ *   xSentAt?: \DateTimeInterface|null,
+ *   xStreamResponse?: null|XStreamResponse|value-of<XStreamResponse>,
  * }
  */
 final class SessionObserveParams implements BaseModel
@@ -33,13 +33,13 @@ final class SessionObserveParams implements BaseModel
     use SdkParams;
 
     /**
-     * Frame ID to observe.
+     * Target frame ID for the observation.
      */
     #[Optional('frameId')]
     public ?string $frameID;
 
     /**
-     * Natural language instruction to filter actions.
+     * Natural language instruction for what actions to find.
      */
     #[Optional]
     public ?string $instruction;
@@ -47,7 +47,17 @@ final class SessionObserveParams implements BaseModel
     #[Optional]
     public ?Options $options;
 
-    /** @var value-of<XStreamResponse>|null $xStreamResponse */
+    /**
+     * ISO timestamp when request was sent.
+     */
+    #[Optional]
+    public ?\DateTimeInterface $xSentAt;
+
+    /**
+     * Whether to stream the response via SSE.
+     *
+     * @var value-of<XStreamResponse>|null $xStreamResponse
+     */
     #[Optional(enum: XStreamResponse::class)]
     public ?string $xStreamResponse;
 
@@ -61,15 +71,14 @@ final class SessionObserveParams implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
-     * @param Options|array{
-     *   model?: ModelConfig|null, selector?: string|null, timeout?: int|null
-     * } $options
-     * @param XStreamResponse|value-of<XStreamResponse> $xStreamResponse
+     * @param Options|OptionsShape|null $options
+     * @param XStreamResponse|value-of<XStreamResponse>|null $xStreamResponse
      */
     public static function with(
         ?string $frameID = null,
         ?string $instruction = null,
         Options|array|null $options = null,
+        ?\DateTimeInterface $xSentAt = null,
         XStreamResponse|string|null $xStreamResponse = null,
     ): self {
         $self = new self;
@@ -77,13 +86,14 @@ final class SessionObserveParams implements BaseModel
         null !== $frameID && $self['frameID'] = $frameID;
         null !== $instruction && $self['instruction'] = $instruction;
         null !== $options && $self['options'] = $options;
+        null !== $xSentAt && $self['xSentAt'] = $xSentAt;
         null !== $xStreamResponse && $self['xStreamResponse'] = $xStreamResponse;
 
         return $self;
     }
 
     /**
-     * Frame ID to observe.
+     * Target frame ID for the observation.
      */
     public function withFrameID(string $frameID): self
     {
@@ -94,7 +104,7 @@ final class SessionObserveParams implements BaseModel
     }
 
     /**
-     * Natural language instruction to filter actions.
+     * Natural language instruction for what actions to find.
      */
     public function withInstruction(string $instruction): self
     {
@@ -105,9 +115,7 @@ final class SessionObserveParams implements BaseModel
     }
 
     /**
-     * @param Options|array{
-     *   model?: ModelConfig|null, selector?: string|null, timeout?: int|null
-     * } $options
+     * @param Options|OptionsShape $options
      */
     public function withOptions(Options|array $options): self
     {
@@ -118,6 +126,19 @@ final class SessionObserveParams implements BaseModel
     }
 
     /**
+     * ISO timestamp when request was sent.
+     */
+    public function withXSentAt(\DateTimeInterface $xSentAt): self
+    {
+        $self = clone $this;
+        $self['xSentAt'] = $xSentAt;
+
+        return $self;
+    }
+
+    /**
+     * Whether to stream the response via SSE.
+     *
      * @param XStreamResponse|value-of<XStreamResponse> $xStreamResponse
      */
     public function withXStreamResponse(
