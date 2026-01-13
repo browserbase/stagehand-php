@@ -9,34 +9,29 @@ use Stagehand\Core\Attributes\Required;
 use Stagehand\Core\Concerns\SdkModel;
 use Stagehand\Core\Concerns\SdkParams;
 use Stagehand\Core\Contracts\BaseModel;
-use Stagehand\Sessions\SessionExecuteAgentParams\AgentConfig;
-use Stagehand\Sessions\SessionExecuteAgentParams\AgentConfig\Provider;
-use Stagehand\Sessions\SessionExecuteAgentParams\ExecuteOptions;
-use Stagehand\Sessions\SessionExecuteAgentParams\XStreamResponse;
+use Stagehand\Sessions\SessionExecuteParams\AgentConfig;
+use Stagehand\Sessions\SessionExecuteParams\ExecuteOptions;
+use Stagehand\Sessions\SessionExecuteParams\XStreamResponse;
 
 /**
- * Runs an autonomous agent that can perform multiple actions to
- * complete a complex task.
+ * Runs an autonomous AI agent that can perform complex multi-step browser tasks.
  *
- * @see Stagehand\Services\SessionsService::executeAgent()
+ * @see Stagehand\Services\SessionsService::execute()
  *
- * @phpstan-type SessionExecuteAgentParamsShape = array{
- *   agentConfig: AgentConfig|array{
- *     cua?: bool|null,
- *     model?: string|null|ModelConfig,
- *     provider?: value-of<Provider>|null,
- *     systemPrompt?: string|null,
- *   },
- *   executeOptions: ExecuteOptions|array{
- *     instruction: string, highlightCursor?: bool|null, maxSteps?: int|null
- *   },
- *   frameID?: string,
- *   xStreamResponse?: XStreamResponse|value-of<XStreamResponse>,
+ * @phpstan-import-type AgentConfigShape from \Stagehand\Sessions\SessionExecuteParams\AgentConfig
+ * @phpstan-import-type ExecuteOptionsShape from \Stagehand\Sessions\SessionExecuteParams\ExecuteOptions
+ *
+ * @phpstan-type SessionExecuteParamsShape = array{
+ *   agentConfig: AgentConfig|AgentConfigShape,
+ *   executeOptions: ExecuteOptions|ExecuteOptionsShape,
+ *   frameID?: string|null,
+ *   xSentAt?: \DateTimeInterface|null,
+ *   xStreamResponse?: null|XStreamResponse|value-of<XStreamResponse>,
  * }
  */
-final class SessionExecuteAgentParams implements BaseModel
+final class SessionExecuteParams implements BaseModel
 {
-    /** @use SdkModel<SessionExecuteAgentParamsShape> */
+    /** @use SdkModel<SessionExecuteParamsShape> */
     use SdkModel;
     use SdkParams;
 
@@ -46,25 +41,38 @@ final class SessionExecuteAgentParams implements BaseModel
     #[Required]
     public ExecuteOptions $executeOptions;
 
+    /**
+     * Target frame ID for the agent.
+     */
     #[Optional('frameId')]
     public ?string $frameID;
 
-    /** @var value-of<XStreamResponse>|null $xStreamResponse */
+    /**
+     * ISO timestamp when request was sent.
+     */
+    #[Optional]
+    public ?\DateTimeInterface $xSentAt;
+
+    /**
+     * Whether to stream the response via SSE.
+     *
+     * @var value-of<XStreamResponse>|null $xStreamResponse
+     */
     #[Optional(enum: XStreamResponse::class)]
     public ?string $xStreamResponse;
 
     /**
-     * `new SessionExecuteAgentParams()` is missing required properties by the API.
+     * `new SessionExecuteParams()` is missing required properties by the API.
      *
      * To enforce required parameters use
      * ```
-     * SessionExecuteAgentParams::with(agentConfig: ..., executeOptions: ...)
+     * SessionExecuteParams::with(agentConfig: ..., executeOptions: ...)
      * ```
      *
      * Otherwise ensure the following setters are called
      *
      * ```
-     * (new SessionExecuteAgentParams)->withAgentConfig(...)->withExecuteOptions(...)
+     * (new SessionExecuteParams)->withAgentConfig(...)->withExecuteOptions(...)
      * ```
      */
     public function __construct()
@@ -77,21 +85,15 @@ final class SessionExecuteAgentParams implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
-     * @param AgentConfig|array{
-     *   cua?: bool|null,
-     *   model?: string|ModelConfig|null,
-     *   provider?: value-of<Provider>|null,
-     *   systemPrompt?: string|null,
-     * } $agentConfig
-     * @param ExecuteOptions|array{
-     *   instruction: string, highlightCursor?: bool|null, maxSteps?: int|null
-     * } $executeOptions
-     * @param XStreamResponse|value-of<XStreamResponse> $xStreamResponse
+     * @param AgentConfig|AgentConfigShape $agentConfig
+     * @param ExecuteOptions|ExecuteOptionsShape $executeOptions
+     * @param XStreamResponse|value-of<XStreamResponse>|null $xStreamResponse
      */
     public static function with(
         AgentConfig|array $agentConfig,
         ExecuteOptions|array $executeOptions,
         ?string $frameID = null,
+        ?\DateTimeInterface $xSentAt = null,
         XStreamResponse|string|null $xStreamResponse = null,
     ): self {
         $self = new self;
@@ -100,18 +102,14 @@ final class SessionExecuteAgentParams implements BaseModel
         $self['executeOptions'] = $executeOptions;
 
         null !== $frameID && $self['frameID'] = $frameID;
+        null !== $xSentAt && $self['xSentAt'] = $xSentAt;
         null !== $xStreamResponse && $self['xStreamResponse'] = $xStreamResponse;
 
         return $self;
     }
 
     /**
-     * @param AgentConfig|array{
-     *   cua?: bool|null,
-     *   model?: string|ModelConfig|null,
-     *   provider?: value-of<Provider>|null,
-     *   systemPrompt?: string|null,
-     * } $agentConfig
+     * @param AgentConfig|AgentConfigShape $agentConfig
      */
     public function withAgentConfig(AgentConfig|array $agentConfig): self
     {
@@ -122,9 +120,7 @@ final class SessionExecuteAgentParams implements BaseModel
     }
 
     /**
-     * @param ExecuteOptions|array{
-     *   instruction: string, highlightCursor?: bool|null, maxSteps?: int|null
-     * } $executeOptions
+     * @param ExecuteOptions|ExecuteOptionsShape $executeOptions
      */
     public function withExecuteOptions(
         ExecuteOptions|array $executeOptions
@@ -135,6 +131,9 @@ final class SessionExecuteAgentParams implements BaseModel
         return $self;
     }
 
+    /**
+     * Target frame ID for the agent.
+     */
     public function withFrameID(string $frameID): self
     {
         $self = clone $this;
@@ -144,6 +143,19 @@ final class SessionExecuteAgentParams implements BaseModel
     }
 
     /**
+     * ISO timestamp when request was sent.
+     */
+    public function withXSentAt(\DateTimeInterface $xSentAt): self
+    {
+        $self = clone $this;
+        $self['xSentAt'] = $xSentAt;
+
+        return $self;
+    }
+
+    /**
+     * Whether to stream the response via SSE.
+     *
      * @param XStreamResponse|value-of<XStreamResponse> $xStreamResponse
      */
     public function withXStreamResponse(

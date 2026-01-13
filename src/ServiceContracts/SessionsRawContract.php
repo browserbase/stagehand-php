@@ -5,122 +5,205 @@ declare(strict_types=1);
 namespace Stagehand\ServiceContracts;
 
 use Stagehand\Core\Contracts\BaseResponse;
+use Stagehand\Core\Contracts\BaseStream;
 use Stagehand\Core\Exceptions\APIException;
 use Stagehand\RequestOptions;
-use Stagehand\Sessions\Action;
 use Stagehand\Sessions\SessionActParams;
 use Stagehand\Sessions\SessionActResponse;
+use Stagehand\Sessions\SessionEndParams;
 use Stagehand\Sessions\SessionEndResponse;
-use Stagehand\Sessions\SessionExecuteAgentParams;
-use Stagehand\Sessions\SessionExecuteAgentResponse;
+use Stagehand\Sessions\SessionExecuteParams;
+use Stagehand\Sessions\SessionExecuteResponse;
 use Stagehand\Sessions\SessionExtractParams;
-use Stagehand\Sessions\SessionExtractResponse\Extraction;
+use Stagehand\Sessions\SessionExtractResponse;
 use Stagehand\Sessions\SessionNavigateParams;
 use Stagehand\Sessions\SessionNavigateResponse;
 use Stagehand\Sessions\SessionObserveParams;
+use Stagehand\Sessions\SessionObserveResponse;
 use Stagehand\Sessions\SessionStartParams;
 use Stagehand\Sessions\SessionStartResponse;
+use Stagehand\Sessions\StreamEvent;
 
+/**
+ * @phpstan-import-type RequestOpts from \Stagehand\RequestOptions
+ */
 interface SessionsRawContract
 {
     /**
      * @api
      *
-     * @param string $sessionID Path param: The session ID returned by /sessions/start
-     * @param array<mixed>|SessionActParams $params
+     * @param string $id Path param: Unique session identifier
+     * @param array<string,mixed>|SessionActParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<SessionActResponse>
      *
      * @throws APIException
      */
     public function act(
-        string $sessionID,
+        string $id,
         array|SessionActParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
      * @api
      *
-     * @param string $sessionID The session ID returned by /sessions/start
+     * @param string $id Path param: Unique session identifier
+     * @param array<string,mixed>|SessionActParams $params
+     * @param RequestOpts|null $requestOptions
+     *
+     * @return BaseResponse<BaseStream<StreamEvent>>
+     *
+     * @throws APIException
+     */
+    public function actStream(
+        string $id,
+        array|SessionActParams $params,
+        RequestOptions|array|null $requestOptions = null,
+    ): BaseResponse;
+
+    /**
+     * @api
+     *
+     * @param string $id Path param: Unique session identifier
+     * @param array<string,mixed>|SessionEndParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<SessionEndResponse>
      *
      * @throws APIException
      */
     public function end(
-        string $sessionID,
-        ?RequestOptions $requestOptions = null
+        string $id,
+        array|SessionEndParams $params,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
      * @api
      *
-     * @param string $sessionID Path param: The session ID returned by /sessions/start
-     * @param array<mixed>|SessionExecuteAgentParams $params
+     * @param string $id Path param: Unique session identifier
+     * @param array<string,mixed>|SessionExecuteParams $params
+     * @param RequestOpts|null $requestOptions
      *
-     * @return BaseResponse<SessionExecuteAgentResponse>
+     * @return BaseResponse<SessionExecuteResponse>
      *
      * @throws APIException
      */
-    public function executeAgent(
-        string $sessionID,
-        array|SessionExecuteAgentParams $params,
-        ?RequestOptions $requestOptions = null,
+    public function execute(
+        string $id,
+        array|SessionExecuteParams $params,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
      * @api
      *
-     * @param string $sessionID Path param: The session ID returned by /sessions/start
-     * @param array<mixed>|SessionExtractParams $params
+     * @param string $id Path param: Unique session identifier
+     * @param array<string,mixed>|SessionExecuteParams $params
+     * @param RequestOpts|null $requestOptions
      *
-     * @return BaseResponse<Extraction|array<string,mixed>>
+     * @return BaseResponse<BaseStream<StreamEvent>>
+     *
+     * @throws APIException
+     */
+    public function executeStream(
+        string $id,
+        array|SessionExecuteParams $params,
+        RequestOptions|array|null $requestOptions = null,
+    ): BaseResponse;
+
+    /**
+     * @api
+     *
+     * @param string $id Path param: Unique session identifier
+     * @param array<string,mixed>|SessionExtractParams $params
+     * @param RequestOpts|null $requestOptions
+     *
+     * @return BaseResponse<SessionExtractResponse>
      *
      * @throws APIException
      */
     public function extract(
-        string $sessionID,
+        string $id,
         array|SessionExtractParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
      * @api
      *
-     * @param string $sessionID Path param: The session ID returned by /sessions/start
-     * @param array<mixed>|SessionNavigateParams $params
+     * @param string $id Path param: Unique session identifier
+     * @param array<string,mixed>|SessionExtractParams $params
+     * @param RequestOpts|null $requestOptions
+     *
+     * @return BaseResponse<BaseStream<StreamEvent>>
+     *
+     * @throws APIException
+     */
+    public function extractStream(
+        string $id,
+        array|SessionExtractParams $params,
+        RequestOptions|array|null $requestOptions = null,
+    ): BaseResponse;
+
+    /**
+     * @api
+     *
+     * @param string $id Path param: Unique session identifier
+     * @param array<string,mixed>|SessionNavigateParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<SessionNavigateResponse>
      *
      * @throws APIException
      */
     public function navigate(
-        string $sessionID,
+        string $id,
         array|SessionNavigateParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
      * @api
      *
-     * @param string $sessionID Path param: The session ID returned by /sessions/start
-     * @param array<mixed>|SessionObserveParams $params
+     * @param string $id Path param: Unique session identifier
+     * @param array<string,mixed>|SessionObserveParams $params
+     * @param RequestOpts|null $requestOptions
      *
-     * @return BaseResponse<list<Action>>
+     * @return BaseResponse<SessionObserveResponse>
      *
      * @throws APIException
      */
     public function observe(
-        string $sessionID,
+        string $id,
         array|SessionObserveParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
      * @api
      *
-     * @param array<mixed>|SessionStartParams $params
+     * @param string $id Path param: Unique session identifier
+     * @param array<string,mixed>|SessionObserveParams $params
+     * @param RequestOpts|null $requestOptions
+     *
+     * @return BaseResponse<BaseStream<StreamEvent>>
+     *
+     * @throws APIException
+     */
+    public function observeStream(
+        string $id,
+        array|SessionObserveParams $params,
+        RequestOptions|array|null $requestOptions = null,
+    ): BaseResponse;
+
+    /**
+     * @api
+     *
+     * @param array<string,mixed>|SessionStartParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<SessionStartResponse>
      *
@@ -128,6 +211,6 @@ interface SessionsRawContract
      */
     public function start(
         array|SessionStartParams $params,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 }

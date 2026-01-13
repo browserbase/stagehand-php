@@ -4,115 +4,28 @@ declare(strict_types=1);
 
 namespace Stagehand\Sessions;
 
-use Stagehand\Core\Attributes\Optional;
-use Stagehand\Core\Concerns\SdkModel;
-use Stagehand\Core\Contracts\BaseModel;
-use Stagehand\Sessions\ModelConfig\Provider;
+use Stagehand\Core\Concerns\SdkUnion;
+use Stagehand\Core\Conversion\Contracts\Converter;
+use Stagehand\Core\Conversion\Contracts\ConverterSource;
+use Stagehand\Sessions\ModelConfig\ModelConfigObject;
 
 /**
- * @phpstan-type ModelConfigShape = array{
- *   apiKey?: string|null,
- *   baseURL?: string|null,
- *   model?: string|null,
- *   provider?: value-of<Provider>|null,
- * }
+ * Model name string with provider prefix (e.g., 'openai/gpt-5-nano', 'anthropic/claude-4.5-opus').
+ *
+ * @phpstan-import-type ModelConfigObjectShape from \Stagehand\Sessions\ModelConfig\ModelConfigObject
+ *
+ * @phpstan-type ModelConfigVariants = string|ModelConfigObject
+ * @phpstan-type ModelConfigShape = ModelConfigVariants|ModelConfigObjectShape
  */
-final class ModelConfig implements BaseModel
+final class ModelConfig implements ConverterSource
 {
-    /** @use SdkModel<ModelConfigShape> */
-    use SdkModel;
+    use SdkUnion;
 
     /**
-     * API key for the model provider.
+     * @return list<string|Converter|ConverterSource>|array<string,string|Converter|ConverterSource>
      */
-    #[Optional]
-    public ?string $apiKey;
-
-    /**
-     * Custom base URL for API.
-     */
-    #[Optional]
-    public ?string $baseURL;
-
-    /**
-     * Model name.
-     */
-    #[Optional]
-    public ?string $model;
-
-    /** @var value-of<Provider>|null $provider */
-    #[Optional(enum: Provider::class)]
-    public ?string $provider;
-
-    public function __construct()
+    public static function variants(): array
     {
-        $this->initialize();
-    }
-
-    /**
-     * Construct an instance from the required parameters.
-     *
-     * You must use named parameters to construct any parameters with a default value.
-     *
-     * @param Provider|value-of<Provider> $provider
-     */
-    public static function with(
-        ?string $apiKey = null,
-        ?string $baseURL = null,
-        ?string $model = null,
-        Provider|string|null $provider = null,
-    ): self {
-        $self = new self;
-
-        null !== $apiKey && $self['apiKey'] = $apiKey;
-        null !== $baseURL && $self['baseURL'] = $baseURL;
-        null !== $model && $self['model'] = $model;
-        null !== $provider && $self['provider'] = $provider;
-
-        return $self;
-    }
-
-    /**
-     * API key for the model provider.
-     */
-    public function withAPIKey(string $apiKey): self
-    {
-        $self = clone $this;
-        $self['apiKey'] = $apiKey;
-
-        return $self;
-    }
-
-    /**
-     * Custom base URL for API.
-     */
-    public function withBaseURL(string $baseURL): self
-    {
-        $self = clone $this;
-        $self['baseURL'] = $baseURL;
-
-        return $self;
-    }
-
-    /**
-     * Model name.
-     */
-    public function withModel(string $model): self
-    {
-        $self = clone $this;
-        $self['model'] = $model;
-
-        return $self;
-    }
-
-    /**
-     * @param Provider|value-of<Provider> $provider
-     */
-    public function withProvider(Provider|string $provider): self
-    {
-        $self = clone $this;
-        $self['provider'] = $provider;
-
-        return $self;
+        return ['string', ModelConfigObject::class];
     }
 }

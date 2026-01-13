@@ -6,29 +6,46 @@ namespace Stagehand\Services;
 
 use Stagehand\Client;
 use Stagehand\Core\Contracts\BaseResponse;
-use Stagehand\Core\Conversion\ListOf;
+use Stagehand\Core\Contracts\BaseStream;
 use Stagehand\Core\Exceptions\APIException;
 use Stagehand\Core\Util;
 use Stagehand\RequestOptions;
 use Stagehand\ServiceContracts\SessionsRawContract;
-use Stagehand\Sessions\Action;
 use Stagehand\Sessions\SessionActParams;
 use Stagehand\Sessions\SessionActParams\XStreamResponse;
 use Stagehand\Sessions\SessionActResponse;
+use Stagehand\Sessions\SessionEndParams;
 use Stagehand\Sessions\SessionEndResponse;
-use Stagehand\Sessions\SessionExecuteAgentParams;
-use Stagehand\Sessions\SessionExecuteAgentParams\AgentConfig\Provider;
-use Stagehand\Sessions\SessionExecuteAgentResponse;
+use Stagehand\Sessions\SessionExecuteParams;
+use Stagehand\Sessions\SessionExecuteParams\AgentConfig;
+use Stagehand\Sessions\SessionExecuteParams\ExecuteOptions;
+use Stagehand\Sessions\SessionExecuteResponse;
 use Stagehand\Sessions\SessionExtractParams;
 use Stagehand\Sessions\SessionExtractResponse;
-use Stagehand\Sessions\SessionExtractResponse\Extraction;
 use Stagehand\Sessions\SessionNavigateParams;
-use Stagehand\Sessions\SessionNavigateParams\Options\WaitUntil;
+use Stagehand\Sessions\SessionNavigateParams\Options;
 use Stagehand\Sessions\SessionNavigateResponse;
 use Stagehand\Sessions\SessionObserveParams;
+use Stagehand\Sessions\SessionObserveResponse;
 use Stagehand\Sessions\SessionStartParams;
+use Stagehand\Sessions\SessionStartParams\Browser;
+use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams;
 use Stagehand\Sessions\SessionStartResponse;
+use Stagehand\Sessions\StreamEvent;
+use Stagehand\SSEStream;
 
+/**
+ * @phpstan-import-type OptionsShape from \Stagehand\Sessions\SessionNavigateParams\Options
+ * @phpstan-import-type BrowserShape from \Stagehand\Sessions\SessionStartParams\Browser
+ * @phpstan-import-type BrowserbaseSessionCreateParamsShape from \Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams
+ * @phpstan-import-type InputShape from \Stagehand\Sessions\SessionActParams\Input
+ * @phpstan-import-type OptionsShape from \Stagehand\Sessions\SessionActParams\Options as OptionsShape1
+ * @phpstan-import-type RequestOpts from \Stagehand\RequestOptions
+ * @phpstan-import-type AgentConfigShape from \Stagehand\Sessions\SessionExecuteParams\AgentConfig
+ * @phpstan-import-type ExecuteOptionsShape from \Stagehand\Sessions\SessionExecuteParams\ExecuteOptions
+ * @phpstan-import-type OptionsShape from \Stagehand\Sessions\SessionExtractParams\Options as OptionsShape2
+ * @phpstan-import-type OptionsShape from \Stagehand\Sessions\SessionObserveParams\Options as OptionsShape3
+ */
 final class SessionsRawService implements SessionsRawContract
 {
     // @phpstan-ignore-next-line
@@ -40,51 +57,39 @@ final class SessionsRawService implements SessionsRawContract
     /**
      * @api
      *
-     * Performs a browser action based on natural language instruction or
-     * a specific action object returned by observe().
+     * Executes a browser action using natural language instructions or a predefined Action object.
      *
-     * @param string $sessionID Path param: The session ID returned by /sessions/start
+     * @param string $id Path param: Unique session identifier
      * @param array{
-     *   input: string|array{
-     *     arguments: list<string>,
-     *     description: string,
-     *     method: string,
-     *     selector: string,
-     *     backendNodeID?: int,
-     *   }|Action,
+     *   input: InputShape,
      *   frameID?: string,
-     *   options?: array{
-     *     model?: array{
-     *       apiKey?: string,
-     *       baseURL?: string,
-     *       model?: string,
-     *       provider?: 'openai'|'anthropic'|'google'|\Stagehand\Sessions\ModelConfig\Provider,
-     *     },
-     *     timeout?: int,
-     *     variables?: array<string,string>,
-     *   },
-     *   xStreamResponse?: 'true'|'false'|XStreamResponse,
+     *   options?: SessionActParams\Options|OptionsShape1,
+     *   xSentAt?: \DateTimeInterface,
+     *   xStreamResponse?: XStreamResponse|value-of<XStreamResponse>,
      * }|SessionActParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<SessionActResponse>
      *
      * @throws APIException
      */
     public function act(
-        string $sessionID,
+        string $id,
         array|SessionActParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = SessionActParams::parseRequest(
             $params,
             $requestOptions,
         );
-        $header_params = ['xStreamResponse' => 'x-stream-response'];
+        $header_params = [
+            'xSentAt' => 'x-sent-at', 'xStreamResponse' => 'x-stream-response',
+        ];
 
         // @phpstan-ignore-next-line return.type
         return $this->client->request(
             method: 'post',
-            path: ['sessions/%1$s/act', $sessionID],
+            path: ['v1/sessions/%1$s/act', $id],
             headers: Util::array_transform_keys(
                 array_intersect_key($parsed, array_flip(array_keys($header_params))),
                 $header_params,
@@ -101,72 +106,92 @@ final class SessionsRawService implements SessionsRawContract
     /**
      * @api
      *
-     * Closes the browser and cleans up all resources associated with the session.
+     * @param string $id Path param: Unique session identifier
+     * @param array{
+     *   input: InputShape,
+     *   frameID?: string,
+     *   options?: SessionActParams\Options|OptionsShape1,
+     *   xSentAt?: \DateTimeInterface,
+     *   xStreamResponse?: XStreamResponse|value-of<XStreamResponse>,
+     * }|SessionActParams $params
+     * @param RequestOpts|null $requestOptions
      *
-     * @param string $sessionID The session ID returned by /sessions/start
-     *
-     * @return BaseResponse<SessionEndResponse>
+     * @return BaseResponse<BaseStream<StreamEvent>>
      *
      * @throws APIException
      */
-    public function end(
-        string $sessionID,
-        ?RequestOptions $requestOptions = null
+    public function actStream(
+        string $id,
+        array|SessionActParams $params,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
+        [$parsed, $options] = SessionActParams::parseRequest(
+            $params,
+            $requestOptions,
+        );
+        $parsed['streamResponse'] = true;
+        $header_params = [
+            'xSentAt' => 'x-sent-at', 'xStreamResponse' => 'x-stream-response',
+        ];
+
         // @phpstan-ignore-next-line return.type
         return $this->client->request(
             method: 'post',
-            path: ['sessions/%1$s/end', $sessionID],
-            options: $requestOptions,
-            convert: SessionEndResponse::class,
+            path: ['v1/sessions/%1$s/act', $id],
+            headers: Util::array_transform_keys(
+                [
+                    'Accept' => 'text/event-stream',
+                    ...array_intersect_key(
+                        $parsed,
+                        array_flip(array_keys($header_params))
+                    ),
+                ],
+                $header_params,
+            ),
+            body: (object) array_diff_key(
+                $parsed,
+                array_flip(array_keys($header_params))
+            ),
+            options: $options,
+            convert: StreamEvent::class,
+            stream: SSEStream::class,
         );
     }
 
     /**
      * @api
      *
-     * Runs an autonomous agent that can perform multiple actions to
-     * complete a complex task.
+     * Terminates the browser session and releases all associated resources.
      *
-     * @param string $sessionID Path param: The session ID returned by /sessions/start
+     * @param string $id Path param: Unique session identifier
      * @param array{
-     *   agentConfig: array{
-     *     cua?: bool,
-     *     model?: string|array{
-     *       apiKey?: string,
-     *       baseURL?: string,
-     *       model?: string,
-     *       provider?: 'openai'|'anthropic'|'google'|\Stagehand\Sessions\ModelConfig\Provider,
-     *     },
-     *     provider?: 'openai'|'anthropic'|'google'|Provider,
-     *     systemPrompt?: string,
-     *   },
-     *   executeOptions: array{
-     *     instruction: string, highlightCursor?: bool, maxSteps?: int
-     *   },
-     *   frameID?: string,
-     *   xStreamResponse?: 'true'|'false'|SessionExecuteAgentParams\XStreamResponse,
-     * }|SessionExecuteAgentParams $params
+     *   _forceBody?: mixed,
+     *   xSentAt?: \DateTimeInterface,
+     *   xStreamResponse?: SessionEndParams\XStreamResponse|value-of<SessionEndParams\XStreamResponse>,
+     * }|SessionEndParams $params
+     * @param RequestOpts|null $requestOptions
      *
-     * @return BaseResponse<SessionExecuteAgentResponse>
+     * @return BaseResponse<SessionEndResponse>
      *
      * @throws APIException
      */
-    public function executeAgent(
-        string $sessionID,
-        array|SessionExecuteAgentParams $params,
-        ?RequestOptions $requestOptions = null,
+    public function end(
+        string $id,
+        array|SessionEndParams $params,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
-        [$parsed, $options] = SessionExecuteAgentParams::parseRequest(
+        [$parsed, $options] = SessionEndParams::parseRequest(
             $params,
             $requestOptions,
         );
-        $header_params = ['xStreamResponse' => 'x-stream-response'];
+        $header_params = [
+            'xSentAt' => 'x-sent-at', 'xStreamResponse' => 'x-stream-response',
+        ];
 
         // @phpstan-ignore-next-line return.type
         return $this->client->request(
             method: 'post',
-            path: ['sessions/%1$s/agentExecute', $sessionID],
+            path: ['v1/sessions/%1$s/end', $id],
             headers: Util::array_transform_keys(
                 array_intersect_key($parsed, array_flip(array_keys($header_params))),
                 $header_params,
@@ -176,53 +201,151 @@ final class SessionsRawService implements SessionsRawContract
                 array_flip(array_keys($header_params))
             ),
             options: $options,
-            convert: SessionExecuteAgentResponse::class,
+            convert: SessionEndResponse::class,
         );
     }
 
     /**
      * @api
      *
-     * Extracts data from the current page using natural language instructions
-     * and optional JSON schema for structured output.
+     * Runs an autonomous AI agent that can perform complex multi-step browser tasks.
      *
-     * @param string $sessionID Path param: The session ID returned by /sessions/start
+     * @param string $id Path param: Unique session identifier
+     * @param array{
+     *   agentConfig: AgentConfig|AgentConfigShape,
+     *   executeOptions: ExecuteOptions|ExecuteOptionsShape,
+     *   frameID?: string,
+     *   xSentAt?: \DateTimeInterface,
+     *   xStreamResponse?: SessionExecuteParams\XStreamResponse|value-of<SessionExecuteParams\XStreamResponse>,
+     * }|SessionExecuteParams $params
+     * @param RequestOpts|null $requestOptions
+     *
+     * @return BaseResponse<SessionExecuteResponse>
+     *
+     * @throws APIException
+     */
+    public function execute(
+        string $id,
+        array|SessionExecuteParams $params,
+        RequestOptions|array|null $requestOptions = null,
+    ): BaseResponse {
+        [$parsed, $options] = SessionExecuteParams::parseRequest(
+            $params,
+            $requestOptions,
+        );
+        $header_params = [
+            'xSentAt' => 'x-sent-at', 'xStreamResponse' => 'x-stream-response',
+        ];
+
+        // @phpstan-ignore-next-line return.type
+        return $this->client->request(
+            method: 'post',
+            path: ['v1/sessions/%1$s/agentExecute', $id],
+            headers: Util::array_transform_keys(
+                array_intersect_key($parsed, array_flip(array_keys($header_params))),
+                $header_params,
+            ),
+            body: (object) array_diff_key(
+                $parsed,
+                array_flip(array_keys($header_params))
+            ),
+            options: $options,
+            convert: SessionExecuteResponse::class,
+        );
+    }
+
+    /**
+     * @api
+     *
+     * @param string $id Path param: Unique session identifier
+     * @param array{
+     *   agentConfig: AgentConfig|AgentConfigShape,
+     *   executeOptions: ExecuteOptions|ExecuteOptionsShape,
+     *   frameID?: string,
+     *   xSentAt?: \DateTimeInterface,
+     *   xStreamResponse?: SessionExecuteParams\XStreamResponse|value-of<SessionExecuteParams\XStreamResponse>,
+     * }|SessionExecuteParams $params
+     * @param RequestOpts|null $requestOptions
+     *
+     * @return BaseResponse<BaseStream<StreamEvent>>
+     *
+     * @throws APIException
+     */
+    public function executeStream(
+        string $id,
+        array|SessionExecuteParams $params,
+        RequestOptions|array|null $requestOptions = null,
+    ): BaseResponse {
+        [$parsed, $options] = SessionExecuteParams::parseRequest(
+            $params,
+            $requestOptions,
+        );
+        $parsed['streamResponse'] = true;
+        $header_params = [
+            'xSentAt' => 'x-sent-at', 'xStreamResponse' => 'x-stream-response',
+        ];
+
+        // @phpstan-ignore-next-line return.type
+        return $this->client->request(
+            method: 'post',
+            path: ['v1/sessions/%1$s/agentExecute', $id],
+            headers: Util::array_transform_keys(
+                [
+                    'Accept' => 'text/event-stream',
+                    ...array_intersect_key(
+                        $parsed,
+                        array_flip(array_keys($header_params))
+                    ),
+                ],
+                $header_params,
+            ),
+            body: (object) array_diff_key(
+                $parsed,
+                array_flip(array_keys($header_params))
+            ),
+            options: $options,
+            convert: StreamEvent::class,
+            stream: SSEStream::class,
+        );
+    }
+
+    /**
+     * @api
+     *
+     * Extracts structured data from the current page using AI-powered analysis.
+     *
+     * @param string $id Path param: Unique session identifier
      * @param array{
      *   frameID?: string,
      *   instruction?: string,
-     *   options?: array{
-     *     model?: array{
-     *       apiKey?: string,
-     *       baseURL?: string,
-     *       model?: string,
-     *       provider?: 'openai'|'anthropic'|'google'|\Stagehand\Sessions\ModelConfig\Provider,
-     *     },
-     *     selector?: string,
-     *     timeout?: int,
-     *   },
+     *   options?: SessionExtractParams\Options|OptionsShape2,
      *   schema?: array<string,mixed>,
-     *   xStreamResponse?: 'true'|'false'|SessionExtractParams\XStreamResponse,
+     *   xSentAt?: \DateTimeInterface,
+     *   xStreamResponse?: SessionExtractParams\XStreamResponse|value-of<SessionExtractParams\XStreamResponse>,
      * }|SessionExtractParams $params
+     * @param RequestOpts|null $requestOptions
      *
-     * @return BaseResponse<Extraction|array<string,mixed>>
+     * @return BaseResponse<SessionExtractResponse>
      *
      * @throws APIException
      */
     public function extract(
-        string $sessionID,
+        string $id,
         array|SessionExtractParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = SessionExtractParams::parseRequest(
             $params,
             $requestOptions,
         );
-        $header_params = ['xStreamResponse' => 'x-stream-response'];
+        $header_params = [
+            'xSentAt' => 'x-sent-at', 'xStreamResponse' => 'x-stream-response',
+        ];
 
         // @phpstan-ignore-next-line return.type
         return $this->client->request(
             method: 'post',
-            path: ['sessions/%1$s/extract', $sessionID],
+            path: ['v1/sessions/%1$s/extract', $id],
             headers: Util::array_transform_keys(
                 array_intersect_key($parsed, array_flip(array_keys($header_params))),
                 $header_params,
@@ -239,37 +362,96 @@ final class SessionsRawService implements SessionsRawContract
     /**
      * @api
      *
-     * Navigates the browser to the specified URL and waits for page load.
+     * @param string $id Path param: Unique session identifier
+     * @param array{
+     *   frameID?: string,
+     *   instruction?: string,
+     *   options?: SessionExtractParams\Options|OptionsShape2,
+     *   schema?: array<string,mixed>,
+     *   xSentAt?: \DateTimeInterface,
+     *   xStreamResponse?: SessionExtractParams\XStreamResponse|value-of<SessionExtractParams\XStreamResponse>,
+     * }|SessionExtractParams $params
+     * @param RequestOpts|null $requestOptions
      *
-     * @param string $sessionID Path param: The session ID returned by /sessions/start
+     * @return BaseResponse<BaseStream<StreamEvent>>
+     *
+     * @throws APIException
+     */
+    public function extractStream(
+        string $id,
+        array|SessionExtractParams $params,
+        RequestOptions|array|null $requestOptions = null,
+    ): BaseResponse {
+        [$parsed, $options] = SessionExtractParams::parseRequest(
+            $params,
+            $requestOptions,
+        );
+        $parsed['streamResponse'] = true;
+        $header_params = [
+            'xSentAt' => 'x-sent-at', 'xStreamResponse' => 'x-stream-response',
+        ];
+
+        // @phpstan-ignore-next-line return.type
+        return $this->client->request(
+            method: 'post',
+            path: ['v1/sessions/%1$s/extract', $id],
+            headers: Util::array_transform_keys(
+                [
+                    'Accept' => 'text/event-stream',
+                    ...array_intersect_key(
+                        $parsed,
+                        array_flip(array_keys($header_params))
+                    ),
+                ],
+                $header_params,
+            ),
+            body: (object) array_diff_key(
+                $parsed,
+                array_flip(array_keys($header_params))
+            ),
+            options: $options,
+            convert: StreamEvent::class,
+            stream: SSEStream::class,
+        );
+    }
+
+    /**
+     * @api
+     *
+     * Navigates the browser to the specified URL.
+     *
+     * @param string $id Path param: Unique session identifier
      * @param array{
      *   url: string,
      *   frameID?: string,
-     *   options?: array{
-     *     waitUntil?: 'load'|'domcontentloaded'|'networkidle'|WaitUntil
-     *   },
-     *   xStreamResponse?: 'true'|'false'|SessionNavigateParams\XStreamResponse,
+     *   options?: Options|OptionsShape,
+     *   streamResponse?: bool,
+     *   xSentAt?: \DateTimeInterface,
+     *   xStreamResponse?: SessionNavigateParams\XStreamResponse|value-of<SessionNavigateParams\XStreamResponse>,
      * }|SessionNavigateParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<SessionNavigateResponse>
      *
      * @throws APIException
      */
     public function navigate(
-        string $sessionID,
+        string $id,
         array|SessionNavigateParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = SessionNavigateParams::parseRequest(
             $params,
             $requestOptions,
         );
-        $header_params = ['xStreamResponse' => 'x-stream-response'];
+        $header_params = [
+            'xSentAt' => 'x-sent-at', 'xStreamResponse' => 'x-stream-response',
+        ];
 
         // @phpstan-ignore-next-line return.type
         return $this->client->request(
             method: 'post',
-            path: ['sessions/%1$s/navigate', $sessionID],
+            path: ['v1/sessions/%1$s/navigate', $id],
             headers: Util::array_transform_keys(
                 array_intersect_key($parsed, array_flip(array_keys($header_params))),
                 $header_params,
@@ -286,45 +468,39 @@ final class SessionsRawService implements SessionsRawContract
     /**
      * @api
      *
-     * Returns a list of candidate actions that can be performed on the page,
-     * optionally filtered by natural language instruction.
+     * Identifies and returns available actions on the current page that match the given instruction.
      *
-     * @param string $sessionID Path param: The session ID returned by /sessions/start
+     * @param string $id Path param: Unique session identifier
      * @param array{
      *   frameID?: string,
      *   instruction?: string,
-     *   options?: array{
-     *     model?: array{
-     *       apiKey?: string,
-     *       baseURL?: string,
-     *       model?: string,
-     *       provider?: 'openai'|'anthropic'|'google'|\Stagehand\Sessions\ModelConfig\Provider,
-     *     },
-     *     selector?: string,
-     *     timeout?: int,
-     *   },
-     *   xStreamResponse?: 'true'|'false'|SessionObserveParams\XStreamResponse,
+     *   options?: SessionObserveParams\Options|OptionsShape3,
+     *   xSentAt?: \DateTimeInterface,
+     *   xStreamResponse?: SessionObserveParams\XStreamResponse|value-of<SessionObserveParams\XStreamResponse>,
      * }|SessionObserveParams $params
+     * @param RequestOpts|null $requestOptions
      *
-     * @return BaseResponse<list<Action>>
+     * @return BaseResponse<SessionObserveResponse>
      *
      * @throws APIException
      */
     public function observe(
-        string $sessionID,
+        string $id,
         array|SessionObserveParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = SessionObserveParams::parseRequest(
             $params,
             $requestOptions,
         );
-        $header_params = ['xStreamResponse' => 'x-stream-response'];
+        $header_params = [
+            'xSentAt' => 'x-sent-at', 'xStreamResponse' => 'x-stream-response',
+        ];
 
         // @phpstan-ignore-next-line return.type
         return $this->client->request(
             method: 'post',
-            path: ['sessions/%1$s/observe', $sessionID],
+            path: ['v1/sessions/%1$s/observe', $id],
             headers: Util::array_transform_keys(
                 array_intersect_key($parsed, array_flip(array_keys($header_params))),
                 $header_params,
@@ -334,25 +510,86 @@ final class SessionsRawService implements SessionsRawContract
                 array_flip(array_keys($header_params))
             ),
             options: $options,
-            convert: new ListOf(Action::class),
+            convert: SessionObserveResponse::class,
         );
     }
 
     /**
      * @api
      *
-     * Initializes a new Stagehand session with a browser instance.
-     * Returns a session ID that must be used for all subsequent requests.
+     * @param string $id Path param: Unique session identifier
+     * @param array{
+     *   frameID?: string,
+     *   instruction?: string,
+     *   options?: SessionObserveParams\Options|OptionsShape3,
+     *   xSentAt?: \DateTimeInterface,
+     *   xStreamResponse?: SessionObserveParams\XStreamResponse|value-of<SessionObserveParams\XStreamResponse>,
+     * }|SessionObserveParams $params
+     * @param RequestOpts|null $requestOptions
+     *
+     * @return BaseResponse<BaseStream<StreamEvent>>
+     *
+     * @throws APIException
+     */
+    public function observeStream(
+        string $id,
+        array|SessionObserveParams $params,
+        RequestOptions|array|null $requestOptions = null,
+    ): BaseResponse {
+        [$parsed, $options] = SessionObserveParams::parseRequest(
+            $params,
+            $requestOptions,
+        );
+        $parsed['streamResponse'] = true;
+        $header_params = [
+            'xSentAt' => 'x-sent-at', 'xStreamResponse' => 'x-stream-response',
+        ];
+
+        // @phpstan-ignore-next-line return.type
+        return $this->client->request(
+            method: 'post',
+            path: ['v1/sessions/%1$s/observe', $id],
+            headers: Util::array_transform_keys(
+                [
+                    'Accept' => 'text/event-stream',
+                    ...array_intersect_key(
+                        $parsed,
+                        array_flip(array_keys($header_params))
+                    ),
+                ],
+                $header_params,
+            ),
+            body: (object) array_diff_key(
+                $parsed,
+                array_flip(array_keys($header_params))
+            ),
+            options: $options,
+            convert: StreamEvent::class,
+            stream: SSEStream::class,
+        );
+    }
+
+    /**
+     * @api
+     *
+     * Creates a new browser session with the specified configuration. Returns a session ID used for all subsequent operations.
      *
      * @param array{
-     *   browserbaseAPIKey: string,
-     *   browserbaseProjectID: string,
-     *   domSettleTimeout?: int,
-     *   model?: string,
+     *   modelName: string,
+     *   actTimeoutMs?: float,
+     *   browser?: Browser|BrowserShape,
+     *   browserbaseSessionCreateParams?: BrowserbaseSessionCreateParams|BrowserbaseSessionCreateParamsShape,
+     *   browserbaseSessionID?: string,
+     *   domSettleTimeoutMs?: float,
+     *   experimental?: bool,
      *   selfHeal?: bool,
      *   systemPrompt?: string,
-     *   verbose?: int,
+     *   verbose?: float,
+     *   waitForCaptchaSolves?: bool,
+     *   xSentAt?: \DateTimeInterface,
+     *   xStreamResponse?: SessionStartParams\XStreamResponse|value-of<SessionStartParams\XStreamResponse>,
      * }|SessionStartParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<SessionStartResponse>
      *
@@ -360,18 +597,28 @@ final class SessionsRawService implements SessionsRawContract
      */
     public function start(
         array|SessionStartParams $params,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = SessionStartParams::parseRequest(
             $params,
             $requestOptions,
         );
+        $header_params = [
+            'xSentAt' => 'x-sent-at', 'xStreamResponse' => 'x-stream-response',
+        ];
 
         // @phpstan-ignore-next-line return.type
         return $this->client->request(
             method: 'post',
-            path: 'sessions/start',
-            body: (object) $parsed,
+            path: 'v1/sessions/start',
+            headers: Util::array_transform_keys(
+                array_intersect_key($parsed, array_flip(array_keys($header_params))),
+                $header_params,
+            ),
+            body: (object) array_diff_key(
+                $parsed,
+                array_flip(array_keys($header_params))
+            ),
             options: $options,
             convert: SessionStartResponse::class,
         );
