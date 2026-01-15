@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Stagehand\Sessions;
+namespace StagehandSDK\Sessions;
 
-use Stagehand\Core\Attributes\Optional;
-use Stagehand\Core\Concerns\SdkModel;
-use Stagehand\Core\Concerns\SdkParams;
-use Stagehand\Core\Contracts\BaseModel;
-use Stagehand\Sessions\SessionExtractParams\Options;
-use Stagehand\Sessions\SessionExtractParams\XStreamResponse;
+use StagehandSDK\Core\Attributes\Optional;
+use StagehandSDK\Core\Concerns\SdkModel;
+use StagehandSDK\Core\Concerns\SdkParams;
+use StagehandSDK\Core\Contracts\BaseModel;
+use StagehandSDK\Sessions\SessionExtractParams\Options;
+use StagehandSDK\Sessions\SessionExtractParams\XStreamResponse;
 
 /**
  * Extracts structured data from the current page using AI-powered analysis.
  *
- * @see Stagehand\Services\SessionsService::extract()
+ * @see StagehandSDK\Services\SessionsService::extract()
  *
- * @phpstan-import-type OptionsShape from \Stagehand\Sessions\SessionExtractParams\Options
+ * @phpstan-import-type OptionsShape from \StagehandSDK\Sessions\SessionExtractParams\Options
  *
  * @phpstan-type SessionExtractParamsShape = array{
  *   frameID?: string|null,

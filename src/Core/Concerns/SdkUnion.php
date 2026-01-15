@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Stagehand\Core\Concerns;
+namespace StagehandSDK\Core\Concerns;
 
-use Stagehand\Core\Conversion\Contracts\Converter;
-use Stagehand\Core\Conversion\Contracts\ConverterSource;
-use Stagehand\Core\Conversion\UnionOf;
+use StagehandSDK\Core\Conversion\Contracts\Converter;
+use StagehandSDK\Core\Conversion\Contracts\ConverterSource;
+use StagehandSDK\Core\Conversion\UnionOf;
 
 /**
  * @internal

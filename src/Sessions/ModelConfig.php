@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Stagehand\Sessions;
+namespace StagehandSDK\Sessions;
 
-use Stagehand\Core\Concerns\SdkUnion;
-use Stagehand\Core\Conversion\Contracts\Converter;
-use Stagehand\Core\Conversion\Contracts\ConverterSource;
-use Stagehand\Sessions\ModelConfig\ModelConfigObject;
+use StagehandSDK\Core\Concerns\SdkUnion;
+use StagehandSDK\Core\Conversion\Contracts\Converter;
+use StagehandSDK\Core\Conversion\Contracts\ConverterSource;
+use StagehandSDK\Sessions\ModelConfig\ModelConfigObject;
 
 /**
  * Model name string with provider prefix (e.g., 'openai/gpt-5-nano', 'anthropic/claude-4.5-opus').
  *
- * @phpstan-import-type ModelConfigObjectShape from \Stagehand\Sessions\ModelConfig\ModelConfigObject
+ * @phpstan-import-type ModelConfigObjectShape from \StagehandSDK\Sessions\ModelConfig\ModelConfigObject
  *
  * @phpstan-type ModelConfigVariants = string|ModelConfigObject
  * @phpstan-type ModelConfigShape = ModelConfigVariants|ModelConfigObjectShape

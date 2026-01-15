@@ -6,7 +6,7 @@
       "src/Version.php"
     ],
     "psr-4": {
-      "Stagehand\\": "src/"
+      "StagehandSDK\\": "src/"
     }
   },
   "autoload-dev": {

@@ -5,10 +5,10 @@ namespace Tests\Core;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Stagehand\Core\Attributes\Optional;
-use Stagehand\Core\Attributes\Required;
-use Stagehand\Core\Concerns\SdkModel;
-use Stagehand\Core\Contracts\BaseModel;
+use StagehandSDK\Core\Attributes\Optional;
+use StagehandSDK\Core\Attributes\Required;
+use StagehandSDK\Core\Concerns\SdkModel;
+use StagehandSDK\Core\Contracts\BaseModel;
 
 class Dog implements BaseModel
 {

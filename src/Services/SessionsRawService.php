@@ -2,49 +2,49 @@
 
 declare(strict_types=1);
 
-namespace Stagehand\Services;
+namespace StagehandSDK\Services;
 
-use Stagehand\Client;
-use Stagehand\Core\Contracts\BaseResponse;
-use Stagehand\Core\Contracts\BaseStream;
-use Stagehand\Core\Exceptions\APIException;
-use Stagehand\Core\Util;
-use Stagehand\RequestOptions;
-use Stagehand\ServiceContracts\SessionsRawContract;
-use Stagehand\Sessions\SessionActParams;
-use Stagehand\Sessions\SessionActParams\XStreamResponse;
-use Stagehand\Sessions\SessionActResponse;
-use Stagehand\Sessions\SessionEndParams;
-use Stagehand\Sessions\SessionEndResponse;
-use Stagehand\Sessions\SessionExecuteParams;
-use Stagehand\Sessions\SessionExecuteParams\AgentConfig;
-use Stagehand\Sessions\SessionExecuteParams\ExecuteOptions;
-use Stagehand\Sessions\SessionExecuteResponse;
-use Stagehand\Sessions\SessionExtractParams;
-use Stagehand\Sessions\SessionExtractResponse;
-use Stagehand\Sessions\SessionNavigateParams;
-use Stagehand\Sessions\SessionNavigateParams\Options;
-use Stagehand\Sessions\SessionNavigateResponse;
-use Stagehand\Sessions\SessionObserveParams;
-use Stagehand\Sessions\SessionObserveResponse;
-use Stagehand\Sessions\SessionStartParams;
-use Stagehand\Sessions\SessionStartParams\Browser;
-use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams;
-use Stagehand\Sessions\SessionStartResponse;
-use Stagehand\Sessions\StreamEvent;
-use Stagehand\SSEStream;
+use StagehandSDK\Client;
+use StagehandSDK\Core\Contracts\BaseResponse;
+use StagehandSDK\Core\Contracts\BaseStream;
+use StagehandSDK\Core\Exceptions\APIException;
+use StagehandSDK\Core\Util;
+use StagehandSDK\RequestOptions;
+use StagehandSDK\ServiceContracts\SessionsRawContract;
+use StagehandSDK\Sessions\SessionActParams;
+use StagehandSDK\Sessions\SessionActParams\XStreamResponse;
+use StagehandSDK\Sessions\SessionActResponse;
+use StagehandSDK\Sessions\SessionEndParams;
+use StagehandSDK\Sessions\SessionEndResponse;
+use StagehandSDK\Sessions\SessionExecuteParams;
+use StagehandSDK\Sessions\SessionExecuteParams\AgentConfig;
+use StagehandSDK\Sessions\SessionExecuteParams\ExecuteOptions;
+use StagehandSDK\Sessions\SessionExecuteResponse;
+use StagehandSDK\Sessions\SessionExtractParams;
+use StagehandSDK\Sessions\SessionExtractResponse;
+use StagehandSDK\Sessions\SessionNavigateParams;
+use StagehandSDK\Sessions\SessionNavigateParams\Options;
+use StagehandSDK\Sessions\SessionNavigateResponse;
+use StagehandSDK\Sessions\SessionObserveParams;
+use StagehandSDK\Sessions\SessionObserveResponse;
+use StagehandSDK\Sessions\SessionStartParams;
+use StagehandSDK\Sessions\SessionStartParams\Browser;
+use StagehandSDK\Sessions\SessionStartParams\BrowserbaseSessionCreateParams;
+use StagehandSDK\Sessions\SessionStartResponse;
+use StagehandSDK\Sessions\StreamEvent;
+use StagehandSDK\SSEStream;
 
 /**
- * @phpstan-import-type OptionsShape from \Stagehand\Sessions\SessionNavigateParams\Options
- * @phpstan-import-type BrowserShape from \Stagehand\Sessions\SessionStartParams\Browser
- * @phpstan-import-type BrowserbaseSessionCreateParamsShape from \Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams
- * @phpstan-import-type InputShape from \Stagehand\Sessions\SessionActParams\Input
- * @phpstan-import-type OptionsShape from \Stagehand\Sessions\SessionActParams\Options as OptionsShape1
- * @phpstan-import-type RequestOpts from \Stagehand\RequestOptions
- * @phpstan-import-type AgentConfigShape from \Stagehand\Sessions\SessionExecuteParams\AgentConfig
- * @phpstan-import-type ExecuteOptionsShape from \Stagehand\Sessions\SessionExecuteParams\ExecuteOptions
- * @phpstan-import-type OptionsShape from \Stagehand\Sessions\SessionExtractParams\Options as OptionsShape2
- * @phpstan-import-type OptionsShape from \Stagehand\Sessions\SessionObserveParams\Options as OptionsShape3
+ * @phpstan-import-type OptionsShape from \StagehandSDK\Sessions\SessionNavigateParams\Options
+ * @phpstan-import-type BrowserShape from \StagehandSDK\Sessions\SessionStartParams\Browser
+ * @phpstan-import-type BrowserbaseSessionCreateParamsShape from \StagehandSDK\Sessions\SessionStartParams\BrowserbaseSessionCreateParams
+ * @phpstan-import-type InputShape from \StagehandSDK\Sessions\SessionActParams\Input
+ * @phpstan-import-type OptionsShape from \StagehandSDK\Sessions\SessionActParams\Options as OptionsShape1
+ * @phpstan-import-type RequestOpts from \StagehandSDK\RequestOptions
+ * @phpstan-import-type AgentConfigShape from \StagehandSDK\Sessions\SessionExecuteParams\AgentConfig
+ * @phpstan-import-type ExecuteOptionsShape from \StagehandSDK\Sessions\SessionExecuteParams\ExecuteOptions
+ * @phpstan-import-type OptionsShape from \StagehandSDK\Sessions\SessionExtractParams\Options as OptionsShape2
+ * @phpstan-import-type OptionsShape from \StagehandSDK\Sessions\SessionObserveParams\Options as OptionsShape3
  */
 final class SessionsRawService implements SessionsRawContract
 {

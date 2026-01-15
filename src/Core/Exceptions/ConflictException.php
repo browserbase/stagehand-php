@@ -1,9 +1,9 @@
 <?php
 
-namespace Stagehand\Core\Exceptions;
+namespace StagehandSDK\Core\Exceptions;
 
 class ConflictException extends APIStatusException
 {
     /** @var string */
-    protected const DESC = 'Stagehand Conflict Exception';
+    protected const DESC = 'StagehandSDK Conflict Exception';
 }

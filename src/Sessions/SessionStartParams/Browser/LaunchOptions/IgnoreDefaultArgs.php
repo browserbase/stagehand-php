@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Stagehand\Sessions\SessionStartParams\Browser\LaunchOptions;
+namespace StagehandSDK\Sessions\SessionStartParams\Browser\LaunchOptions;
 
-use Stagehand\Core\Concerns\SdkUnion;
-use Stagehand\Core\Conversion\Contracts\Converter;
-use Stagehand\Core\Conversion\Contracts\ConverterSource;
-use Stagehand\Core\Conversion\ListOf;
+use StagehandSDK\Core\Concerns\SdkUnion;
+use StagehandSDK\Core\Conversion\Contracts\Converter;
+use StagehandSDK\Core\Conversion\Contracts\ConverterSource;
+use StagehandSDK\Core\Conversion\ListOf;
 
 /**
  * @phpstan-type IgnoreDefaultArgsVariants = bool|list<string>

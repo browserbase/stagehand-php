@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Stagehand\Sessions\StreamEvent\Data;
+namespace StagehandSDK\Sessions\StreamEvent\Data;
 
-use Stagehand\Core\Attributes\Optional;
-use Stagehand\Core\Attributes\Required;
-use Stagehand\Core\Concerns\SdkModel;
-use Stagehand\Core\Contracts\BaseModel;
-use Stagehand\Sessions\StreamEvent\Data\StreamEventSystemDataOutput\Status;
+use StagehandSDK\Core\Attributes\Optional;
+use StagehandSDK\Core\Attributes\Required;
+use StagehandSDK\Core\Concerns\SdkModel;
+use StagehandSDK\Core\Contracts\BaseModel;
+use StagehandSDK\Sessions\StreamEvent\Data\StreamEventSystemDataOutput\Status;
 
 /**
  * @phpstan-type StreamEventSystemDataOutputShape = array{

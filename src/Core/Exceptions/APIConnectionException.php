@@ -1,9 +1,9 @@
 <?php
 
-namespace Stagehand\Core\Exceptions;
+namespace StagehandSDK\Core\Exceptions;
 
 class APIConnectionException extends APIException
 {
     /** @var string */
-    protected const DESC = 'Stagehand API Connection Error';
+    protected const DESC = 'StagehandSDK API Connection Error';
 }

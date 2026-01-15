@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Stagehand\Sessions\SessionNavigateParams;
+namespace StagehandSDK\Sessions\SessionNavigateParams;
 
-use Stagehand\Core\Attributes\Optional;
-use Stagehand\Core\Concerns\SdkModel;
-use Stagehand\Core\Contracts\BaseModel;
-use Stagehand\Sessions\SessionNavigateParams\Options\WaitUntil;
+use StagehandSDK\Core\Attributes\Optional;
+use StagehandSDK\Core\Concerns\SdkModel;
+use StagehandSDK\Core\Contracts\BaseModel;
+use StagehandSDK\Sessions\SessionNavigateParams\Options\WaitUntil;
 
 /**
  * @phpstan-type OptionsShape = array{

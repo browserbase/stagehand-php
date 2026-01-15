@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings;
+namespace StagehandSDK\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings;
 
-use Stagehand\Core\Attributes\Optional;
-use Stagehand\Core\Concerns\SdkModel;
-use Stagehand\Core\Contracts\BaseModel;
-use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings\Fingerprint\Browser;
-use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings\Fingerprint\Device;
-use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings\Fingerprint\HTTPVersion;
-use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings\Fingerprint\OperatingSystem;
-use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings\Fingerprint\Screen;
+use StagehandSDK\Core\Attributes\Optional;
+use StagehandSDK\Core\Concerns\SdkModel;
+use StagehandSDK\Core\Contracts\BaseModel;
+use StagehandSDK\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings\Fingerprint\Browser;
+use StagehandSDK\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings\Fingerprint\Device;
+use StagehandSDK\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings\Fingerprint\HTTPVersion;
+use StagehandSDK\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings\Fingerprint\OperatingSystem;
+use StagehandSDK\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings\Fingerprint\Screen;
 
 /**
- * @phpstan-import-type ScreenShape from \Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings\Fingerprint\Screen
+ * @phpstan-import-type ScreenShape from \StagehandSDK\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings\Fingerprint\Screen
  *
  * @phpstan-type FingerprintShape = array{
  *   browsers?: list<Browser|value-of<Browser>>|null,

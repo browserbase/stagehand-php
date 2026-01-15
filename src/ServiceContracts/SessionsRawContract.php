@@ -2,30 +2,30 @@
 
 declare(strict_types=1);
 
-namespace Stagehand\ServiceContracts;
+namespace StagehandSDK\ServiceContracts;
 
-use Stagehand\Core\Contracts\BaseResponse;
-use Stagehand\Core\Contracts\BaseStream;
-use Stagehand\Core\Exceptions\APIException;
-use Stagehand\RequestOptions;
-use Stagehand\Sessions\SessionActParams;
-use Stagehand\Sessions\SessionActResponse;
-use Stagehand\Sessions\SessionEndParams;
-use Stagehand\Sessions\SessionEndResponse;
-use Stagehand\Sessions\SessionExecuteParams;
-use Stagehand\Sessions\SessionExecuteResponse;
-use Stagehand\Sessions\SessionExtractParams;
-use Stagehand\Sessions\SessionExtractResponse;
-use Stagehand\Sessions\SessionNavigateParams;
-use Stagehand\Sessions\SessionNavigateResponse;
-use Stagehand\Sessions\SessionObserveParams;
-use Stagehand\Sessions\SessionObserveResponse;
-use Stagehand\Sessions\SessionStartParams;
-use Stagehand\Sessions\SessionStartResponse;
-use Stagehand\Sessions\StreamEvent;
+use StagehandSDK\Core\Contracts\BaseResponse;
+use StagehandSDK\Core\Contracts\BaseStream;
+use StagehandSDK\Core\Exceptions\APIException;
+use StagehandSDK\RequestOptions;
+use StagehandSDK\Sessions\SessionActParams;
+use StagehandSDK\Sessions\SessionActResponse;
+use StagehandSDK\Sessions\SessionEndParams;
+use StagehandSDK\Sessions\SessionEndResponse;
+use StagehandSDK\Sessions\SessionExecuteParams;
+use StagehandSDK\Sessions\SessionExecuteResponse;
+use StagehandSDK\Sessions\SessionExtractParams;
+use StagehandSDK\Sessions\SessionExtractResponse;
+use StagehandSDK\Sessions\SessionNavigateParams;
+use StagehandSDK\Sessions\SessionNavigateResponse;
+use StagehandSDK\Sessions\SessionObserveParams;
+use StagehandSDK\Sessions\SessionObserveResponse;
+use StagehandSDK\Sessions\SessionStartParams;
+use StagehandSDK\Sessions\SessionStartResponse;
+use StagehandSDK\Sessions\StreamEvent;
 
 /**
- * @phpstan-import-type RequestOpts from \Stagehand\RequestOptions
+ * @phpstan-import-type RequestOpts from \StagehandSDK\RequestOptions
  */
 interface SessionsRawContract
 {

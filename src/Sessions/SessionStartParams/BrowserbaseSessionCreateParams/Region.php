@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams;
+namespace StagehandSDK\Sessions\SessionStartParams\BrowserbaseSessionCreateParams;
 
 enum Region: string
 {

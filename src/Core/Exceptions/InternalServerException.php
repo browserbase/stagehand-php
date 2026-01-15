@@ -1,9 +1,9 @@
 <?php
 
-namespace Stagehand\Core\Exceptions;
+namespace StagehandSDK\Core\Exceptions;
 
 class InternalServerException extends APIStatusException
 {
     /** @var string */
-    protected const DESC = 'Stagehand Internal Server Exception';
+    protected const DESC = 'StagehandSDK Internal Server Exception';
 }

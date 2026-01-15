@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stagehand\Core;
+namespace StagehandSDK\Core;
 
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;

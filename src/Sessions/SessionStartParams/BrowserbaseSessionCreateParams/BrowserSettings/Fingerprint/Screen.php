@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings\Fingerprint;
+namespace StagehandSDK\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings\Fingerprint;
 
-use Stagehand\Core\Attributes\Optional;
-use Stagehand\Core\Concerns\SdkModel;
-use Stagehand\Core\Contracts\BaseModel;
+use StagehandSDK\Core\Attributes\Optional;
+use StagehandSDK\Core\Concerns\SdkModel;
+use StagehandSDK\Core\Contracts\BaseModel;
 
 /**
  * @phpstan-type ScreenShape = array{

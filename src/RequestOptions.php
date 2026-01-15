@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Stagehand;
+namespace StagehandSDK;
 
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\UriFactoryInterface;
-use Stagehand\Core\Attributes\Optional;
-use Stagehand\Core\Attributes\Required as Property;
-use Stagehand\Core\Concerns\SdkModel;
-use Stagehand\Core\Contracts\BaseModel;
+use StagehandSDK\Core\Attributes\Optional;
+use StagehandSDK\Core\Attributes\Required as Property;
+use StagehandSDK\Core\Concerns\SdkModel;
+use StagehandSDK\Core\Contracts\BaseModel;
 
 /**
  * @phpstan-type RequestOptionShape = array{

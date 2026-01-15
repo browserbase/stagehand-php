@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Stagehand\Sessions;
+namespace StagehandSDK\Sessions;
 
-use Stagehand\Core\Attributes\Optional;
-use Stagehand\Core\Concerns\SdkModel;
-use Stagehand\Core\Concerns\SdkParams;
-use Stagehand\Core\Contracts\BaseModel;
-use Stagehand\Sessions\SessionEndParams\XStreamResponse;
+use StagehandSDK\Core\Attributes\Optional;
+use StagehandSDK\Core\Concerns\SdkModel;
+use StagehandSDK\Core\Concerns\SdkParams;
+use StagehandSDK\Core\Contracts\BaseModel;
+use StagehandSDK\Sessions\SessionEndParams\XStreamResponse;
 
 /**
  * Terminates the browser session and releases all associated resources.
  *
- * @see Stagehand\Services\SessionsService::end()
+ * @see StagehandSDK\Services\SessionsService::end()
  *
  * @phpstan-type SessionEndParamsShape = array{
  *   _forceBody?: mixed,

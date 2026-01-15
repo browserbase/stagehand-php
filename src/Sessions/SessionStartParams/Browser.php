@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Stagehand\Sessions\SessionStartParams;
+namespace StagehandSDK\Sessions\SessionStartParams;
 
-use Stagehand\Core\Attributes\Optional;
-use Stagehand\Core\Concerns\SdkModel;
-use Stagehand\Core\Contracts\BaseModel;
-use Stagehand\Sessions\SessionStartParams\Browser\LaunchOptions;
-use Stagehand\Sessions\SessionStartParams\Browser\Type;
+use StagehandSDK\Core\Attributes\Optional;
+use StagehandSDK\Core\Concerns\SdkModel;
+use StagehandSDK\Core\Contracts\BaseModel;
+use StagehandSDK\Sessions\SessionStartParams\Browser\LaunchOptions;
+use StagehandSDK\Sessions\SessionStartParams\Browser\Type;
 
 /**
- * @phpstan-import-type LaunchOptionsShape from \Stagehand\Sessions\SessionStartParams\Browser\LaunchOptions
+ * @phpstan-import-type LaunchOptionsShape from \StagehandSDK\Sessions\SessionStartParams\Browser\LaunchOptions
  *
  * @phpstan-type BrowserShape = array{
  *   cdpURL?: string|null,
