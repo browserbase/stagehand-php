@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace StagehandSDK\Core\Concerns;
+namespace Stagehand\Core\Concerns;
 
-use StagehandSDK\Core\Conversion\Contracts\Converter;
-use StagehandSDK\Core\Conversion\EnumOf;
+use Stagehand\Core\Conversion\Contracts\Converter;
+use Stagehand\Core\Conversion\EnumOf;
 
 /**
  * @internal

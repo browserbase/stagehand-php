@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace StagehandSDK\Sessions\StreamEvent;
+namespace Stagehand\Sessions\StreamEvent;
 
 /**
  * Type of stream event - system events or log messages.

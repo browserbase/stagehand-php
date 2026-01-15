@@ -1,9 +1,9 @@
 <?php
 
-namespace StagehandSDK\Core\Exceptions;
+namespace Stagehand\Core\Exceptions;
 
 class AuthenticationException extends APIStatusException
 {
     /** @var string */
-    protected const DESC = 'StagehandSDK Authentication Exception';
+    protected const DESC = 'Stagehand Authentication Exception';
 }

@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace StagehandSDK\Sessions\SessionExecuteResponse;
+namespace Stagehand\Sessions\SessionExecuteResponse;
 
-use StagehandSDK\Core\Attributes\Required;
-use StagehandSDK\Core\Concerns\SdkModel;
-use StagehandSDK\Core\Contracts\BaseModel;
-use StagehandSDK\Sessions\SessionExecuteResponse\Data\Result;
+use Stagehand\Core\Attributes\Required;
+use Stagehand\Core\Concerns\SdkModel;
+use Stagehand\Core\Contracts\BaseModel;
+use Stagehand\Sessions\SessionExecuteResponse\Data\Result;
 
 /**
- * @phpstan-import-type ResultShape from \StagehandSDK\Sessions\SessionExecuteResponse\Data\Result
+ * @phpstan-import-type ResultShape from \Stagehand\Sessions\SessionExecuteResponse\Data\Result
  *
  * @phpstan-type DataShape = array{result: Result|ResultShape}
  */

@@ -2,24 +2,24 @@
 
 declare(strict_types=1);
 
-namespace StagehandSDK\Core;
+namespace Stagehand\Core;
 
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UriInterface;
-use StagehandSDK\Core\Contracts\BasePage;
-use StagehandSDK\Core\Contracts\BaseResponse;
-use StagehandSDK\Core\Contracts\BaseStream;
-use StagehandSDK\Core\Conversion\Contracts\Converter;
-use StagehandSDK\Core\Conversion\Contracts\ConverterSource;
-use StagehandSDK\Core\Exceptions\APIConnectionException;
-use StagehandSDK\Core\Exceptions\APIStatusException;
-use StagehandSDK\Core\Implementation\RawResponse;
-use StagehandSDK\RequestOptions;
+use Stagehand\Core\Contracts\BasePage;
+use Stagehand\Core\Contracts\BaseResponse;
+use Stagehand\Core\Contracts\BaseStream;
+use Stagehand\Core\Conversion\Contracts\Converter;
+use Stagehand\Core\Conversion\Contracts\ConverterSource;
+use Stagehand\Core\Exceptions\APIConnectionException;
+use Stagehand\Core\Exceptions\APIStatusException;
+use Stagehand\Core\Implementation\RawResponse;
+use Stagehand\RequestOptions;
 
 /**
- * @phpstan-import-type RequestOpts from \StagehandSDK\RequestOptions
+ * @phpstan-import-type RequestOpts from \Stagehand\RequestOptions
  *
  * @phpstan-type NormalizedRequest = array{
  *   method: string,

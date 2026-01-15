@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace StagehandSDK\Core;
+namespace Stagehand\Core;
 
-use StagehandSDK\Core\Conversion\CoerceState;
-use StagehandSDK\Core\Conversion\Contracts\Converter;
-use StagehandSDK\Core\Conversion\Contracts\ConverterSource;
-use StagehandSDK\Core\Conversion\DumpState;
+use Stagehand\Core\Conversion\CoerceState;
+use Stagehand\Core\Conversion\Contracts\Converter;
+use Stagehand\Core\Conversion\Contracts\ConverterSource;
+use Stagehand\Core\Conversion\DumpState;
 
 /**
  * @internal

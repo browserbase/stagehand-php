@@ -5,14 +5,14 @@ namespace Tests\Services;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use StagehandSDK\Client;
-use StagehandSDK\Sessions\SessionActResponse;
-use StagehandSDK\Sessions\SessionEndResponse;
-use StagehandSDK\Sessions\SessionExecuteResponse;
-use StagehandSDK\Sessions\SessionExtractResponse;
-use StagehandSDK\Sessions\SessionNavigateResponse;
-use StagehandSDK\Sessions\SessionObserveResponse;
-use StagehandSDK\Sessions\SessionStartResponse;
+use Stagehand\Client;
+use Stagehand\Sessions\SessionActResponse;
+use Stagehand\Sessions\SessionEndResponse;
+use Stagehand\Sessions\SessionExecuteResponse;
+use Stagehand\Sessions\SessionExtractResponse;
+use Stagehand\Sessions\SessionNavigateResponse;
+use Stagehand\Sessions\SessionObserveResponse;
+use Stagehand\Sessions\SessionStartResponse;
 use Tests\UnsupportedMockTests;
 
 /**

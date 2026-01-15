@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace StagehandSDK\Sessions;
+namespace Stagehand\Sessions;
 
-use StagehandSDK\Core\Attributes\Optional;
-use StagehandSDK\Core\Concerns\SdkModel;
-use StagehandSDK\Core\Concerns\SdkParams;
-use StagehandSDK\Core\Contracts\BaseModel;
-use StagehandSDK\Sessions\SessionObserveParams\Options;
-use StagehandSDK\Sessions\SessionObserveParams\XStreamResponse;
+use Stagehand\Core\Attributes\Optional;
+use Stagehand\Core\Concerns\SdkModel;
+use Stagehand\Core\Concerns\SdkParams;
+use Stagehand\Core\Contracts\BaseModel;
+use Stagehand\Sessions\SessionObserveParams\Options;
+use Stagehand\Sessions\SessionObserveParams\XStreamResponse;
 
 /**
  * Identifies and returns available actions on the current page that match the given instruction.
  *
- * @see StagehandSDK\Services\SessionsService::observe()
+ * @see Stagehand\Services\SessionsService::observe()
  *
- * @phpstan-import-type OptionsShape from \StagehandSDK\Sessions\SessionObserveParams\Options
+ * @phpstan-import-type OptionsShape from \Stagehand\Sessions\SessionObserveParams\Options
  *
  * @phpstan-type SessionObserveParamsShape = array{
  *   frameID?: string|null,

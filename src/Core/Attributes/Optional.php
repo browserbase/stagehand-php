@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace StagehandSDK\Core\Attributes;
+namespace Stagehand\Core\Attributes;
 
-use StagehandSDK\Core\Conversion\Contracts\Converter;
-use StagehandSDK\Core\Conversion\Contracts\ConverterSource;
+use Stagehand\Core\Conversion\Contracts\Converter;
+use Stagehand\Core\Conversion\Contracts\ConverterSource;
 
 /**
  * @internal

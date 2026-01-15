@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace StagehandSDK\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings;
+namespace Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings;
 
-use StagehandSDK\Core\Attributes\Optional;
-use StagehandSDK\Core\Concerns\SdkModel;
-use StagehandSDK\Core\Contracts\BaseModel;
+use Stagehand\Core\Attributes\Optional;
+use Stagehand\Core\Concerns\SdkModel;
+use Stagehand\Core\Contracts\BaseModel;
 
 /**
  * @phpstan-type ViewportShape = array{height?: float|null, width?: float|null}

@@ -1,15 +1,15 @@
 <?php
 
-namespace StagehandSDK\Core\Exceptions;
+namespace Stagehand\Core\Exceptions;
 
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use StagehandSDK\Core\Util;
+use Stagehand\Core\Util;
 
 class APIStatusException extends APIException
 {
     /** @var string */
-    protected const DESC = 'StagehandSDK API Status Error';
+    protected const DESC = 'Stagehand API Status Error';
 
     public ?int $status;
 

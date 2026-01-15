@@ -1,9 +1,9 @@
 <?php
 
-namespace StagehandSDK\Core\Exceptions;
+namespace Stagehand\Core\Exceptions;
 
 class PermissionDeniedException extends APIStatusException
 {
     /** @var string */
-    protected const DESC = 'StagehandSDK Permission Denied Exception';
+    protected const DESC = 'Stagehand Permission Denied Exception';
 }

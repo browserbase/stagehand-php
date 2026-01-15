@@ -2,24 +2,24 @@
 
 declare(strict_types=1);
 
-namespace StagehandSDK\Sessions;
+namespace Stagehand\Sessions;
 
-use StagehandSDK\Core\Attributes\Optional;
-use StagehandSDK\Core\Attributes\Required;
-use StagehandSDK\Core\Concerns\SdkModel;
-use StagehandSDK\Core\Concerns\SdkParams;
-use StagehandSDK\Core\Contracts\BaseModel;
-use StagehandSDK\Sessions\SessionExecuteParams\AgentConfig;
-use StagehandSDK\Sessions\SessionExecuteParams\ExecuteOptions;
-use StagehandSDK\Sessions\SessionExecuteParams\XStreamResponse;
+use Stagehand\Core\Attributes\Optional;
+use Stagehand\Core\Attributes\Required;
+use Stagehand\Core\Concerns\SdkModel;
+use Stagehand\Core\Concerns\SdkParams;
+use Stagehand\Core\Contracts\BaseModel;
+use Stagehand\Sessions\SessionExecuteParams\AgentConfig;
+use Stagehand\Sessions\SessionExecuteParams\ExecuteOptions;
+use Stagehand\Sessions\SessionExecuteParams\XStreamResponse;
 
 /**
  * Runs an autonomous AI agent that can perform complex multi-step browser tasks.
  *
- * @see StagehandSDK\Services\SessionsService::execute()
+ * @see Stagehand\Services\SessionsService::execute()
  *
- * @phpstan-import-type AgentConfigShape from \StagehandSDK\Sessions\SessionExecuteParams\AgentConfig
- * @phpstan-import-type ExecuteOptionsShape from \StagehandSDK\Sessions\SessionExecuteParams\ExecuteOptions
+ * @phpstan-import-type AgentConfigShape from \Stagehand\Sessions\SessionExecuteParams\AgentConfig
+ * @phpstan-import-type ExecuteOptionsShape from \Stagehand\Sessions\SessionExecuteParams\ExecuteOptions
  *
  * @phpstan-type SessionExecuteParamsShape = array{
  *   agentConfig: AgentConfig|AgentConfigShape,

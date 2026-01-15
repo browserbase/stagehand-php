@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace StagehandSDK\Sessions\SessionStartParams\Browser;
+namespace Stagehand\Sessions\SessionStartParams\Browser;
 
-use StagehandSDK\Core\Attributes\Optional;
-use StagehandSDK\Core\Concerns\SdkModel;
-use StagehandSDK\Core\Contracts\BaseModel;
-use StagehandSDK\Sessions\SessionStartParams\Browser\LaunchOptions\IgnoreDefaultArgs;
-use StagehandSDK\Sessions\SessionStartParams\Browser\LaunchOptions\Proxy;
-use StagehandSDK\Sessions\SessionStartParams\Browser\LaunchOptions\Viewport;
+use Stagehand\Core\Attributes\Optional;
+use Stagehand\Core\Concerns\SdkModel;
+use Stagehand\Core\Contracts\BaseModel;
+use Stagehand\Sessions\SessionStartParams\Browser\LaunchOptions\IgnoreDefaultArgs;
+use Stagehand\Sessions\SessionStartParams\Browser\LaunchOptions\Proxy;
+use Stagehand\Sessions\SessionStartParams\Browser\LaunchOptions\Viewport;
 
 /**
- * @phpstan-import-type IgnoreDefaultArgsVariants from \StagehandSDK\Sessions\SessionStartParams\Browser\LaunchOptions\IgnoreDefaultArgs
- * @phpstan-import-type IgnoreDefaultArgsShape from \StagehandSDK\Sessions\SessionStartParams\Browser\LaunchOptions\IgnoreDefaultArgs
- * @phpstan-import-type ProxyShape from \StagehandSDK\Sessions\SessionStartParams\Browser\LaunchOptions\Proxy
- * @phpstan-import-type ViewportShape from \StagehandSDK\Sessions\SessionStartParams\Browser\LaunchOptions\Viewport
+ * @phpstan-import-type IgnoreDefaultArgsVariants from \Stagehand\Sessions\SessionStartParams\Browser\LaunchOptions\IgnoreDefaultArgs
+ * @phpstan-import-type IgnoreDefaultArgsShape from \Stagehand\Sessions\SessionStartParams\Browser\LaunchOptions\IgnoreDefaultArgs
+ * @phpstan-import-type ProxyShape from \Stagehand\Sessions\SessionStartParams\Browser\LaunchOptions\Proxy
+ * @phpstan-import-type ViewportShape from \Stagehand\Sessions\SessionStartParams\Browser\LaunchOptions\Viewport
  *
  * @phpstan-type LaunchOptionsShape = array{
  *   acceptDownloads?: bool|null,

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace StagehandSDK\Core\Contracts;
+namespace Stagehand\Core\Contracts;
 
 /**
- * @phpstan-import-type NormalizedRequest from \StagehandSDK\Core\BaseClient
+ * @phpstan-import-type NormalizedRequest from \Stagehand\Core\BaseClient
  *
  * @internal
  *

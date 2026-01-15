@@ -1,9 +1,9 @@
 <?php
 
-namespace StagehandSDK\Core\Exceptions;
+namespace Stagehand\Core\Exceptions;
 
 class RateLimitException extends APIStatusException
 {
     /** @var string */
-    protected const DESC = 'StagehandSDK Rate Limit Exception';
+    protected const DESC = 'Stagehand Rate Limit Exception';
 }

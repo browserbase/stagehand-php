@@ -1,13 +1,13 @@
 <?php
 
-namespace StagehandSDK\Core\Exceptions;
+namespace Stagehand\Core\Exceptions;
 
 use Psr\Http\Message\RequestInterface;
 
 class APITimeoutException extends APIConnectionException
 {
     /** @var string */
-    protected const DESC = 'StagehandSDK API Timeout Exception';
+    protected const DESC = 'Stagehand API Timeout Exception';
 
     public function __construct(
         RequestInterface $request,

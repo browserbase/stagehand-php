@@ -1,20 +1,20 @@
 <?php
 
-namespace StagehandSDK\Core\Implementation;
+namespace Stagehand\Core\Implementation;
 
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use StagehandSDK\Core\BaseClient;
-use StagehandSDK\Core\Concerns\ResponseProxy;
-use StagehandSDK\Core\Contracts\BaseResponse;
-use StagehandSDK\Core\Conversion;
-use StagehandSDK\Core\Conversion\Contracts\Converter;
-use StagehandSDK\Core\Conversion\Contracts\ConverterSource;
-use StagehandSDK\Core\Util;
-use StagehandSDK\RequestOptions;
+use Stagehand\Core\BaseClient;
+use Stagehand\Core\Concerns\ResponseProxy;
+use Stagehand\Core\Contracts\BaseResponse;
+use Stagehand\Core\Conversion;
+use Stagehand\Core\Conversion\Contracts\Converter;
+use Stagehand\Core\Conversion\Contracts\ConverterSource;
+use Stagehand\Core\Util;
+use Stagehand\RequestOptions;
 
 /**
- * @phpstan-import-type NormalizedRequest from \StagehandSDK\Core\BaseClient
+ * @phpstan-import-type NormalizedRequest from \Stagehand\Core\BaseClient
  *
  * @internal
  *

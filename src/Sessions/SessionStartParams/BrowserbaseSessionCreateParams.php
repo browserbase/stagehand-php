@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace StagehandSDK\Sessions\SessionStartParams;
+namespace Stagehand\Sessions\SessionStartParams;
 
-use StagehandSDK\Core\Attributes\Optional;
-use StagehandSDK\Core\Concerns\SdkModel;
-use StagehandSDK\Core\Contracts\BaseModel;
-use StagehandSDK\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings;
-use StagehandSDK\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Proxies;
-use StagehandSDK\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Region;
+use Stagehand\Core\Attributes\Optional;
+use Stagehand\Core\Concerns\SdkModel;
+use Stagehand\Core\Contracts\BaseModel;
+use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings;
+use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Proxies;
+use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Region;
 
 /**
- * @phpstan-import-type ProxiesVariants from \StagehandSDK\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Proxies
- * @phpstan-import-type BrowserSettingsShape from \StagehandSDK\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings
- * @phpstan-import-type ProxiesShape from \StagehandSDK\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Proxies
+ * @phpstan-import-type ProxiesVariants from \Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Proxies
+ * @phpstan-import-type BrowserSettingsShape from \Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings
+ * @phpstan-import-type ProxiesShape from \Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Proxies
  *
  * @phpstan-type BrowserbaseSessionCreateParamsShape = array{
  *   browserSettings?: null|BrowserSettings|BrowserSettingsShape,

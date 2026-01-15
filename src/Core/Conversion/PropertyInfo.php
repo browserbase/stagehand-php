@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace StagehandSDK\Core\Conversion;
+namespace Stagehand\Core\Conversion;
 
-use StagehandSDK\Core\Attributes\Optional;
-use StagehandSDK\Core\Attributes\Required;
-use StagehandSDK\Core\Conversion\Contracts\Converter;
-use StagehandSDK\Core\Conversion\Contracts\ConverterSource;
+use Stagehand\Core\Attributes\Optional;
+use Stagehand\Core\Attributes\Required;
+use Stagehand\Core\Conversion\Contracts\Converter;
+use Stagehand\Core\Conversion\Contracts\ConverterSource;
 
 /**
  * @internal

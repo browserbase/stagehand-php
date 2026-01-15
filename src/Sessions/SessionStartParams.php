@@ -2,24 +2,24 @@
 
 declare(strict_types=1);
 
-namespace StagehandSDK\Sessions;
+namespace Stagehand\Sessions;
 
-use StagehandSDK\Core\Attributes\Optional;
-use StagehandSDK\Core\Attributes\Required;
-use StagehandSDK\Core\Concerns\SdkModel;
-use StagehandSDK\Core\Concerns\SdkParams;
-use StagehandSDK\Core\Contracts\BaseModel;
-use StagehandSDK\Sessions\SessionStartParams\Browser;
-use StagehandSDK\Sessions\SessionStartParams\BrowserbaseSessionCreateParams;
-use StagehandSDK\Sessions\SessionStartParams\XStreamResponse;
+use Stagehand\Core\Attributes\Optional;
+use Stagehand\Core\Attributes\Required;
+use Stagehand\Core\Concerns\SdkModel;
+use Stagehand\Core\Concerns\SdkParams;
+use Stagehand\Core\Contracts\BaseModel;
+use Stagehand\Sessions\SessionStartParams\Browser;
+use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams;
+use Stagehand\Sessions\SessionStartParams\XStreamResponse;
 
 /**
  * Creates a new browser session with the specified configuration. Returns a session ID used for all subsequent operations.
  *
- * @see StagehandSDK\Services\SessionsService::start()
+ * @see Stagehand\Services\SessionsService::start()
  *
- * @phpstan-import-type BrowserShape from \StagehandSDK\Sessions\SessionStartParams\Browser
- * @phpstan-import-type BrowserbaseSessionCreateParamsShape from \StagehandSDK\Sessions\SessionStartParams\BrowserbaseSessionCreateParams
+ * @phpstan-import-type BrowserShape from \Stagehand\Sessions\SessionStartParams\Browser
+ * @phpstan-import-type BrowserbaseSessionCreateParamsShape from \Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams
  *
  * @phpstan-type SessionStartParamsShape = array{
  *   modelName: string,

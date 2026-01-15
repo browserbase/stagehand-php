@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace StagehandSDK\Core\Concerns;
+namespace Stagehand\Core\Concerns;
 
-use StagehandSDK\Core\Contracts\BaseModel;
-use StagehandSDK\Core\Conversion;
-use StagehandSDK\Core\Conversion\CoerceState;
-use StagehandSDK\Core\Conversion\Contracts\Converter;
-use StagehandSDK\Core\Conversion\ModelOf;
-use StagehandSDK\Core\Util;
+use Stagehand\Core\Contracts\BaseModel;
+use Stagehand\Core\Conversion;
+use Stagehand\Core\Conversion\CoerceState;
+use Stagehand\Core\Conversion\Contracts\Converter;
+use Stagehand\Core\Conversion\ModelOf;
+use Stagehand\Core\Util;
 
 /**
  * @internal

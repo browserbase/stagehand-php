@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace StagehandSDK\Sessions\SessionNavigateParams\Options;
+namespace Stagehand\Sessions\SessionNavigateParams\Options;
 
 /**
  * When to consider navigation complete.
