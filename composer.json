@@ -27,7 +27,7 @@
     "sort-packages": true
   },
   "description": "Stagehand PHP SDK",
-  "name": "browserbase/stagehand",
+  "name": "browserbase/stagehand-sdk",
   "require": {
     "php": "^8.1",
     "php-http/discovery": "^1",
