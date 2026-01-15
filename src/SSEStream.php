@@ -1,12 +1,12 @@
 <?php
 
-namespace Stagehand;
+namespace StagehandSDK;
 
-use Stagehand\Core\Concerns\SdkStream;
-use Stagehand\Core\Contracts\BaseStream;
-use Stagehand\Core\Conversion;
-use Stagehand\Core\Exceptions\APIStatusException;
-use Stagehand\Core\Util;
+use StagehandSDK\Core\Concerns\SdkStream;
+use StagehandSDK\Core\Contracts\BaseStream;
+use StagehandSDK\Core\Conversion;
+use StagehandSDK\Core\Exceptions\APIStatusException;
+use StagehandSDK\Core\Util;
 
 /**
  * @template TItem

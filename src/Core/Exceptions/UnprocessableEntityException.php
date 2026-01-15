@@ -1,9 +1,9 @@
 <?php
 
-namespace Stagehand\Core\Exceptions;
+namespace StagehandSDK\Core\Exceptions;
 
 class UnprocessableEntityException extends APIStatusException
 {
     /** @var string */
-    protected const DESC = 'Stagehand Unprocessable Entity Exception';
+    protected const DESC = 'StagehandSDK Unprocessable Entity Exception';
 }

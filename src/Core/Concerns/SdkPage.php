@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Stagehand\Core\Concerns;
+namespace StagehandSDK\Core\Concerns;
 
-use Stagehand\Client;
-use Stagehand\Core\Contracts\BaseResponse;
-use Stagehand\Core\Conversion\Contracts\Converter;
-use Stagehand\Core\Conversion\Contracts\ConverterSource;
-use Stagehand\Core\Exceptions\APIStatusException;
-use Stagehand\RequestOptions;
+use StagehandSDK\Client;
+use StagehandSDK\Core\Contracts\BaseResponse;
+use StagehandSDK\Core\Conversion\Contracts\Converter;
+use StagehandSDK\Core\Conversion\Contracts\ConverterSource;
+use StagehandSDK\Core\Exceptions\APIStatusException;
+use StagehandSDK\RequestOptions;
 
 /**
- * @phpstan-import-type NormalizedRequest from \Stagehand\Core\BaseClient
+ * @phpstan-import-type NormalizedRequest from \StagehandSDK\Core\BaseClient
  *
  * @internal
  *

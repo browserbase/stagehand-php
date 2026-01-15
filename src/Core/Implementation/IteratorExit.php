@@ -1,5 +1,5 @@
 <?php
 
-namespace Stagehand\Core\Implementation;
+namespace StagehandSDK\Core\Implementation;
 
 class IteratorExit extends \Error {}

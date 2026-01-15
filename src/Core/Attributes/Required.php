@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Stagehand\Core\Attributes;
+namespace StagehandSDK\Core\Attributes;
 
-use Stagehand\Core\Conversion\Contracts\Converter;
-use Stagehand\Core\Conversion\Contracts\ConverterSource;
-use Stagehand\Core\Conversion\EnumOf;
-use Stagehand\Core\Conversion\ListOf;
-use Stagehand\Core\Conversion\MapOf;
+use StagehandSDK\Core\Conversion\Contracts\Converter;
+use StagehandSDK\Core\Conversion\Contracts\ConverterSource;
+use StagehandSDK\Core\Conversion\EnumOf;
+use StagehandSDK\Core\Conversion\ListOf;
+use StagehandSDK\Core\Conversion\MapOf;
 
 /**
  * @internal

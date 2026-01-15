@@ -5,7 +5,7 @@ namespace Tests;
 use Http\Discovery\Psr17FactoryDiscovery;
 use Http\Mock\Client;
 use PHPUnit\Framework\TestCase;
-use Stagehand\Core\Util;
+use StagehandSDK\Core\Util;
 
 /**
  * @internal
@@ -26,7 +26,7 @@ class ClientTest extends TestCase
 
         $transporter->setDefaultResponse($mockRsp);
 
-        $client = new \Stagehand\Client(
+        $client = new \StagehandSDK\Client(
             baseUrl: 'http://localhost',
             browserbaseAPIKey: 'My Browserbase API Key',
             browserbaseProjectID: 'My Browserbase Project ID',

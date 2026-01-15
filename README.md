@@ -38,7 +38,7 @@ Parameters with a default value must be set by name.
 ```php
 <?php
 
-use Stagehand\Client;
+use StagehandSDK\Client;
 
 $client = new Client(
   browserbaseAPIKey: getenv('BROWSERBASE_API_KEY') ?: 'My Browserbase API Key',
@@ -70,7 +70,7 @@ We provide support for streaming responses using Server-Sent Events (SSE).
 ```php
 <?php
 
-use Stagehand\Client;
+use StagehandSDK\Client;
 
 $client = new Client(
   browserbaseAPIKey: getenv('BROWSERBASE_API_KEY') ?: 'My Browserbase API Key',
@@ -92,14 +92,14 @@ foreach ($stream as $response) {
 
 ### Handling errors
 
-When the library is unable to connect to the API, or if the API returns a non-success status code (i.e., 4xx or 5xx response), a subclass of `Stagehand\Core\Exceptions\APIException` will be thrown:
+When the library is unable to connect to the API, or if the API returns a non-success status code (i.e., 4xx or 5xx response), a subclass of `StagehandSDK\Core\Exceptions\APIException` will be thrown:
 
 ```php
 <?php
 
-use Stagehand\Core\Exceptions\APIConnectionException;
-use Stagehand\Core\Exceptions\RateLimitException;
-use Stagehand\Core\Exceptions\APIStatusException;
+use StagehandSDK\Core\Exceptions\APIConnectionException;
+use StagehandSDK\Core\Exceptions\RateLimitException;
+use StagehandSDK\Core\Exceptions\APIStatusException;
 
 try {
   $response = $client->sessions->start(modelName: 'openai/gpt-5-nano');
@@ -141,7 +141,7 @@ You can use the `maxRetries` option to configure or disable this:
 ```php
 <?php
 
-use Stagehand\Client;
+use StagehandSDK\Client;
 
 // Configure the default for all requests:
 $client = new Client(requestOptions: ['maxRetries' => 0]);

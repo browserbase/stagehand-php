@@ -2,22 +2,22 @@
 
 declare(strict_types=1);
 
-namespace Stagehand\Sessions;
+namespace StagehandSDK\Sessions;
 
-use Stagehand\Core\Attributes\Optional;
-use Stagehand\Core\Attributes\Required;
-use Stagehand\Core\Concerns\SdkModel;
-use Stagehand\Core\Concerns\SdkParams;
-use Stagehand\Core\Contracts\BaseModel;
-use Stagehand\Sessions\SessionNavigateParams\Options;
-use Stagehand\Sessions\SessionNavigateParams\XStreamResponse;
+use StagehandSDK\Core\Attributes\Optional;
+use StagehandSDK\Core\Attributes\Required;
+use StagehandSDK\Core\Concerns\SdkModel;
+use StagehandSDK\Core\Concerns\SdkParams;
+use StagehandSDK\Core\Contracts\BaseModel;
+use StagehandSDK\Sessions\SessionNavigateParams\Options;
+use StagehandSDK\Sessions\SessionNavigateParams\XStreamResponse;
 
 /**
  * Navigates the browser to the specified URL.
  *
- * @see Stagehand\Services\SessionsService::navigate()
+ * @see StagehandSDK\Services\SessionsService::navigate()
  *
- * @phpstan-import-type OptionsShape from \Stagehand\Sessions\SessionNavigateParams\Options
+ * @phpstan-import-type OptionsShape from \StagehandSDK\Sessions\SessionNavigateParams\Options
  *
  * @phpstan-type SessionNavigateParamsShape = array{
  *   url: string,

@@ -2,24 +2,24 @@
 
 declare(strict_types=1);
 
-namespace Stagehand\Sessions;
+namespace StagehandSDK\Sessions;
 
-use Stagehand\Core\Attributes\Optional;
-use Stagehand\Core\Attributes\Required;
-use Stagehand\Core\Concerns\SdkModel;
-use Stagehand\Core\Concerns\SdkParams;
-use Stagehand\Core\Contracts\BaseModel;
-use Stagehand\Sessions\SessionActParams\Options;
-use Stagehand\Sessions\SessionActParams\XStreamResponse;
+use StagehandSDK\Core\Attributes\Optional;
+use StagehandSDK\Core\Attributes\Required;
+use StagehandSDK\Core\Concerns\SdkModel;
+use StagehandSDK\Core\Concerns\SdkParams;
+use StagehandSDK\Core\Contracts\BaseModel;
+use StagehandSDK\Sessions\SessionActParams\Options;
+use StagehandSDK\Sessions\SessionActParams\XStreamResponse;
 
 /**
  * Executes a browser action using natural language instructions or a predefined Action object.
  *
- * @see Stagehand\Services\SessionsService::act()
+ * @see StagehandSDK\Services\SessionsService::act()
  *
- * @phpstan-import-type InputVariants from \Stagehand\Sessions\SessionActParams\Input
- * @phpstan-import-type InputShape from \Stagehand\Sessions\SessionActParams\Input
- * @phpstan-import-type OptionsShape from \Stagehand\Sessions\SessionActParams\Options
+ * @phpstan-import-type InputVariants from \StagehandSDK\Sessions\SessionActParams\Input
+ * @phpstan-import-type InputShape from \StagehandSDK\Sessions\SessionActParams\Input
+ * @phpstan-import-type OptionsShape from \StagehandSDK\Sessions\SessionActParams\Options
  *
  * @phpstan-type SessionActParamsShape = array{
  *   input: InputShape,

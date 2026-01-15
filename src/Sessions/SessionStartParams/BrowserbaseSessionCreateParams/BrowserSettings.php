@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams;
+namespace StagehandSDK\Sessions\SessionStartParams\BrowserbaseSessionCreateParams;
 
-use Stagehand\Core\Attributes\Optional;
-use Stagehand\Core\Concerns\SdkModel;
-use Stagehand\Core\Contracts\BaseModel;
-use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings\Context;
-use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings\Fingerprint;
-use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings\Viewport;
+use StagehandSDK\Core\Attributes\Optional;
+use StagehandSDK\Core\Concerns\SdkModel;
+use StagehandSDK\Core\Contracts\BaseModel;
+use StagehandSDK\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings\Context;
+use StagehandSDK\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings\Fingerprint;
+use StagehandSDK\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings\Viewport;
 
 /**
- * @phpstan-import-type ContextShape from \Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings\Context
- * @phpstan-import-type FingerprintShape from \Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings\Fingerprint
- * @phpstan-import-type ViewportShape from \Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings\Viewport
+ * @phpstan-import-type ContextShape from \StagehandSDK\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings\Context
+ * @phpstan-import-type FingerprintShape from \StagehandSDK\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings\Fingerprint
+ * @phpstan-import-type ViewportShape from \StagehandSDK\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings\Viewport
  *
  * @phpstan-type BrowserSettingsShape = array{
  *   advancedStealth?: bool|null,

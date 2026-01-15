@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stagehand\Sessions\SessionStartParams\Browser;
+namespace StagehandSDK\Sessions\SessionStartParams\Browser;
 
 /**
  * Browser type to use.

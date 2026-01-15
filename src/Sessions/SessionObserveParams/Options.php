@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Stagehand\Sessions\SessionObserveParams;
+namespace StagehandSDK\Sessions\SessionObserveParams;
 
-use Stagehand\Core\Attributes\Optional;
-use Stagehand\Core\Concerns\SdkModel;
-use Stagehand\Core\Contracts\BaseModel;
-use Stagehand\Sessions\ModelConfig\ModelConfigObject;
+use StagehandSDK\Core\Attributes\Optional;
+use StagehandSDK\Core\Concerns\SdkModel;
+use StagehandSDK\Core\Contracts\BaseModel;
+use StagehandSDK\Sessions\ModelConfig\ModelConfigObject;
 
 /**
- * @phpstan-import-type ModelConfigVariants from \Stagehand\Sessions\ModelConfig
- * @phpstan-import-type ModelConfigShape from \Stagehand\Sessions\ModelConfig
+ * @phpstan-import-type ModelConfigVariants from \StagehandSDK\Sessions\ModelConfig
+ * @phpstan-import-type ModelConfigShape from \StagehandSDK\Sessions\ModelConfig
  *
  * @phpstan-type OptionsShape = array{
  *   model?: ModelConfigShape|null, selector?: string|null, timeout?: float|null

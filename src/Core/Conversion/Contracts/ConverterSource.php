@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stagehand\Core\Conversion\Contracts;
+namespace StagehandSDK\Core\Conversion\Contracts;
 
 /**
  * @internal

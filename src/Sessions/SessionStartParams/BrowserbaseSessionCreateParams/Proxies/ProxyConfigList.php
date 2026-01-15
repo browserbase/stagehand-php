@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Proxies;
+namespace StagehandSDK\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Proxies;
 
-use Stagehand\Core\Concerns\SdkUnion;
-use Stagehand\Core\Conversion\Contracts\Converter;
-use Stagehand\Core\Conversion\Contracts\ConverterSource;
-use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Proxies\ProxyConfigList\BrowserbaseProxyConfig;
-use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Proxies\ProxyConfigList\ExternalProxyConfig;
+use StagehandSDK\Core\Concerns\SdkUnion;
+use StagehandSDK\Core\Conversion\Contracts\Converter;
+use StagehandSDK\Core\Conversion\Contracts\ConverterSource;
+use StagehandSDK\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Proxies\ProxyConfigList\BrowserbaseProxyConfig;
+use StagehandSDK\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Proxies\ProxyConfigList\ExternalProxyConfig;
 
 /**
- * @phpstan-import-type BrowserbaseProxyConfigShape from \Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Proxies\ProxyConfigList\BrowserbaseProxyConfig
- * @phpstan-import-type ExternalProxyConfigShape from \Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Proxies\ProxyConfigList\ExternalProxyConfig
+ * @phpstan-import-type BrowserbaseProxyConfigShape from \StagehandSDK\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Proxies\ProxyConfigList\BrowserbaseProxyConfig
+ * @phpstan-import-type ExternalProxyConfigShape from \StagehandSDK\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Proxies\ProxyConfigList\ExternalProxyConfig
  *
  * @phpstan-type ProxyConfigListVariants = BrowserbaseProxyConfig|ExternalProxyConfig
  * @phpstan-type ProxyConfigListShape = ProxyConfigListVariants|BrowserbaseProxyConfigShape|ExternalProxyConfigShape

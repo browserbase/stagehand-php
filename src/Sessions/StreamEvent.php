@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Stagehand\Sessions;
+namespace StagehandSDK\Sessions;
 
-use Stagehand\Core\Attributes\Required;
-use Stagehand\Core\Concerns\SdkModel;
-use Stagehand\Core\Contracts\BaseModel;
-use Stagehand\Sessions\StreamEvent\Data\StreamEventLogDataOutput;
-use Stagehand\Sessions\StreamEvent\Data\StreamEventSystemDataOutput;
-use Stagehand\Sessions\StreamEvent\Type;
+use StagehandSDK\Core\Attributes\Required;
+use StagehandSDK\Core\Concerns\SdkModel;
+use StagehandSDK\Core\Contracts\BaseModel;
+use StagehandSDK\Sessions\StreamEvent\Data\StreamEventLogDataOutput;
+use StagehandSDK\Sessions\StreamEvent\Data\StreamEventSystemDataOutput;
+use StagehandSDK\Sessions\StreamEvent\Type;
 
 /**
  * Server-Sent Event emitted during streaming responses. Events are sent as `data: <JSON>\n\n`. Key order: data (with status first), type, id.
  *
- * @phpstan-import-type DataVariants from \Stagehand\Sessions\StreamEvent\Data
- * @phpstan-import-type DataShape from \Stagehand\Sessions\StreamEvent\Data
+ * @phpstan-import-type DataVariants from \StagehandSDK\Sessions\StreamEvent\Data
+ * @phpstan-import-type DataShape from \StagehandSDK\Sessions\StreamEvent\Data
  *
  * @phpstan-type StreamEventShape = array{
  *   id: string, data: DataShape, type: Type|value-of<Type>

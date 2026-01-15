@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stagehand;
+namespace StagehandSDK;
 
 // x-release-please-start-version
 const VERSION = '0.3.1';
