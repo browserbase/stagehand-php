@@ -62,8 +62,9 @@ final class SessionsTest extends TestCase
         }
 
         $result = $this->client->sessions->act(
-            '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-            input: 'click the sign in button',
+            'c4dbf3a9-9a58-4b22-8a1c-9f20f9f9e123',
+            input: 'Click the login button',
+            frameID: 'frameId',
             options: [
                 'model' => 'openai/gpt-5-nano',
                 'timeout' => 30000,
@@ -131,6 +132,8 @@ final class SessionsTest extends TestCase
                 'highlightCursor' => true,
                 'maxSteps' => 20,
             ],
+            frameID: 'frameId',
+            xSentAt: new \DateTimeImmutable('2025-01-15T10:30:00Z'),
             xStreamResponse: 'true',
         );
 
@@ -179,7 +182,12 @@ final class SessionsTest extends TestCase
         $result = $this->client->sessions->navigate(
             'c4dbf3a9-9a58-4b22-8a1c-9f20f9f9e123',
             url: 'https://example.com',
-            options: ['waitUntil' => 'load'],
+            frameID: 'frameId',
+            options: [
+                'referer' => 'referer', 'timeout' => 30000, 'waitUntil' => 'networkidle',
+            ],
+            streamResponse: true,
+            xSentAt: new \DateTimeImmutable('2025-01-15T10:30:00Z'),
             xStreamResponse: 'true',
         );
 
