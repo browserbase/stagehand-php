@@ -1,6 +1,6 @@
 {
   "$schema": "https://getcomposer.org/schema.json",
-  "license": "Apache-2.0",
+  "license": "MIT",
   "autoload": {
     "files": [
       "src/Version.php"
@@ -27,7 +27,7 @@
     "sort-packages": true
   },
   "description": "Stagehand PHP SDK",
-  "name": "browserbase/stagehand",
+  "name": "browserbase/stagehand-sdk",
   "require": {
     "php": "^8.1",
     "php-http/discovery": "^1",
