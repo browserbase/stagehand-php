@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace StagehandSDK\Sessions\SessionExecuteResponse\Data;
+namespace Stagehand\Sessions\SessionExecuteResponse\Data;
 
-use StagehandSDK\Core\Attributes\Optional;
-use StagehandSDK\Core\Attributes\Required;
-use StagehandSDK\Core\Concerns\SdkModel;
-use StagehandSDK\Core\Contracts\BaseModel;
-use StagehandSDK\Sessions\SessionExecuteResponse\Data\Result\Action;
-use StagehandSDK\Sessions\SessionExecuteResponse\Data\Result\Usage;
+use Stagehand\Core\Attributes\Optional;
+use Stagehand\Core\Attributes\Required;
+use Stagehand\Core\Concerns\SdkModel;
+use Stagehand\Core\Contracts\BaseModel;
+use Stagehand\Sessions\SessionExecuteResponse\Data\Result\Action;
+use Stagehand\Sessions\SessionExecuteResponse\Data\Result\Usage;
 
 /**
- * @phpstan-import-type ActionShape from \StagehandSDK\Sessions\SessionExecuteResponse\Data\Result\Action
- * @phpstan-import-type UsageShape from \StagehandSDK\Sessions\SessionExecuteResponse\Data\Result\Usage
+ * @phpstan-import-type ActionShape from \Stagehand\Sessions\SessionExecuteResponse\Data\Result\Action
+ * @phpstan-import-type UsageShape from \Stagehand\Sessions\SessionExecuteResponse\Data\Result\Usage
  *
  * @phpstan-type ResultShape = array{
  *   actions: list<Action|ActionShape>,

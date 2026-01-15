@@ -1,11 +1,11 @@
 <?php
 
-namespace StagehandSDK\Core\Exceptions;
+namespace Stagehand\Core\Exceptions;
 
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class APIException extends StagehandSDKException
+class APIException extends StagehandException
 {
     public ?int $status = null;
 

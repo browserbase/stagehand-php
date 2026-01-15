@@ -1,11 +1,11 @@
 <?php
 
-namespace StagehandSDK\Core\Exceptions;
+namespace Stagehand\Core\Exceptions;
 
-class StagehandSDKException extends \Exception
+class StagehandException extends \Exception
 {
     /** @var string */
-    protected const DESC = 'StagehandSDK Error';
+    protected const DESC = 'Stagehand Error';
 
     public function __construct(string $message, int $code = 0, ?\Throwable $previous = null)
     {

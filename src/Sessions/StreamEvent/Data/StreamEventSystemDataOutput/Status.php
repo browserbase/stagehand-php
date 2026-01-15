@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace StagehandSDK\Sessions\StreamEvent\Data\StreamEventSystemDataOutput;
+namespace Stagehand\Sessions\StreamEvent\Data\StreamEventSystemDataOutput;
 
 /**
  * Current status of the streaming operation.

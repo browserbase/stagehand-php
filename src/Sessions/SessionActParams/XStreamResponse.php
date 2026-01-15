@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace StagehandSDK\Sessions\SessionActParams;
+namespace Stagehand\Sessions\SessionActParams;
 
 /**
  * Whether to stream the response via SSE.

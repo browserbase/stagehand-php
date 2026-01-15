@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace StagehandSDK\Sessions;
+namespace Stagehand\Sessions;
 
-use StagehandSDK\Core\Attributes\Required;
-use StagehandSDK\Core\Concerns\SdkModel;
-use StagehandSDK\Core\Contracts\BaseModel;
-use StagehandSDK\Sessions\SessionActResponse\Data;
+use Stagehand\Core\Attributes\Required;
+use Stagehand\Core\Concerns\SdkModel;
+use Stagehand\Core\Contracts\BaseModel;
+use Stagehand\Sessions\SessionActResponse\Data;
 
 /**
- * @phpstan-import-type DataShape from \StagehandSDK\Sessions\SessionActResponse\Data
+ * @phpstan-import-type DataShape from \Stagehand\Sessions\SessionActResponse\Data
  *
  * @phpstan-type SessionActResponseShape = array{
  *   data: Data|DataShape, success: bool

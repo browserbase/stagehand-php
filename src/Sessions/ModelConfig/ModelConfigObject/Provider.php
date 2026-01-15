@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace StagehandSDK\Sessions\ModelConfig\ModelConfigObject;
+namespace Stagehand\Sessions\ModelConfig\ModelConfigObject;
 
 /**
  * AI provider for the model (or provide a baseURL endpoint instead).

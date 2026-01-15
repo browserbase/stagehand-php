@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace StagehandSDK\Sessions;
+namespace Stagehand\Sessions;
 
-use StagehandSDK\Core\Attributes\Required;
-use StagehandSDK\Core\Concerns\SdkModel;
-use StagehandSDK\Core\Contracts\BaseModel;
+use Stagehand\Core\Attributes\Required;
+use Stagehand\Core\Concerns\SdkModel;
+use Stagehand\Core\Contracts\BaseModel;
 
 /**
  * @phpstan-type SessionEndResponseShape = array{success: bool}

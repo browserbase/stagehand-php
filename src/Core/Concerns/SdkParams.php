@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace StagehandSDK\Core\Concerns;
+namespace Stagehand\Core\Concerns;
 
-use StagehandSDK\Core\Conversion;
-use StagehandSDK\Core\Conversion\DumpState;
-use StagehandSDK\RequestOptions;
+use Stagehand\Core\Conversion;
+use Stagehand\Core\Conversion\DumpState;
+use Stagehand\RequestOptions;
 
 /**
  * @internal

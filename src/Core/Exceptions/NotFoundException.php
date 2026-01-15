@@ -1,9 +1,9 @@
 <?php
 
-namespace StagehandSDK\Core\Exceptions;
+namespace Stagehand\Core\Exceptions;
 
 class NotFoundException extends APIStatusException
 {
     /** @var string */
-    protected const DESC = 'StagehandSDK Not Found Exception';
+    protected const DESC = 'Stagehand Not Found Exception';
 }

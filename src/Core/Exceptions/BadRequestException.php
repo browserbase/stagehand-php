@@ -1,9 +1,9 @@
 <?php
 
-namespace StagehandSDK\Core\Exceptions;
+namespace Stagehand\Core\Exceptions;
 
 class BadRequestException extends APIStatusException
 {
     /** @var string */
-    protected const DESC = 'StagehandSDK Bad Request Exception';
+    protected const DESC = 'Stagehand Bad Request Exception';
 }

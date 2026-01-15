@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace StagehandSDK\Sessions\StreamEvent;
+namespace Stagehand\Sessions\StreamEvent;
 
-use StagehandSDK\Core\Concerns\SdkUnion;
-use StagehandSDK\Core\Conversion\Contracts\Converter;
-use StagehandSDK\Core\Conversion\Contracts\ConverterSource;
-use StagehandSDK\Sessions\StreamEvent\Data\StreamEventLogDataOutput;
-use StagehandSDK\Sessions\StreamEvent\Data\StreamEventSystemDataOutput;
+use Stagehand\Core\Concerns\SdkUnion;
+use Stagehand\Core\Conversion\Contracts\Converter;
+use Stagehand\Core\Conversion\Contracts\ConverterSource;
+use Stagehand\Sessions\StreamEvent\Data\StreamEventLogDataOutput;
+use Stagehand\Sessions\StreamEvent\Data\StreamEventSystemDataOutput;
 
 /**
- * @phpstan-import-type StreamEventSystemDataOutputShape from \StagehandSDK\Sessions\StreamEvent\Data\StreamEventSystemDataOutput
- * @phpstan-import-type StreamEventLogDataOutputShape from \StagehandSDK\Sessions\StreamEvent\Data\StreamEventLogDataOutput
+ * @phpstan-import-type StreamEventSystemDataOutputShape from \Stagehand\Sessions\StreamEvent\Data\StreamEventSystemDataOutput
+ * @phpstan-import-type StreamEventLogDataOutputShape from \Stagehand\Sessions\StreamEvent\Data\StreamEventLogDataOutput
  *
  * @phpstan-type DataVariants = StreamEventSystemDataOutput|StreamEventLogDataOutput
  * @phpstan-type DataShape = DataVariants|StreamEventSystemDataOutputShape|StreamEventLogDataOutputShape

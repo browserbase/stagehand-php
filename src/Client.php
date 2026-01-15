@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace StagehandSDK;
+namespace Stagehand;
 
 use Http\Discovery\Psr17FactoryDiscovery;
 use Http\Discovery\Psr18ClientDiscovery;
-use StagehandSDK\Core\BaseClient;
-use StagehandSDK\Core\Util;
-use StagehandSDK\Services\SessionsService;
+use Stagehand\Core\BaseClient;
+use Stagehand\Core\Util;
+use Stagehand\Services\SessionsService;
 
 /**
- * @phpstan-import-type NormalizedRequest from \StagehandSDK\Core\BaseClient
- * @phpstan-import-type RequestOpts from \StagehandSDK\RequestOptions
+ * @phpstan-import-type NormalizedRequest from \Stagehand\Core\BaseClient
+ * @phpstan-import-type RequestOpts from \Stagehand\RequestOptions
  */
 class Client extends BaseClient
 {

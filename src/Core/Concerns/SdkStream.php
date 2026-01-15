@@ -1,13 +1,13 @@
 <?php
 
-namespace StagehandSDK\Core\Concerns;
+namespace Stagehand\Core\Concerns;
 
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use StagehandSDK\Core\Contracts\BaseStream;
-use StagehandSDK\Core\Conversion\Contracts\Converter;
-use StagehandSDK\Core\Conversion\Contracts\ConverterSource;
-use StagehandSDK\Core\Implementation\IteratorExit;
+use Stagehand\Core\Contracts\BaseStream;
+use Stagehand\Core\Conversion\Contracts\Converter;
+use Stagehand\Core\Conversion\Contracts\ConverterSource;
+use Stagehand\Core\Implementation\IteratorExit;
 
 /**
  * @internal

@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace StagehandSDK\Sessions\SessionActParams;
+namespace Stagehand\Sessions\SessionActParams;
 
-use StagehandSDK\Core\Concerns\SdkUnion;
-use StagehandSDK\Core\Conversion\Contracts\Converter;
-use StagehandSDK\Core\Conversion\Contracts\ConverterSource;
-use StagehandSDK\Sessions\Action;
+use Stagehand\Core\Concerns\SdkUnion;
+use Stagehand\Core\Conversion\Contracts\Converter;
+use Stagehand\Core\Conversion\Contracts\ConverterSource;
+use Stagehand\Sessions\Action;
 
 /**
  * Natural language instruction or Action object.
  *
- * @phpstan-import-type ActionShape from \StagehandSDK\Sessions\Action
+ * @phpstan-import-type ActionShape from \Stagehand\Sessions\Action
  *
  * @phpstan-type InputVariants = string|Action
  * @phpstan-type InputShape = InputVariants|ActionShape
