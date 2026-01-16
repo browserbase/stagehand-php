@@ -25,7 +25,6 @@ use Stagehand\Sessions\SessionExecuteParams\XStreamResponse;
  *   agentConfig: AgentConfig|AgentConfigShape,
  *   executeOptions: ExecuteOptions|ExecuteOptionsShape,
  *   frameID?: string|null,
- *   xSentAt?: \DateTimeInterface|null,
  *   xStreamResponse?: null|XStreamResponse|value-of<XStreamResponse>,
  * }
  */
@@ -44,14 +43,8 @@ final class SessionExecuteParams implements BaseModel
     /**
      * Target frame ID for the agent.
      */
-    #[Optional('frameId')]
+    #[Optional('frameId', nullable: true)]
     public ?string $frameID;
-
-    /**
-     * ISO timestamp when request was sent.
-     */
-    #[Optional]
-    public ?\DateTimeInterface $xSentAt;
 
     /**
      * Whether to stream the response via SSE.
@@ -93,7 +86,6 @@ final class SessionExecuteParams implements BaseModel
         AgentConfig|array $agentConfig,
         ExecuteOptions|array $executeOptions,
         ?string $frameID = null,
-        ?\DateTimeInterface $xSentAt = null,
         XStreamResponse|string|null $xStreamResponse = null,
     ): self {
         $self = new self;
@@ -102,7 +94,6 @@ final class SessionExecuteParams implements BaseModel
         $self['executeOptions'] = $executeOptions;
 
         null !== $frameID && $self['frameID'] = $frameID;
-        null !== $xSentAt && $self['xSentAt'] = $xSentAt;
         null !== $xStreamResponse && $self['xStreamResponse'] = $xStreamResponse;
 
         return $self;
@@ -134,21 +125,10 @@ final class SessionExecuteParams implements BaseModel
     /**
      * Target frame ID for the agent.
      */
-    public function withFrameID(string $frameID): self
+    public function withFrameID(?string $frameID): self
     {
         $self = clone $this;
         $self['frameID'] = $frameID;
-
-        return $self;
-    }
-
-    /**
-     * ISO timestamp when request was sent.
-     */
-    public function withXSentAt(\DateTimeInterface $xSentAt): self
-    {
-        $self = clone $this;
-        $self['xSentAt'] = $xSentAt;
 
         return $self;
     }

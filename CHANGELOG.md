@@ -1,5 +1,18 @@
 # Changelog
 
+## 3.2.0 (2026-01-16)
+
+Full Changelog: [v3.1.0...v3.2.0](https://github.com/browserbase/stagehand-php/compare/v3.1.0...v3.2.0)
+
+### Features
+
+* x-stainless-any fix, optional frame id, ModelConfigString fix ([b611de5](https://github.com/browserbase/stagehand-php/commit/b611de5d7f423d0dc9ac8f96da879aed361ad78c))
+
+
+### Chores
+
+* remove custom code ([c79671f](https://github.com/browserbase/stagehand-php/commit/c79671f7b0b0e14a44772cb7c2775028740dbdb6))
+
 ## 3.1.0 (2026-01-15)
 
 Full Changelog: [v3.0.1...v3.1.0](https://github.com/browserbase/stagehand-php/compare/v3.0.1...v3.1.0)

@@ -22,7 +22,6 @@ use Stagehand\Sessions\SessionObserveParams\XStreamResponse;
  *   frameID?: string|null,
  *   instruction?: string|null,
  *   options?: null|Options|OptionsShape,
- *   xSentAt?: \DateTimeInterface|null,
  *   xStreamResponse?: null|XStreamResponse|value-of<XStreamResponse>,
  * }
  */
@@ -35,7 +34,7 @@ final class SessionObserveParams implements BaseModel
     /**
      * Target frame ID for the observation.
      */
-    #[Optional('frameId')]
+    #[Optional('frameId', nullable: true)]
     public ?string $frameID;
 
     /**
@@ -46,12 +45,6 @@ final class SessionObserveParams implements BaseModel
 
     #[Optional]
     public ?Options $options;
-
-    /**
-     * ISO timestamp when request was sent.
-     */
-    #[Optional]
-    public ?\DateTimeInterface $xSentAt;
 
     /**
      * Whether to stream the response via SSE.
@@ -78,7 +71,6 @@ final class SessionObserveParams implements BaseModel
         ?string $frameID = null,
         ?string $instruction = null,
         Options|array|null $options = null,
-        ?\DateTimeInterface $xSentAt = null,
         XStreamResponse|string|null $xStreamResponse = null,
     ): self {
         $self = new self;
@@ -86,7 +78,6 @@ final class SessionObserveParams implements BaseModel
         null !== $frameID && $self['frameID'] = $frameID;
         null !== $instruction && $self['instruction'] = $instruction;
         null !== $options && $self['options'] = $options;
-        null !== $xSentAt && $self['xSentAt'] = $xSentAt;
         null !== $xStreamResponse && $self['xStreamResponse'] = $xStreamResponse;
 
         return $self;
@@ -95,7 +86,7 @@ final class SessionObserveParams implements BaseModel
     /**
      * Target frame ID for the observation.
      */
-    public function withFrameID(string $frameID): self
+    public function withFrameID(?string $frameID): self
     {
         $self = clone $this;
         $self['frameID'] = $frameID;
@@ -121,17 +112,6 @@ final class SessionObserveParams implements BaseModel
     {
         $self = clone $this;
         $self['options'] = $options;
-
-        return $self;
-    }
-
-    /**
-     * ISO timestamp when request was sent.
-     */
-    public function withXSentAt(\DateTimeInterface $xSentAt): self
-    {
-        $self = clone $this;
-        $self['xSentAt'] = $xSentAt;
 
         return $self;
     }

@@ -1,67 +1,12 @@
-<div id="toc" align="center" style="margin-bottom: 0;">
-  <ul style="list-style: none; margin: 0; padding: 0;">
-    <a href="https://stagehand.dev">
-      <picture>
-        <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/browserbase/stagehand/main/media/dark_logo.png" />
-        <img alt="Stagehand" src="https://raw.githubusercontent.com/browserbase/stagehand/main/media/light_logo.png" width="200" style="margin-right: 30px;" />
-      </picture>
-    </a>
-  </ul>
-</div>
-<p align="center">
-  <strong>The AI Browser Automation Framework</strong><br>
-  <a href="https://docs.stagehand.dev/v3/sdk/php">Read the Docs</a>
-</p>
+# Stagehand PHP API library
 
-<p align="center">
-  <a href="https://github.com/browserbase/stagehand/tree/main?tab=MIT-1-ov-file#MIT-1-ov-file">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/browserbase/stagehand/main/media/dark_license.svg" />
-      <img alt="MIT License" src="https://raw.githubusercontent.com/browserbase/stagehand/main/media/light_license.svg" />
-    </picture>
-  </a>
-  <a href="https://stagehand.dev/discord">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/browserbase/stagehand/main/media/dark_discord.svg" />
-      <img alt="Discord Community" src="https://raw.githubusercontent.com/browserbase/stagehand/main/media/light_discord.svg" />
-    </picture>
-  </a>
-</p>
+The Stagehand PHP library provides convenient access to the Stagehand REST API from any PHP 8.1.0+ application.
 
-<p align="center">
-	<a href="https://trendshift.io/repositories/12122" target="_blank"><img src="https://trendshift.io/api/badge/repositories/12122" alt="browserbase%2Fstagehand | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
-</p>
+It is generated with [Stainless](https://www.stainless.com/).
 
-<p align="center">
-If you're looking for other languages, you can find them
-<a href="https://docs.stagehand.dev/v3/first-steps/introduction"> here</a>
-</p>
+## Documentation
 
-<div align="center" style="display: flex; align-items: center; justify-content: center; gap: 4px; margin-bottom: 0;">
-  <b>Vibe code</b>
-  <span style="font-size: 1.05em;"> Stagehand with </span>
-  <a href="https://director.ai" style="display: flex; align-items: center;">
-    <span>Director</span>
-  </a>
-  <span> </span>
-  <picture>
-    <img alt="Director" src="https://raw.githubusercontent.com/browserbase/stagehand/main/media/director_icon.svg" width="25" />
-  </picture>
-</div>
-
-## What is Stagehand?
-
-Stagehand is a browser automation framework used to control web browsers with natural language and code. By combining the power of AI with the precision of code, Stagehand makes web automation flexible, maintainable, and actually reliable.
-
-## Why Stagehand?
-
-Most existing browser automation tools either require you to write low-level code in a framework like Selenium, Playwright, or Puppeteer, or use high-level agents that can be unpredictable in production. By letting developers choose what to write in code vs. natural language (and bridging the gap between the two) Stagehand is the natural choice for browser automations in production.
-
-1. **Choose when to write code vs. natural language**: use AI when you want to navigate unfamiliar pages, and use code when you know exactly what you want to do.
-
-2. **Go from AI-driven to repeatable workflows**: Stagehand lets you preview AI actions before running them, and also helps you easily cache repeatable actions to save time and tokens.
-
-3. **Write once, run forever**: Stagehand's auto-caching combined with self-healing remembers previous actions, runs without LLM inference, and knows when to involve AI whenever the website changes and your automation breaks.
+The REST API documentation can be found on [docs.stagehand.dev](https://docs.stagehand.dev).
 
 ## Installation
 
@@ -90,129 +35,25 @@ To use this package, install via Composer by adding the following to your applic
 This library uses named parameters to specify optional arguments.
 Parameters with a default value must be set by name.
 
-Here's a comprehensive example demonstrating the full workflow: start session, navigate, observe, act, extract, execute agent, and end session.
-
 ```php
 <?php
 
-require_once __DIR__ . '/../vendor/autoload.php';
-
 use Stagehand\Client;
-use Stagehand\Sessions\Action;
 
-// Load environment variables from .env file if it exists
-if (file_exists(__DIR__ . '/../.env')) {
-    $dotenv = parse_ini_file(__DIR__ . '/../.env');
-    foreach ($dotenv as $key => $value) {
-        if (!getenv($key)) {
-            putenv("$key=$value");
-        }
-    }
-}
-
-// Initialize the Stagehand client with API keys from environment variables
 $client = new Client(
-    browserbaseAPIKey: getenv('BROWSERBASE_API_KEY') ?: throw new Exception('BROWSERBASE_API_KEY environment variable is required'),
-    browserbaseProjectID: getenv('BROWSERBASE_PROJECT_ID') ?: throw new Exception('BROWSERBASE_PROJECT_ID environment variable is required'),
-    modelAPIKey: getenv('MODEL_API_KEY') ?: throw new Exception('MODEL_API_KEY environment variable is required'),
+  browserbaseAPIKey: getenv('BROWSERBASE_API_KEY') ?: 'My Browserbase API Key',
+  browserbaseProjectID: getenv(
+    'BROWSERBASE_PROJECT_ID'
+  ) ?: 'My Browserbase Project ID',
+  modelAPIKey: getenv('MODEL_API_KEY') ?: 'My Model API Key',
 );
 
-// Start a new session
-$startResponse = $client->sessions->start(
-    browserbaseAPIKey: getenv('BROWSERBASE_API_KEY'),
-    browserbaseProjectID: getenv('BROWSERBASE_PROJECT_ID'),
-    model: 'openai/gpt-4o',
-);
-echo "Session started: {$startResponse->data->sessionID}\n";
-
-$sessionID = $startResponse->data->sessionID;
-
-// Navigate to Hacker News
-$client->sessions->navigate(
-    $sessionID,
-    url: 'https://news.ycombinator.com',
-);
-echo "Navigated to Hacker News\n";
-
-// Observe to find possible actions
-$observeResponse = $client->sessions->observe(
-    $sessionID,
-    instruction: 'find the link to view comments for the top post',
+$response = $client->sessions->act(
+  '00000000-your-session-id-000000000000',
+  input: 'click the first link on the page',
 );
 
-$actions = $observeResponse->data->result;
-echo "Found " . count($actions) . " possible actions\n";
-
-if (count($actions) === 0) {
-    echo "No actions found\n";
-    exit(0);
-}
-
-// Use the first action
-$action = $actions[0];
-echo "Acting on: {$action->description}\n";
-
-// Pass the action to Act
-$actResponse = $client->sessions->act(
-    $sessionID,
-    input: Action::with(
-        description: $action->description,
-        selector: $action->selector,
-        method: $action->method,
-        arguments: $action->arguments,
-    ),
-);
-echo "Act completed: {$actResponse->data->result->message}\n";
-
-// Extract data from the page
-// We're now on the comments page, so extract the top comment text
-$extractResponse = $client->sessions->extract(
-    $sessionID,
-    instruction: 'extract the text of the top comment on this page',
-    schema: [
-        'type' => 'object',
-        'properties' => [
-            'commentText' => [
-                'type' => 'string',
-                'description' => 'The text content of the top comment',
-            ],
-            'author' => [
-                'type' => 'string',
-                'description' => 'The username of the comment author',
-            ],
-        ],
-        'required' => ['commentText'],
-    ],
-);
-echo "Extracted data: " . json_encode($extractResponse->data->result) . "\n";
-
-// Get the author from the extracted data
-$extractedData = $extractResponse->data->result;
-$author = $extractedData['author'] ?? 'unknown';
-echo "Looking up profile for author: $author\n";
-
-// Use the Agent to find the author's profile
-// Execute runs an autonomous agent that can navigate and interact with pages
-$executeResponse = $client->sessions->executeAgent(
-    $sessionID,
-    agentConfig: [
-        'model' => 'openai/gpt-4.1-mini',
-        'cua' => false,
-    ],
-    executeOptions: [
-        'instruction' => "Find any personal website, GitHub, LinkedIn, or other best profile URL for the Hacker News user '$author'. " .
-            "Click on their username to go to their profile page and look for any links they have shared. " .
-            "Use Google Search with their username or other details from their profile if you dont find any direct links.",
-        'maxSteps' => 15,
-    ],
-);
-echo "Agent completed: {$executeResponse->data->result->message}\n";
-echo "Agent success: " . ($executeResponse->data->result->success ? 'true' : 'false') . "\n";
-echo "Agent actions taken: " . count($executeResponse->data->result->actions) . "\n";
-
-// End the session to clean up resources
-$client->sessions->end($sessionID);
-echo "Session ended\n";
+var_dump($response->data);
 ```
 
 ### Value Objects

@@ -24,7 +24,6 @@ use Stagehand\Sessions\SessionNavigateParams\XStreamResponse;
  *   frameID?: string|null,
  *   options?: null|Options|OptionsShape,
  *   streamResponse?: bool|null,
- *   xSentAt?: \DateTimeInterface|null,
  *   xStreamResponse?: null|XStreamResponse|value-of<XStreamResponse>,
  * }
  */
@@ -43,7 +42,7 @@ final class SessionNavigateParams implements BaseModel
     /**
      * Target frame ID for the navigation.
      */
-    #[Optional('frameId')]
+    #[Optional('frameId', nullable: true)]
     public ?string $frameID;
 
     #[Optional]
@@ -54,12 +53,6 @@ final class SessionNavigateParams implements BaseModel
      */
     #[Optional]
     public ?bool $streamResponse;
-
-    /**
-     * ISO timestamp when request was sent.
-     */
-    #[Optional]
-    public ?\DateTimeInterface $xSentAt;
 
     /**
      * Whether to stream the response via SSE.
@@ -101,7 +94,6 @@ final class SessionNavigateParams implements BaseModel
         ?string $frameID = null,
         Options|array|null $options = null,
         ?bool $streamResponse = null,
-        ?\DateTimeInterface $xSentAt = null,
         XStreamResponse|string|null $xStreamResponse = null,
     ): self {
         $self = new self;
@@ -111,7 +103,6 @@ final class SessionNavigateParams implements BaseModel
         null !== $frameID && $self['frameID'] = $frameID;
         null !== $options && $self['options'] = $options;
         null !== $streamResponse && $self['streamResponse'] = $streamResponse;
-        null !== $xSentAt && $self['xSentAt'] = $xSentAt;
         null !== $xStreamResponse && $self['xStreamResponse'] = $xStreamResponse;
 
         return $self;
@@ -131,7 +122,7 @@ final class SessionNavigateParams implements BaseModel
     /**
      * Target frame ID for the navigation.
      */
-    public function withFrameID(string $frameID): self
+    public function withFrameID(?string $frameID): self
     {
         $self = clone $this;
         $self['frameID'] = $frameID;
@@ -157,17 +148,6 @@ final class SessionNavigateParams implements BaseModel
     {
         $self = clone $this;
         $self['streamResponse'] = $streamResponse;
-
-        return $self;
-    }
-
-    /**
-     * ISO timestamp when request was sent.
-     */
-    public function withXSentAt(\DateTimeInterface $xSentAt): self
-    {
-        $self = clone $this;
-        $self['xSentAt'] = $xSentAt;
 
         return $self;
     }

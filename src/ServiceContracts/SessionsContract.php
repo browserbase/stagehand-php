@@ -42,9 +42,8 @@ interface SessionsContract
      *
      * @param string $id Path param: Unique session identifier
      * @param InputShape $input Body param: Natural language instruction or Action object
-     * @param string $frameID Body param: Target frame ID for the action
+     * @param string|null $frameID Body param: Target frame ID for the action
      * @param Options|OptionsShape1 $options Body param
-     * @param \DateTimeInterface $xSentAt Header param: ISO timestamp when request was sent
      * @param XStreamResponse|value-of<XStreamResponse> $xStreamResponse Header param: Whether to stream the response via SSE
      * @param RequestOpts|null $requestOptions
      *
@@ -55,7 +54,6 @@ interface SessionsContract
         string|Action|array $input,
         ?string $frameID = null,
         Options|array|null $options = null,
-        ?\DateTimeInterface $xSentAt = null,
         XStreamResponse|string|null $xStreamResponse = null,
         RequestOptions|array|null $requestOptions = null,
     ): SessionActResponse;
@@ -65,9 +63,8 @@ interface SessionsContract
      *
      * @param string $id Path param: Unique session identifier
      * @param InputShape $input Body param: Natural language instruction or Action object
-     * @param string $frameID Body param: Target frame ID for the action
+     * @param string|null $frameID Body param: Target frame ID for the action
      * @param Options|OptionsShape1 $options Body param
-     * @param \DateTimeInterface $xSentAt Header param: ISO timestamp when request was sent
      * @param XStreamResponse|value-of<XStreamResponse> $xStreamResponse Header param: Whether to stream the response via SSE
      * @param RequestOpts|null $requestOptions
      *
@@ -80,7 +77,6 @@ interface SessionsContract
         string|Action|array $input,
         ?string $frameID = null,
         Options|array|null $options = null,
-        ?\DateTimeInterface $xSentAt = null,
         XStreamResponse|string|null $xStreamResponse = null,
         RequestOptions|array|null $requestOptions = null,
     ): BaseStream;
@@ -90,7 +86,6 @@ interface SessionsContract
      *
      * @param string $id Path param: Unique session identifier
      * @param mixed $_forceBody Body param
-     * @param \DateTimeInterface $xSentAt Header param: ISO timestamp when request was sent
      * @param \Stagehand\Sessions\SessionEndParams\XStreamResponse|value-of<\Stagehand\Sessions\SessionEndParams\XStreamResponse> $xStreamResponse Header param: Whether to stream the response via SSE
      * @param RequestOpts|null $requestOptions
      *
@@ -99,7 +94,6 @@ interface SessionsContract
     public function end(
         string $id,
         mixed $_forceBody = null,
-        ?\DateTimeInterface $xSentAt = null,
         \Stagehand\Sessions\SessionEndParams\XStreamResponse|string|null $xStreamResponse = null,
         RequestOptions|array|null $requestOptions = null,
     ): SessionEndResponse;
@@ -110,8 +104,7 @@ interface SessionsContract
      * @param string $id Path param: Unique session identifier
      * @param AgentConfig|AgentConfigShape $agentConfig Body param
      * @param ExecuteOptions|ExecuteOptionsShape $executeOptions Body param
-     * @param string $frameID Body param: Target frame ID for the agent
-     * @param \DateTimeInterface $xSentAt Header param: ISO timestamp when request was sent
+     * @param string|null $frameID Body param: Target frame ID for the agent
      * @param \Stagehand\Sessions\SessionExecuteParams\XStreamResponse|value-of<\Stagehand\Sessions\SessionExecuteParams\XStreamResponse> $xStreamResponse Header param: Whether to stream the response via SSE
      * @param RequestOpts|null $requestOptions
      *
@@ -122,7 +115,6 @@ interface SessionsContract
         AgentConfig|array $agentConfig,
         ExecuteOptions|array $executeOptions,
         ?string $frameID = null,
-        ?\DateTimeInterface $xSentAt = null,
         \Stagehand\Sessions\SessionExecuteParams\XStreamResponse|string|null $xStreamResponse = null,
         RequestOptions|array|null $requestOptions = null,
     ): SessionExecuteResponse;
@@ -133,8 +125,7 @@ interface SessionsContract
      * @param string $id Path param: Unique session identifier
      * @param AgentConfig|AgentConfigShape $agentConfig Body param
      * @param ExecuteOptions|ExecuteOptionsShape $executeOptions Body param
-     * @param string $frameID Body param: Target frame ID for the agent
-     * @param \DateTimeInterface $xSentAt Header param: ISO timestamp when request was sent
+     * @param string|null $frameID Body param: Target frame ID for the agent
      * @param \Stagehand\Sessions\SessionExecuteParams\XStreamResponse|value-of<\Stagehand\Sessions\SessionExecuteParams\XStreamResponse> $xStreamResponse Header param: Whether to stream the response via SSE
      * @param RequestOpts|null $requestOptions
      *
@@ -147,7 +138,6 @@ interface SessionsContract
         AgentConfig|array $agentConfig,
         ExecuteOptions|array $executeOptions,
         ?string $frameID = null,
-        ?\DateTimeInterface $xSentAt = null,
         \Stagehand\Sessions\SessionExecuteParams\XStreamResponse|string|null $xStreamResponse = null,
         RequestOptions|array|null $requestOptions = null,
     ): BaseStream;
@@ -156,11 +146,10 @@ interface SessionsContract
      * @api
      *
      * @param string $id Path param: Unique session identifier
-     * @param string $frameID Body param: Target frame ID for the extraction
+     * @param string|null $frameID Body param: Target frame ID for the extraction
      * @param string $instruction Body param: Natural language instruction for what to extract
      * @param \Stagehand\Sessions\SessionExtractParams\Options|OptionsShape2 $options Body param
      * @param array<string,mixed> $schema Body param: JSON Schema defining the structure of data to extract
-     * @param \DateTimeInterface $xSentAt Header param: ISO timestamp when request was sent
      * @param \Stagehand\Sessions\SessionExtractParams\XStreamResponse|value-of<\Stagehand\Sessions\SessionExtractParams\XStreamResponse> $xStreamResponse Header param: Whether to stream the response via SSE
      * @param RequestOpts|null $requestOptions
      *
@@ -172,7 +161,6 @@ interface SessionsContract
         ?string $instruction = null,
         \Stagehand\Sessions\SessionExtractParams\Options|array|null $options = null,
         ?array $schema = null,
-        ?\DateTimeInterface $xSentAt = null,
         \Stagehand\Sessions\SessionExtractParams\XStreamResponse|string|null $xStreamResponse = null,
         RequestOptions|array|null $requestOptions = null,
     ): SessionExtractResponse;
@@ -181,11 +169,10 @@ interface SessionsContract
      * @api
      *
      * @param string $id Path param: Unique session identifier
-     * @param string $frameID Body param: Target frame ID for the extraction
+     * @param string|null $frameID Body param: Target frame ID for the extraction
      * @param string $instruction Body param: Natural language instruction for what to extract
      * @param \Stagehand\Sessions\SessionExtractParams\Options|OptionsShape2 $options Body param
      * @param array<string,mixed> $schema Body param: JSON Schema defining the structure of data to extract
-     * @param \DateTimeInterface $xSentAt Header param: ISO timestamp when request was sent
      * @param \Stagehand\Sessions\SessionExtractParams\XStreamResponse|value-of<\Stagehand\Sessions\SessionExtractParams\XStreamResponse> $xStreamResponse Header param: Whether to stream the response via SSE
      * @param RequestOpts|null $requestOptions
      *
@@ -199,7 +186,6 @@ interface SessionsContract
         ?string $instruction = null,
         \Stagehand\Sessions\SessionExtractParams\Options|array|null $options = null,
         ?array $schema = null,
-        ?\DateTimeInterface $xSentAt = null,
         \Stagehand\Sessions\SessionExtractParams\XStreamResponse|string|null $xStreamResponse = null,
         RequestOptions|array|null $requestOptions = null,
     ): BaseStream;
@@ -209,10 +195,9 @@ interface SessionsContract
      *
      * @param string $id Path param: Unique session identifier
      * @param string $url Body param: URL to navigate to
-     * @param string $frameID Body param: Target frame ID for the navigation
+     * @param string|null $frameID Body param: Target frame ID for the navigation
      * @param \Stagehand\Sessions\SessionNavigateParams\Options|OptionsShape $options Body param
      * @param bool $streamResponse Body param: Whether to stream the response via SSE
-     * @param \DateTimeInterface $xSentAt Header param: ISO timestamp when request was sent
      * @param \Stagehand\Sessions\SessionNavigateParams\XStreamResponse|value-of<\Stagehand\Sessions\SessionNavigateParams\XStreamResponse> $xStreamResponse Header param: Whether to stream the response via SSE
      * @param RequestOpts|null $requestOptions
      *
@@ -224,7 +209,6 @@ interface SessionsContract
         ?string $frameID = null,
         \Stagehand\Sessions\SessionNavigateParams\Options|array|null $options = null,
         ?bool $streamResponse = null,
-        ?\DateTimeInterface $xSentAt = null,
         \Stagehand\Sessions\SessionNavigateParams\XStreamResponse|string|null $xStreamResponse = null,
         RequestOptions|array|null $requestOptions = null,
     ): SessionNavigateResponse;
@@ -233,10 +217,9 @@ interface SessionsContract
      * @api
      *
      * @param string $id Path param: Unique session identifier
-     * @param string $frameID Body param: Target frame ID for the observation
+     * @param string|null $frameID Body param: Target frame ID for the observation
      * @param string $instruction Body param: Natural language instruction for what actions to find
      * @param \Stagehand\Sessions\SessionObserveParams\Options|OptionsShape3 $options Body param
-     * @param \DateTimeInterface $xSentAt Header param: ISO timestamp when request was sent
      * @param \Stagehand\Sessions\SessionObserveParams\XStreamResponse|value-of<\Stagehand\Sessions\SessionObserveParams\XStreamResponse> $xStreamResponse Header param: Whether to stream the response via SSE
      * @param RequestOpts|null $requestOptions
      *
@@ -247,7 +230,6 @@ interface SessionsContract
         ?string $frameID = null,
         ?string $instruction = null,
         \Stagehand\Sessions\SessionObserveParams\Options|array|null $options = null,
-        ?\DateTimeInterface $xSentAt = null,
         \Stagehand\Sessions\SessionObserveParams\XStreamResponse|string|null $xStreamResponse = null,
         RequestOptions|array|null $requestOptions = null,
     ): SessionObserveResponse;
@@ -256,10 +238,9 @@ interface SessionsContract
      * @api
      *
      * @param string $id Path param: Unique session identifier
-     * @param string $frameID Body param: Target frame ID for the observation
+     * @param string|null $frameID Body param: Target frame ID for the observation
      * @param string $instruction Body param: Natural language instruction for what actions to find
      * @param \Stagehand\Sessions\SessionObserveParams\Options|OptionsShape3 $options Body param
-     * @param \DateTimeInterface $xSentAt Header param: ISO timestamp when request was sent
      * @param \Stagehand\Sessions\SessionObserveParams\XStreamResponse|value-of<\Stagehand\Sessions\SessionObserveParams\XStreamResponse> $xStreamResponse Header param: Whether to stream the response via SSE
      * @param RequestOpts|null $requestOptions
      *
@@ -272,7 +253,6 @@ interface SessionsContract
         ?string $frameID = null,
         ?string $instruction = null,
         \Stagehand\Sessions\SessionObserveParams\Options|array|null $options = null,
-        ?\DateTimeInterface $xSentAt = null,
         \Stagehand\Sessions\SessionObserveParams\XStreamResponse|string|null $xStreamResponse = null,
         RequestOptions|array|null $requestOptions = null,
     ): BaseStream;
@@ -280,7 +260,7 @@ interface SessionsContract
     /**
      * @api
      *
-     * @param string $modelName Body param: Model name to use for AI operations
+     * @param string $modelName Body param: Model name to use for AI operations. Always use the format 'provider/model-name' (e.g., 'openai/gpt-4o', 'anthropic/claude-sonnet-4-5-20250929', 'google/gemini-2.0-flash')
      * @param float $actTimeoutMs Body param: Timeout in ms for act operations (deprecated, v2 only)
      * @param Browser|BrowserShape $browser Body param
      * @param BrowserbaseSessionCreateParams|BrowserbaseSessionCreateParamsShape $browserbaseSessionCreateParams Body param
@@ -291,7 +271,6 @@ interface SessionsContract
      * @param string $systemPrompt Body param: Custom system prompt for AI operations
      * @param float $verbose Body param: Logging verbosity level (0=quiet, 1=normal, 2=debug)
      * @param bool $waitForCaptchaSolves Body param: Wait for captcha solves (deprecated, v2 only)
-     * @param \DateTimeInterface $xSentAt Header param: ISO timestamp when request was sent
      * @param \Stagehand\Sessions\SessionStartParams\XStreamResponse|value-of<\Stagehand\Sessions\SessionStartParams\XStreamResponse> $xStreamResponse Header param: Whether to stream the response via SSE
      * @param RequestOpts|null $requestOptions
      *
@@ -309,7 +288,6 @@ interface SessionsContract
         ?string $systemPrompt = null,
         ?float $verbose = null,
         ?bool $waitForCaptchaSolves = null,
-        ?\DateTimeInterface $xSentAt = null,
         \Stagehand\Sessions\SessionStartParams\XStreamResponse|string|null $xStreamResponse = null,
         RequestOptions|array|null $requestOptions = null,
     ): SessionStartResponse;

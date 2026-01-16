@@ -23,7 +23,7 @@ final class Options implements BaseModel
     use SdkModel;
 
     /**
-     * Model name string with provider prefix (e.g., 'openai/gpt-5-nano', 'anthropic/claude-4.5-opus').
+     * Model name string with provider prefix. Always use the format 'provider/model-name' (e.g., 'openai/gpt-4o', 'anthropic/claude-sonnet-4-5-20250929', 'google/gemini-2.0-flash').
      *
      * @var ModelConfigVariants|null $model
      */
@@ -69,7 +69,7 @@ final class Options implements BaseModel
     }
 
     /**
-     * Model name string with provider prefix (e.g., 'openai/gpt-5-nano', 'anthropic/claude-4.5-opus').
+     * Model name string with provider prefix. Always use the format 'provider/model-name' (e.g., 'openai/gpt-4o', 'anthropic/claude-sonnet-4-5-20250929', 'google/gemini-2.0-flash').
      *
      * @param ModelConfigShape $model
      */
