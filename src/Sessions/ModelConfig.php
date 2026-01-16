@@ -10,7 +10,7 @@ use Stagehand\Core\Conversion\Contracts\ConverterSource;
 use Stagehand\Sessions\ModelConfig\ModelConfigObject;
 
 /**
- * Model name string with provider prefix (e.g., 'openai/gpt-5-nano', 'anthropic/claude-4.5-opus').
+ * Model name string with provider prefix. Always use the format 'provider/model-name' (e.g., 'openai/gpt-4o', 'anthropic/claude-sonnet-4-5-20250929', 'google/gemini-2.0-flash').
  *
  * @phpstan-import-type ModelConfigObjectShape from \Stagehand\Sessions\ModelConfig\ModelConfigObject
  *
