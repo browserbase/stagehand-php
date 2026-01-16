@@ -25,7 +25,6 @@ use Stagehand\Sessions\SessionActParams\XStreamResponse;
  *   input: InputShape,
  *   frameID?: string|null,
  *   options?: null|Options|OptionsShape,
- *   xSentAt?: \DateTimeInterface|null,
  *   xStreamResponse?: null|XStreamResponse|value-of<XStreamResponse>,
  * }
  */
@@ -46,17 +45,11 @@ final class SessionActParams implements BaseModel
     /**
      * Target frame ID for the action.
      */
-    #[Optional('frameId')]
+    #[Optional('frameId', nullable: true)]
     public ?string $frameID;
 
     #[Optional]
     public ?Options $options;
-
-    /**
-     * ISO timestamp when request was sent.
-     */
-    #[Optional]
-    public ?\DateTimeInterface $xSentAt;
 
     /**
      * Whether to stream the response via SSE.
@@ -98,7 +91,6 @@ final class SessionActParams implements BaseModel
         string|Action|array $input,
         ?string $frameID = null,
         Options|array|null $options = null,
-        ?\DateTimeInterface $xSentAt = null,
         XStreamResponse|string|null $xStreamResponse = null,
     ): self {
         $self = new self;
@@ -107,7 +99,6 @@ final class SessionActParams implements BaseModel
 
         null !== $frameID && $self['frameID'] = $frameID;
         null !== $options && $self['options'] = $options;
-        null !== $xSentAt && $self['xSentAt'] = $xSentAt;
         null !== $xStreamResponse && $self['xStreamResponse'] = $xStreamResponse;
 
         return $self;
@@ -129,7 +120,7 @@ final class SessionActParams implements BaseModel
     /**
      * Target frame ID for the action.
      */
-    public function withFrameID(string $frameID): self
+    public function withFrameID(?string $frameID): self
     {
         $self = clone $this;
         $self['frameID'] = $frameID;
@@ -144,17 +135,6 @@ final class SessionActParams implements BaseModel
     {
         $self = clone $this;
         $self['options'] = $options;
-
-        return $self;
-    }
-
-    /**
-     * ISO timestamp when request was sent.
-     */
-    public function withXSentAt(\DateTimeInterface $xSentAt): self
-    {
-        $self = clone $this;
-        $self['xSentAt'] = $xSentAt;
 
         return $self;
     }

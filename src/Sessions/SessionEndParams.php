@@ -17,7 +17,6 @@ use Stagehand\Sessions\SessionEndParams\XStreamResponse;
  *
  * @phpstan-type SessionEndParamsShape = array{
  *   _forceBody?: mixed,
- *   xSentAt?: \DateTimeInterface|null,
  *   xStreamResponse?: null|XStreamResponse|value-of<XStreamResponse>,
  * }
  */
@@ -29,12 +28,6 @@ final class SessionEndParams implements BaseModel
 
     #[Optional]
     public mixed $_forceBody;
-
-    /**
-     * ISO timestamp when request was sent.
-     */
-    #[Optional]
-    public ?\DateTimeInterface $xSentAt;
 
     /**
      * Whether to stream the response via SSE.
@@ -58,13 +51,11 @@ final class SessionEndParams implements BaseModel
      */
     public static function with(
         mixed $_forceBody = null,
-        ?\DateTimeInterface $xSentAt = null,
-        XStreamResponse|string|null $xStreamResponse = null,
+        XStreamResponse|string|null $xStreamResponse = null
     ): self {
         $self = new self;
 
         null !== $_forceBody && $self['_forceBody'] = $_forceBody;
-        null !== $xSentAt && $self['xSentAt'] = $xSentAt;
         null !== $xStreamResponse && $self['xStreamResponse'] = $xStreamResponse;
 
         return $self;
@@ -74,17 +65,6 @@ final class SessionEndParams implements BaseModel
     {
         $self = clone $this;
         $self['_forceBody'] = $_forceBody;
-
-        return $self;
-    }
-
-    /**
-     * ISO timestamp when request was sent.
-     */
-    public function withXSentAt(\DateTimeInterface $xSentAt): self
-    {
-        $self = clone $this;
-        $self['xSentAt'] = $xSentAt;
 
         return $self;
     }

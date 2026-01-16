@@ -23,7 +23,6 @@ use Stagehand\Sessions\SessionExtractParams\XStreamResponse;
  *   instruction?: string|null,
  *   options?: null|Options|OptionsShape,
  *   schema?: array<string,mixed>|null,
- *   xSentAt?: \DateTimeInterface|null,
  *   xStreamResponse?: null|XStreamResponse|value-of<XStreamResponse>,
  * }
  */
@@ -36,7 +35,7 @@ final class SessionExtractParams implements BaseModel
     /**
      * Target frame ID for the extraction.
      */
-    #[Optional('frameId')]
+    #[Optional('frameId', nullable: true)]
     public ?string $frameID;
 
     /**
@@ -55,12 +54,6 @@ final class SessionExtractParams implements BaseModel
      */
     #[Optional(map: 'mixed')]
     public ?array $schema;
-
-    /**
-     * ISO timestamp when request was sent.
-     */
-    #[Optional]
-    public ?\DateTimeInterface $xSentAt;
 
     /**
      * Whether to stream the response via SSE.
@@ -89,7 +82,6 @@ final class SessionExtractParams implements BaseModel
         ?string $instruction = null,
         Options|array|null $options = null,
         ?array $schema = null,
-        ?\DateTimeInterface $xSentAt = null,
         XStreamResponse|string|null $xStreamResponse = null,
     ): self {
         $self = new self;
@@ -98,7 +90,6 @@ final class SessionExtractParams implements BaseModel
         null !== $instruction && $self['instruction'] = $instruction;
         null !== $options && $self['options'] = $options;
         null !== $schema && $self['schema'] = $schema;
-        null !== $xSentAt && $self['xSentAt'] = $xSentAt;
         null !== $xStreamResponse && $self['xStreamResponse'] = $xStreamResponse;
 
         return $self;
@@ -107,7 +98,7 @@ final class SessionExtractParams implements BaseModel
     /**
      * Target frame ID for the extraction.
      */
-    public function withFrameID(string $frameID): self
+    public function withFrameID(?string $frameID): self
     {
         $self = clone $this;
         $self['frameID'] = $frameID;
@@ -146,17 +137,6 @@ final class SessionExtractParams implements BaseModel
     {
         $self = clone $this;
         $self['schema'] = $schema;
-
-        return $self;
-    }
-
-    /**
-     * ISO timestamp when request was sent.
-     */
-    public function withXSentAt(\DateTimeInterface $xSentAt): self
-    {
-        $self = clone $this;
-        $self['xSentAt'] = $xSentAt;
 
         return $self;
     }

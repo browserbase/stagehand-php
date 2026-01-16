@@ -62,9 +62,8 @@ final class SessionsRawService implements SessionsRawContract
      * @param string $id Path param: Unique session identifier
      * @param array{
      *   input: InputShape,
-     *   frameID?: string,
+     *   frameID?: string|null,
      *   options?: SessionActParams\Options|OptionsShape1,
-     *   xSentAt?: \DateTimeInterface,
      *   xStreamResponse?: XStreamResponse|value-of<XStreamResponse>,
      * }|SessionActParams $params
      * @param RequestOpts|null $requestOptions
@@ -82,9 +81,7 @@ final class SessionsRawService implements SessionsRawContract
             $params,
             $requestOptions,
         );
-        $header_params = [
-            'xSentAt' => 'x-sent-at', 'xStreamResponse' => 'x-stream-response',
-        ];
+        $header_params = ['xStreamResponse' => 'x-stream-response'];
 
         // @phpstan-ignore-next-line return.type
         return $this->client->request(
@@ -109,9 +106,8 @@ final class SessionsRawService implements SessionsRawContract
      * @param string $id Path param: Unique session identifier
      * @param array{
      *   input: InputShape,
-     *   frameID?: string,
+     *   frameID?: string|null,
      *   options?: SessionActParams\Options|OptionsShape1,
-     *   xSentAt?: \DateTimeInterface,
      *   xStreamResponse?: XStreamResponse|value-of<XStreamResponse>,
      * }|SessionActParams $params
      * @param RequestOpts|null $requestOptions
@@ -130,9 +126,7 @@ final class SessionsRawService implements SessionsRawContract
             $requestOptions,
         );
         $parsed['streamResponse'] = true;
-        $header_params = [
-            'xSentAt' => 'x-sent-at', 'xStreamResponse' => 'x-stream-response',
-        ];
+        $header_params = ['xStreamResponse' => 'x-stream-response'];
 
         // @phpstan-ignore-next-line return.type
         return $this->client->request(
@@ -166,7 +160,6 @@ final class SessionsRawService implements SessionsRawContract
      * @param string $id Path param: Unique session identifier
      * @param array{
      *   _forceBody?: mixed,
-     *   xSentAt?: \DateTimeInterface,
      *   xStreamResponse?: SessionEndParams\XStreamResponse|value-of<SessionEndParams\XStreamResponse>,
      * }|SessionEndParams $params
      * @param RequestOpts|null $requestOptions
@@ -184,9 +177,7 @@ final class SessionsRawService implements SessionsRawContract
             $params,
             $requestOptions,
         );
-        $header_params = [
-            'xSentAt' => 'x-sent-at', 'xStreamResponse' => 'x-stream-response',
-        ];
+        $header_params = ['xStreamResponse' => 'x-stream-response'];
 
         // @phpstan-ignore-next-line return.type
         return $this->client->request(
@@ -214,8 +205,7 @@ final class SessionsRawService implements SessionsRawContract
      * @param array{
      *   agentConfig: AgentConfig|AgentConfigShape,
      *   executeOptions: ExecuteOptions|ExecuteOptionsShape,
-     *   frameID?: string,
-     *   xSentAt?: \DateTimeInterface,
+     *   frameID?: string|null,
      *   xStreamResponse?: SessionExecuteParams\XStreamResponse|value-of<SessionExecuteParams\XStreamResponse>,
      * }|SessionExecuteParams $params
      * @param RequestOpts|null $requestOptions
@@ -233,9 +223,7 @@ final class SessionsRawService implements SessionsRawContract
             $params,
             $requestOptions,
         );
-        $header_params = [
-            'xSentAt' => 'x-sent-at', 'xStreamResponse' => 'x-stream-response',
-        ];
+        $header_params = ['xStreamResponse' => 'x-stream-response'];
 
         // @phpstan-ignore-next-line return.type
         return $this->client->request(
@@ -261,8 +249,7 @@ final class SessionsRawService implements SessionsRawContract
      * @param array{
      *   agentConfig: AgentConfig|AgentConfigShape,
      *   executeOptions: ExecuteOptions|ExecuteOptionsShape,
-     *   frameID?: string,
-     *   xSentAt?: \DateTimeInterface,
+     *   frameID?: string|null,
      *   xStreamResponse?: SessionExecuteParams\XStreamResponse|value-of<SessionExecuteParams\XStreamResponse>,
      * }|SessionExecuteParams $params
      * @param RequestOpts|null $requestOptions
@@ -281,9 +268,7 @@ final class SessionsRawService implements SessionsRawContract
             $requestOptions,
         );
         $parsed['streamResponse'] = true;
-        $header_params = [
-            'xSentAt' => 'x-sent-at', 'xStreamResponse' => 'x-stream-response',
-        ];
+        $header_params = ['xStreamResponse' => 'x-stream-response'];
 
         // @phpstan-ignore-next-line return.type
         return $this->client->request(
@@ -316,11 +301,10 @@ final class SessionsRawService implements SessionsRawContract
      *
      * @param string $id Path param: Unique session identifier
      * @param array{
-     *   frameID?: string,
+     *   frameID?: string|null,
      *   instruction?: string,
      *   options?: SessionExtractParams\Options|OptionsShape2,
      *   schema?: array<string,mixed>,
-     *   xSentAt?: \DateTimeInterface,
      *   xStreamResponse?: SessionExtractParams\XStreamResponse|value-of<SessionExtractParams\XStreamResponse>,
      * }|SessionExtractParams $params
      * @param RequestOpts|null $requestOptions
@@ -338,9 +322,7 @@ final class SessionsRawService implements SessionsRawContract
             $params,
             $requestOptions,
         );
-        $header_params = [
-            'xSentAt' => 'x-sent-at', 'xStreamResponse' => 'x-stream-response',
-        ];
+        $header_params = ['xStreamResponse' => 'x-stream-response'];
 
         // @phpstan-ignore-next-line return.type
         return $this->client->request(
@@ -364,11 +346,10 @@ final class SessionsRawService implements SessionsRawContract
      *
      * @param string $id Path param: Unique session identifier
      * @param array{
-     *   frameID?: string,
+     *   frameID?: string|null,
      *   instruction?: string,
      *   options?: SessionExtractParams\Options|OptionsShape2,
      *   schema?: array<string,mixed>,
-     *   xSentAt?: \DateTimeInterface,
      *   xStreamResponse?: SessionExtractParams\XStreamResponse|value-of<SessionExtractParams\XStreamResponse>,
      * }|SessionExtractParams $params
      * @param RequestOpts|null $requestOptions
@@ -387,9 +368,7 @@ final class SessionsRawService implements SessionsRawContract
             $requestOptions,
         );
         $parsed['streamResponse'] = true;
-        $header_params = [
-            'xSentAt' => 'x-sent-at', 'xStreamResponse' => 'x-stream-response',
-        ];
+        $header_params = ['xStreamResponse' => 'x-stream-response'];
 
         // @phpstan-ignore-next-line return.type
         return $this->client->request(
@@ -423,10 +402,9 @@ final class SessionsRawService implements SessionsRawContract
      * @param string $id Path param: Unique session identifier
      * @param array{
      *   url: string,
-     *   frameID?: string,
+     *   frameID?: string|null,
      *   options?: Options|OptionsShape,
      *   streamResponse?: bool,
-     *   xSentAt?: \DateTimeInterface,
      *   xStreamResponse?: SessionNavigateParams\XStreamResponse|value-of<SessionNavigateParams\XStreamResponse>,
      * }|SessionNavigateParams $params
      * @param RequestOpts|null $requestOptions
@@ -444,9 +422,7 @@ final class SessionsRawService implements SessionsRawContract
             $params,
             $requestOptions,
         );
-        $header_params = [
-            'xSentAt' => 'x-sent-at', 'xStreamResponse' => 'x-stream-response',
-        ];
+        $header_params = ['xStreamResponse' => 'x-stream-response'];
 
         // @phpstan-ignore-next-line return.type
         return $this->client->request(
@@ -472,10 +448,9 @@ final class SessionsRawService implements SessionsRawContract
      *
      * @param string $id Path param: Unique session identifier
      * @param array{
-     *   frameID?: string,
+     *   frameID?: string|null,
      *   instruction?: string,
      *   options?: SessionObserveParams\Options|OptionsShape3,
-     *   xSentAt?: \DateTimeInterface,
      *   xStreamResponse?: SessionObserveParams\XStreamResponse|value-of<SessionObserveParams\XStreamResponse>,
      * }|SessionObserveParams $params
      * @param RequestOpts|null $requestOptions
@@ -493,9 +468,7 @@ final class SessionsRawService implements SessionsRawContract
             $params,
             $requestOptions,
         );
-        $header_params = [
-            'xSentAt' => 'x-sent-at', 'xStreamResponse' => 'x-stream-response',
-        ];
+        $header_params = ['xStreamResponse' => 'x-stream-response'];
 
         // @phpstan-ignore-next-line return.type
         return $this->client->request(
@@ -519,10 +492,9 @@ final class SessionsRawService implements SessionsRawContract
      *
      * @param string $id Path param: Unique session identifier
      * @param array{
-     *   frameID?: string,
+     *   frameID?: string|null,
      *   instruction?: string,
      *   options?: SessionObserveParams\Options|OptionsShape3,
-     *   xSentAt?: \DateTimeInterface,
      *   xStreamResponse?: SessionObserveParams\XStreamResponse|value-of<SessionObserveParams\XStreamResponse>,
      * }|SessionObserveParams $params
      * @param RequestOpts|null $requestOptions
@@ -541,9 +513,7 @@ final class SessionsRawService implements SessionsRawContract
             $requestOptions,
         );
         $parsed['streamResponse'] = true;
-        $header_params = [
-            'xSentAt' => 'x-sent-at', 'xStreamResponse' => 'x-stream-response',
-        ];
+        $header_params = ['xStreamResponse' => 'x-stream-response'];
 
         // @phpstan-ignore-next-line return.type
         return $this->client->request(
@@ -586,7 +556,6 @@ final class SessionsRawService implements SessionsRawContract
      *   systemPrompt?: string,
      *   verbose?: float,
      *   waitForCaptchaSolves?: bool,
-     *   xSentAt?: \DateTimeInterface,
      *   xStreamResponse?: SessionStartParams\XStreamResponse|value-of<SessionStartParams\XStreamResponse>,
      * }|SessionStartParams $params
      * @param RequestOpts|null $requestOptions
@@ -603,9 +572,7 @@ final class SessionsRawService implements SessionsRawContract
             $params,
             $requestOptions,
         );
-        $header_params = [
-            'xSentAt' => 'x-sent-at', 'xStreamResponse' => 'x-stream-response',
-        ];
+        $header_params = ['xStreamResponse' => 'x-stream-response'];
 
         // @phpstan-ignore-next-line return.type
         return $this->client->request(

@@ -33,7 +33,6 @@ use Stagehand\Sessions\SessionStartParams\XStreamResponse;
  *   systemPrompt?: string|null,
  *   verbose?: float|null,
  *   waitForCaptchaSolves?: bool|null,
- *   xSentAt?: \DateTimeInterface|null,
  *   xStreamResponse?: null|XStreamResponse|value-of<XStreamResponse>,
  * }
  */
@@ -44,7 +43,7 @@ final class SessionStartParams implements BaseModel
     use SdkParams;
 
     /**
-     * Model name to use for AI operations.
+     * Model name to use for AI operations. Always use the format 'provider/model-name' (e.g., 'openai/gpt-4o', 'anthropic/claude-sonnet-4-5-20250929', 'google/gemini-2.0-flash').
      */
     #[Required]
     public string $modelName;
@@ -101,12 +100,6 @@ final class SessionStartParams implements BaseModel
     public ?bool $waitForCaptchaSolves;
 
     /**
-     * ISO timestamp when request was sent.
-     */
-    #[Optional]
-    public ?\DateTimeInterface $xSentAt;
-
-    /**
      * Whether to stream the response via SSE.
      *
      * @var value-of<XStreamResponse>|null $xStreamResponse
@@ -154,7 +147,6 @@ final class SessionStartParams implements BaseModel
         ?string $systemPrompt = null,
         ?float $verbose = null,
         ?bool $waitForCaptchaSolves = null,
-        ?\DateTimeInterface $xSentAt = null,
         XStreamResponse|string|null $xStreamResponse = null,
     ): self {
         $self = new self;
@@ -171,14 +163,13 @@ final class SessionStartParams implements BaseModel
         null !== $systemPrompt && $self['systemPrompt'] = $systemPrompt;
         null !== $verbose && $self['verbose'] = $verbose;
         null !== $waitForCaptchaSolves && $self['waitForCaptchaSolves'] = $waitForCaptchaSolves;
-        null !== $xSentAt && $self['xSentAt'] = $xSentAt;
         null !== $xStreamResponse && $self['xStreamResponse'] = $xStreamResponse;
 
         return $self;
     }
 
     /**
-     * Model name to use for AI operations.
+     * Model name to use for AI operations. Always use the format 'provider/model-name' (e.g., 'openai/gpt-4o', 'anthropic/claude-sonnet-4-5-20250929', 'google/gemini-2.0-flash').
      */
     public function withModelName(string $modelName): self
     {
@@ -292,17 +283,6 @@ final class SessionStartParams implements BaseModel
     {
         $self = clone $this;
         $self['waitForCaptchaSolves'] = $waitForCaptchaSolves;
-
-        return $self;
-    }
-
-    /**
-     * ISO timestamp when request was sent.
-     */
-    public function withXSentAt(\DateTimeInterface $xSentAt): self
-    {
-        $self = clone $this;
-        $self['xSentAt'] = $xSentAt;
 
         return $self;
     }

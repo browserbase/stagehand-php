@@ -66,11 +66,10 @@ final class SessionsTest extends TestCase
             input: 'Click the login button',
             frameID: 'frameId',
             options: [
-                'model' => 'openai/gpt-5-nano',
+                'model' => 'openai/gpt-4o',
                 'timeout' => 30000,
                 'variables' => ['username' => 'john_doe'],
             ],
-            xSentAt: new \DateTimeImmutable('2025-01-15T10:30:00Z'),
             xStreamResponse: 'true',
         );
 
@@ -123,7 +122,7 @@ final class SessionsTest extends TestCase
             'c4dbf3a9-9a58-4b22-8a1c-9f20f9f9e123',
             agentConfig: [
                 'cua' => true,
-                'model' => 'openai/gpt-5-nano',
+                'model' => 'openai/gpt-4o',
                 'provider' => 'openai',
                 'systemPrompt' => 'systemPrompt',
             ],
@@ -133,7 +132,6 @@ final class SessionsTest extends TestCase
                 'maxSteps' => 20,
             ],
             frameID: 'frameId',
-            xSentAt: new \DateTimeImmutable('2025-01-15T10:30:00Z'),
             xStreamResponse: 'true',
         );
 
@@ -187,7 +185,6 @@ final class SessionsTest extends TestCase
                 'referer' => 'referer', 'timeout' => 30000, 'waitUntil' => 'networkidle',
             ],
             streamResponse: true,
-            xSentAt: new \DateTimeImmutable('2025-01-15T10:30:00Z'),
             xStreamResponse: 'true',
         );
 
@@ -301,7 +298,6 @@ final class SessionsTest extends TestCase
             systemPrompt: 'systemPrompt',
             verbose: 1,
             waitForCaptchaSolves: true,
-            xSentAt: new \DateTimeImmutable('2025-01-15T10:30:00Z'),
             xStreamResponse: 'true',
         );
 
