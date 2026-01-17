@@ -1,5 +1,14 @@
 # Changelog
 
+## 3.2.3 (2026-01-17)
+
+Full Changelog: [v3.2.2...v3.2.3](https://github.com/browserbase/stagehand-php/compare/v3.2.2...v3.2.3)
+
+### Chores
+
+* **internal:** minor test script reformatting ([4aa1009](https://github.com/browserbase/stagehand-php/commit/4aa10092946a58f994dd9fe91675a1b8c1a9f28f))
+* **internal:** update `actions/checkout` version ([43bf977](https://github.com/browserbase/stagehand-php/commit/43bf9775e76419afaa665fccb6f1cec69b20bcc1))
+
 ## 3.2.2 (2026-01-16)
 
 Full Changelog: [v3.2.1...v3.2.2](https://github.com/browserbase/stagehand-php/compare/v3.2.1...v3.2.2)
