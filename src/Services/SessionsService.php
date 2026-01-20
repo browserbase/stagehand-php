@@ -428,7 +428,7 @@ final class SessionsService implements SessionsContract
      *
      * Creates a new browser session with the specified configuration. Returns a session ID used for all subsequent operations.
      *
-     * @param string $modelName Body param: Model name to use for AI operations. Always use the format 'provider/model-name' (e.g., 'openai/gpt-4o', 'anthropic/claude-sonnet-4-5-20250929', 'google/gemini-2.0-flash')
+     * @param string $modelName Body param: Model name to use for AI operations
      * @param float $actTimeoutMs Body param: Timeout in ms for act operations (deprecated, v2 only)
      * @param Browser|BrowserShape $browser Body param
      * @param BrowserbaseSessionCreateParams|BrowserbaseSessionCreateParamsShape $browserbaseSessionCreateParams Body param

@@ -66,7 +66,12 @@ final class SessionsTest extends TestCase
             input: 'Click the login button',
             frameID: 'frameId',
             options: [
-                'model' => 'openai/gpt-4o',
+                'model' => [
+                    'modelName' => 'openai/gpt-5-nano',
+                    'apiKey' => 'sk-some-openai-api-key',
+                    'baseURL' => 'https://api.openai.com/v1',
+                    'provider' => 'openai',
+                ],
                 'timeout' => 30000,
                 'variables' => ['username' => 'john_doe'],
             ],
@@ -122,7 +127,12 @@ final class SessionsTest extends TestCase
             'c4dbf3a9-9a58-4b22-8a1c-9f20f9f9e123',
             agentConfig: [
                 'cua' => true,
-                'model' => 'openai/gpt-4o',
+                'model' => [
+                    'modelName' => 'openai/gpt-5-nano',
+                    'apiKey' => 'sk-some-openai-api-key',
+                    'baseURL' => 'https://api.openai.com/v1',
+                    'provider' => 'openai',
+                ],
                 'provider' => 'openai',
                 'systemPrompt' => 'systemPrompt',
             ],
