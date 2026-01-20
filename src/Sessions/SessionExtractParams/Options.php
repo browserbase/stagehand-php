@@ -7,14 +7,15 @@ namespace Stagehand\Sessions\SessionExtractParams;
 use Stagehand\Core\Attributes\Optional;
 use Stagehand\Core\Concerns\SdkModel;
 use Stagehand\Core\Contracts\BaseModel;
-use Stagehand\Sessions\ModelConfig\ModelConfigObject;
+use Stagehand\Sessions\ModelConfig;
 
 /**
- * @phpstan-import-type ModelConfigVariants from \Stagehand\Sessions\ModelConfig
  * @phpstan-import-type ModelConfigShape from \Stagehand\Sessions\ModelConfig
  *
  * @phpstan-type OptionsShape = array{
- *   model?: ModelConfigShape|null, selector?: string|null, timeout?: float|null
+ *   model?: null|ModelConfig|ModelConfigShape,
+ *   selector?: string|null,
+ *   timeout?: float|null,
  * }
  */
 final class Options implements BaseModel
@@ -22,13 +23,8 @@ final class Options implements BaseModel
     /** @use SdkModel<OptionsShape> */
     use SdkModel;
 
-    /**
-     * Model name string with provider prefix. Always use the format 'provider/model-name' (e.g., 'openai/gpt-4o', 'anthropic/claude-sonnet-4-5-20250929', 'google/gemini-2.0-flash').
-     *
-     * @var ModelConfigVariants|null $model
-     */
     #[Optional]
-    public string|ModelConfigObject|null $model;
+    public ?ModelConfig $model;
 
     /**
      * CSS selector to scope extraction to a specific element.
@@ -52,10 +48,10 @@ final class Options implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
-     * @param ModelConfigShape|null $model
+     * @param ModelConfig|ModelConfigShape|null $model
      */
     public static function with(
-        string|ModelConfigObject|array|null $model = null,
+        ModelConfig|array|null $model = null,
         ?string $selector = null,
         ?float $timeout = null,
     ): self {
@@ -69,11 +65,9 @@ final class Options implements BaseModel
     }
 
     /**
-     * Model name string with provider prefix. Always use the format 'provider/model-name' (e.g., 'openai/gpt-4o', 'anthropic/claude-sonnet-4-5-20250929', 'google/gemini-2.0-flash').
-     *
-     * @param ModelConfigShape $model
+     * @param ModelConfig|ModelConfigShape $model
      */
-    public function withModel(string|ModelConfigObject|array $model): self
+    public function withModel(ModelConfig|array $model): self
     {
         $self = clone $this;
         $self['model'] = $model;

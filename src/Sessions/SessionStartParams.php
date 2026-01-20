@@ -43,7 +43,7 @@ final class SessionStartParams implements BaseModel
     use SdkParams;
 
     /**
-     * Model name to use for AI operations. Always use the format 'provider/model-name' (e.g., 'openai/gpt-4o', 'anthropic/claude-sonnet-4-5-20250929', 'google/gemini-2.0-flash').
+     * Model name to use for AI operations.
      */
     #[Required]
     public string $modelName;
@@ -169,7 +169,7 @@ final class SessionStartParams implements BaseModel
     }
 
     /**
-     * Model name to use for AI operations. Always use the format 'provider/model-name' (e.g., 'openai/gpt-4o', 'anthropic/claude-sonnet-4-5-20250929', 'google/gemini-2.0-flash').
+     * Model name to use for AI operations.
      */
     public function withModelName(string $modelName): self
     {
