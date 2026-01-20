@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.4.0 (2026-01-20)
+
+Full Changelog: [v3.3.0...v3.4.0](https://github.com/browserbase/stagehand-php/compare/v3.3.0...v3.4.0)
+
+### Features
+
+* End endpoint cleanup ([3146db4](https://github.com/browserbase/stagehand-php/commit/3146db4768aab42af9ce6c2add2aa583bed8b86f))
+
 ## 3.3.0 (2026-01-20)
 
 Full Changelog: [v3.2.2...v3.3.0](https://github.com/browserbase/stagehand-php/compare/v3.2.2...v3.3.0)
