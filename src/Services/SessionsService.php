@@ -132,22 +132,18 @@ final class SessionsService implements SessionsContract
      *
      * Terminates the browser session and releases all associated resources.
      *
-     * @param string $id Path param: Unique session identifier
-     * @param mixed $_forceBody Body param
-     * @param \Stagehand\Sessions\SessionEndParams\XStreamResponse|value-of<\Stagehand\Sessions\SessionEndParams\XStreamResponse> $xStreamResponse Header param: Whether to stream the response via SSE
+     * @param string $id Unique session identifier
+     * @param \Stagehand\Sessions\SessionEndParams\XStreamResponse|value-of<\Stagehand\Sessions\SessionEndParams\XStreamResponse> $xStreamResponse Whether to stream the response via SSE
      * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
      */
     public function end(
         string $id,
-        mixed $_forceBody = null,
         \Stagehand\Sessions\SessionEndParams\XStreamResponse|string|null $xStreamResponse = null,
         RequestOptions|array|null $requestOptions = null,
     ): SessionEndResponse {
-        $params = Util::removeNulls(
-            ['_forceBody' => $_forceBody, 'xStreamResponse' => $xStreamResponse]
-        );
+        $params = Util::removeNulls(['xStreamResponse' => $xStreamResponse]);
 
         // @phpstan-ignore-next-line argument.type
         $response = $this->raw->end($id, params: $params, requestOptions: $requestOptions);

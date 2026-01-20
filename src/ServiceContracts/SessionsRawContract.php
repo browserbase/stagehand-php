@@ -66,7 +66,7 @@ interface SessionsRawContract
     /**
      * @api
      *
-     * @param string $id Path param: Unique session identifier
+     * @param string $id Unique session identifier
      * @param array<string,mixed>|SessionEndParams $params
      * @param RequestOpts|null $requestOptions
      *

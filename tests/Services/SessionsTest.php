@@ -257,6 +257,7 @@ final class SessionsTest extends TestCase
                     'ignoreDefaultArgs' => true,
                     'ignoreHTTPSErrors' => true,
                     'locale' => 'locale',
+                    'port' => 0,
                     'preserveUserDataDir' => true,
                     'proxy' => [
                         'server' => 'server',
