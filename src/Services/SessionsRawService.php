@@ -157,9 +157,8 @@ final class SessionsRawService implements SessionsRawContract
      *
      * Terminates the browser session and releases all associated resources.
      *
-     * @param string $id Path param: Unique session identifier
+     * @param string $id Unique session identifier
      * @param array{
-     *   _forceBody?: mixed,
      *   xStreamResponse?: SessionEndParams\XStreamResponse|value-of<SessionEndParams\XStreamResponse>,
      * }|SessionEndParams $params
      * @param RequestOpts|null $requestOptions
@@ -177,19 +176,14 @@ final class SessionsRawService implements SessionsRawContract
             $params,
             $requestOptions,
         );
-        $header_params = ['xStreamResponse' => 'x-stream-response'];
 
         // @phpstan-ignore-next-line return.type
         return $this->client->request(
             method: 'post',
             path: ['v1/sessions/%1$s/end', $id],
             headers: Util::array_transform_keys(
-                array_intersect_key($parsed, array_flip(array_keys($header_params))),
-                $header_params,
-            ),
-            body: (object) array_diff_key(
                 $parsed,
-                array_flip(array_keys($header_params))
+                ['xStreamResponse' => 'x-stream-response']
             ),
             options: $options,
             convert: SessionEndResponse::class,

@@ -32,6 +32,7 @@ use Stagehand\Sessions\SessionStartParams\Browser\LaunchOptions\Viewport;
  *   ignoreDefaultArgs?: IgnoreDefaultArgsShape|null,
  *   ignoreHTTPSErrors?: bool|null,
  *   locale?: string|null,
+ *   port?: float|null,
  *   preserveUserDataDir?: bool|null,
  *   proxy?: null|Proxy|ProxyShape,
  *   userDataDir?: string|null,
@@ -88,6 +89,9 @@ final class LaunchOptions implements BaseModel
     public ?string $locale;
 
     #[Optional]
+    public ?float $port;
+
+    #[Optional]
     public ?bool $preserveUserDataDir;
 
     #[Optional]
@@ -129,6 +133,7 @@ final class LaunchOptions implements BaseModel
         bool|array|null $ignoreDefaultArgs = null,
         ?bool $ignoreHTTPSErrors = null,
         ?string $locale = null,
+        ?float $port = null,
         ?bool $preserveUserDataDir = null,
         Proxy|array|null $proxy = null,
         ?string $userDataDir = null,
@@ -150,6 +155,7 @@ final class LaunchOptions implements BaseModel
         null !== $ignoreDefaultArgs && $self['ignoreDefaultArgs'] = $ignoreDefaultArgs;
         null !== $ignoreHTTPSErrors && $self['ignoreHTTPSErrors'] = $ignoreHTTPSErrors;
         null !== $locale && $self['locale'] = $locale;
+        null !== $port && $self['port'] = $port;
         null !== $preserveUserDataDir && $self['preserveUserDataDir'] = $preserveUserDataDir;
         null !== $proxy && $self['proxy'] = $proxy;
         null !== $userDataDir && $self['userDataDir'] = $userDataDir;
@@ -272,6 +278,14 @@ final class LaunchOptions implements BaseModel
     {
         $self = clone $this;
         $self['locale'] = $locale;
+
+        return $self;
+    }
+
+    public function withPort(float $port): self
+    {
+        $self = clone $this;
+        $self['port'] = $port;
 
         return $self;
     }

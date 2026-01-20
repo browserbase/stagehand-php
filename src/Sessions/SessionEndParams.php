@@ -16,8 +16,7 @@ use Stagehand\Sessions\SessionEndParams\XStreamResponse;
  * @see Stagehand\Services\SessionsService::end()
  *
  * @phpstan-type SessionEndParamsShape = array{
- *   _forceBody?: mixed,
- *   xStreamResponse?: null|XStreamResponse|value-of<XStreamResponse>,
+ *   xStreamResponse?: null|XStreamResponse|value-of<XStreamResponse>
  * }
  */
 final class SessionEndParams implements BaseModel
@@ -25,9 +24,6 @@ final class SessionEndParams implements BaseModel
     /** @use SdkModel<SessionEndParamsShape> */
     use SdkModel;
     use SdkParams;
-
-    #[Optional]
-    public mixed $_forceBody;
 
     /**
      * Whether to stream the response via SSE.
@@ -50,21 +46,11 @@ final class SessionEndParams implements BaseModel
      * @param XStreamResponse|value-of<XStreamResponse>|null $xStreamResponse
      */
     public static function with(
-        mixed $_forceBody = null,
         XStreamResponse|string|null $xStreamResponse = null
     ): self {
         $self = new self;
 
-        null !== $_forceBody && $self['_forceBody'] = $_forceBody;
         null !== $xStreamResponse && $self['xStreamResponse'] = $xStreamResponse;
-
-        return $self;
-    }
-
-    public function withForceBody(mixed $_forceBody): self
-    {
-        $self = clone $this;
-        $self['_forceBody'] = $_forceBody;
 
         return $self;
     }
