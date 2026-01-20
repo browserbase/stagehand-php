@@ -1,5 +1,19 @@
 # Changelog
 
+## 3.3.0 (2026-01-20)
+
+Full Changelog: [v3.2.2...v3.3.0](https://github.com/browserbase/stagehand-php/compare/v3.2.2...v3.3.0)
+
+### Features
+
+* move Stainless compatibility transforms from gen-openapi.ts into stainless.yml ([92aa35d](https://github.com/browserbase/stagehand-php/commit/92aa35dc997b874b76c9ca1b3397f0ede3910a28))
+
+
+### Chores
+
+* **internal:** minor test script reformatting ([4aa1009](https://github.com/browserbase/stagehand-php/commit/4aa10092946a58f994dd9fe91675a1b8c1a9f28f))
+* **internal:** update `actions/checkout` version ([43bf977](https://github.com/browserbase/stagehand-php/commit/43bf9775e76419afaa665fccb6f1cec69b20bcc1))
+
 ## 3.2.2 (2026-01-16)
 
 Full Changelog: [v3.2.1...v3.2.2](https://github.com/browserbase/stagehand-php/compare/v3.2.1...v3.2.2)
