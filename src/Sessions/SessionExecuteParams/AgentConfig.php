@@ -7,16 +7,15 @@ namespace Stagehand\Sessions\SessionExecuteParams;
 use Stagehand\Core\Attributes\Optional;
 use Stagehand\Core\Concerns\SdkModel;
 use Stagehand\Core\Contracts\BaseModel;
-use Stagehand\Sessions\ModelConfig\ModelConfigObject;
+use Stagehand\Sessions\ModelConfig;
 use Stagehand\Sessions\SessionExecuteParams\AgentConfig\Provider;
 
 /**
- * @phpstan-import-type ModelConfigVariants from \Stagehand\Sessions\ModelConfig
  * @phpstan-import-type ModelConfigShape from \Stagehand\Sessions\ModelConfig
  *
  * @phpstan-type AgentConfigShape = array{
  *   cua?: bool|null,
- *   model?: ModelConfigShape|null,
+ *   model?: null|ModelConfig|ModelConfigShape,
  *   provider?: null|Provider|value-of<Provider>,
  *   systemPrompt?: string|null,
  * }
@@ -32,13 +31,8 @@ final class AgentConfig implements BaseModel
     #[Optional]
     public ?bool $cua;
 
-    /**
-     * Model name string with provider prefix. Always use the format 'provider/model-name' (e.g., 'openai/gpt-4o', 'anthropic/claude-sonnet-4-5-20250929', 'google/gemini-2.0-flash').
-     *
-     * @var ModelConfigVariants|null $model
-     */
     #[Optional]
-    public string|ModelConfigObject|null $model;
+    public ?ModelConfig $model;
 
     /**
      * AI provider for the agent (legacy, use model: openai/gpt-5-nano instead).
@@ -64,12 +58,12 @@ final class AgentConfig implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
-     * @param ModelConfigShape|null $model
+     * @param ModelConfig|ModelConfigShape|null $model
      * @param Provider|value-of<Provider>|null $provider
      */
     public static function with(
         ?bool $cua = null,
-        string|ModelConfigObject|array|null $model = null,
+        ModelConfig|array|null $model = null,
         Provider|string|null $provider = null,
         ?string $systemPrompt = null,
     ): self {
@@ -95,11 +89,9 @@ final class AgentConfig implements BaseModel
     }
 
     /**
-     * Model name string with provider prefix. Always use the format 'provider/model-name' (e.g., 'openai/gpt-4o', 'anthropic/claude-sonnet-4-5-20250929', 'google/gemini-2.0-flash').
-     *
-     * @param ModelConfigShape $model
+     * @param ModelConfig|ModelConfigShape $model
      */
-    public function withModel(string|ModelConfigObject|array $model): self
+    public function withModel(ModelConfig|array $model): self
     {
         $self = clone $this;
         $self['model'] = $model;
