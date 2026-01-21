@@ -10,12 +10,11 @@ use Stagehand\Core\Contracts\BaseModel;
 use Stagehand\Sessions\ModelConfig;
 
 /**
- * @phpstan-import-type ModelConfigShape from \Stagehand\Sessions\ModelConfig
+ * @phpstan-import-type ModelVariants from \Stagehand\Sessions\SessionObserveParams\Options\Model
+ * @phpstan-import-type ModelShape from \Stagehand\Sessions\SessionObserveParams\Options\Model
  *
  * @phpstan-type OptionsShape = array{
- *   model?: null|ModelConfig|ModelConfigShape,
- *   selector?: string|null,
- *   timeout?: float|null,
+ *   model?: ModelShape|null, selector?: string|null, timeout?: float|null
  * }
  */
 final class Options implements BaseModel
@@ -23,8 +22,13 @@ final class Options implements BaseModel
     /** @use SdkModel<OptionsShape> */
     use SdkModel;
 
+    /**
+     * Model configuration object or model name string (e.g., 'openai/gpt-5-nano').
+     *
+     * @var ModelVariants|null $model
+     */
     #[Optional]
-    public ?ModelConfig $model;
+    public string|ModelConfig|null $model;
 
     /**
      * CSS selector to scope observation to a specific element.
@@ -48,10 +52,10 @@ final class Options implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
-     * @param ModelConfig|ModelConfigShape|null $model
+     * @param ModelShape|null $model
      */
     public static function with(
-        ModelConfig|array|null $model = null,
+        string|ModelConfig|array|null $model = null,
         ?string $selector = null,
         ?float $timeout = null,
     ): self {
@@ -65,9 +69,11 @@ final class Options implements BaseModel
     }
 
     /**
-     * @param ModelConfig|ModelConfigShape $model
+     * Model configuration object or model name string (e.g., 'openai/gpt-5-nano').
+     *
+     * @param ModelShape $model
      */
-    public function withModel(ModelConfig|array $model): self
+    public function withModel(string|ModelConfig|array $model): self
     {
         $self = clone $this;
         $self['model'] = $model;
