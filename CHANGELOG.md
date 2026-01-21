@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.5.0 (2026-01-21)
+
+Full Changelog: [v3.4.0...v3.5.0](https://github.com/browserbase/stagehand-php/compare/v3.4.0...v3.5.0)
+
+### Features
+
+* [feat]: add support for local caching of agent when using api (2) ([ee4a13f](https://github.com/browserbase/stagehand-php/commit/ee4a13fd656e552d2f889e5da2be151f4d93c970))
+
 ## 3.4.0 (2026-01-20)
 
 Full Changelog: [v3.3.0...v3.4.0](https://github.com/browserbase/stagehand-php/compare/v3.3.0...v3.4.0)
