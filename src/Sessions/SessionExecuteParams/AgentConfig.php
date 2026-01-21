@@ -11,11 +11,12 @@ use Stagehand\Sessions\ModelConfig;
 use Stagehand\Sessions\SessionExecuteParams\AgentConfig\Provider;
 
 /**
- * @phpstan-import-type ModelConfigShape from \Stagehand\Sessions\ModelConfig
+ * @phpstan-import-type ModelVariants from \Stagehand\Sessions\SessionExecuteParams\AgentConfig\Model
+ * @phpstan-import-type ModelShape from \Stagehand\Sessions\SessionExecuteParams\AgentConfig\Model
  *
  * @phpstan-type AgentConfigShape = array{
  *   cua?: bool|null,
- *   model?: null|ModelConfig|ModelConfigShape,
+ *   model?: ModelShape|null,
  *   provider?: null|Provider|value-of<Provider>,
  *   systemPrompt?: string|null,
  * }
@@ -31,8 +32,13 @@ final class AgentConfig implements BaseModel
     #[Optional]
     public ?bool $cua;
 
+    /**
+     * Model configuration object or model name string (e.g., 'openai/gpt-5-nano').
+     *
+     * @var ModelVariants|null $model
+     */
     #[Optional]
-    public ?ModelConfig $model;
+    public string|ModelConfig|null $model;
 
     /**
      * AI provider for the agent (legacy, use model: openai/gpt-5-nano instead).
@@ -58,12 +64,12 @@ final class AgentConfig implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
-     * @param ModelConfig|ModelConfigShape|null $model
+     * @param ModelShape|null $model
      * @param Provider|value-of<Provider>|null $provider
      */
     public static function with(
         ?bool $cua = null,
-        ModelConfig|array|null $model = null,
+        string|ModelConfig|array|null $model = null,
         Provider|string|null $provider = null,
         ?string $systemPrompt = null,
     ): self {
@@ -89,9 +95,11 @@ final class AgentConfig implements BaseModel
     }
 
     /**
-     * @param ModelConfig|ModelConfigShape $model
+     * Model configuration object or model name string (e.g., 'openai/gpt-5-nano').
+     *
+     * @param ModelShape $model
      */
-    public function withModel(ModelConfig|array $model): self
+    public function withModel(string|ModelConfig|array $model): self
     {
         $self = clone $this;
         $self['model'] = $model;
