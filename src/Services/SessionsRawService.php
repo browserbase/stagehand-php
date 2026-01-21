@@ -200,6 +200,7 @@ final class SessionsRawService implements SessionsRawContract
      *   agentConfig: AgentConfig|AgentConfigShape,
      *   executeOptions: ExecuteOptions|ExecuteOptionsShape,
      *   frameID?: string|null,
+     *   shouldCache?: bool,
      *   xStreamResponse?: SessionExecuteParams\XStreamResponse|value-of<SessionExecuteParams\XStreamResponse>,
      * }|SessionExecuteParams $params
      * @param RequestOpts|null $requestOptions
@@ -244,6 +245,7 @@ final class SessionsRawService implements SessionsRawContract
      *   agentConfig: AgentConfig|AgentConfigShape,
      *   executeOptions: ExecuteOptions|ExecuteOptionsShape,
      *   frameID?: string|null,
+     *   shouldCache?: bool,
      *   xStreamResponse?: SessionExecuteParams\XStreamResponse|value-of<SessionExecuteParams\XStreamResponse>,
      * }|SessionExecuteParams $params
      * @param RequestOpts|null $requestOptions
