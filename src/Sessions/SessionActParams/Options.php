@@ -10,10 +10,11 @@ use Stagehand\Core\Contracts\BaseModel;
 use Stagehand\Sessions\ModelConfig;
 
 /**
- * @phpstan-import-type ModelConfigShape from \Stagehand\Sessions\ModelConfig
+ * @phpstan-import-type ModelVariants from \Stagehand\Sessions\SessionActParams\Options\Model
+ * @phpstan-import-type ModelShape from \Stagehand\Sessions\SessionActParams\Options\Model
  *
  * @phpstan-type OptionsShape = array{
- *   model?: null|ModelConfig|ModelConfigShape,
+ *   model?: ModelShape|null,
  *   timeout?: float|null,
  *   variables?: array<string,string>|null,
  * }
@@ -23,8 +24,13 @@ final class Options implements BaseModel
     /** @use SdkModel<OptionsShape> */
     use SdkModel;
 
+    /**
+     * Model configuration object or model name string (e.g., 'openai/gpt-5-nano').
+     *
+     * @var ModelVariants|null $model
+     */
     #[Optional]
-    public ?ModelConfig $model;
+    public string|ModelConfig|null $model;
 
     /**
      * Timeout in ms for the action.
@@ -50,11 +56,11 @@ final class Options implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
-     * @param ModelConfig|ModelConfigShape|null $model
+     * @param ModelShape|null $model
      * @param array<string,string>|null $variables
      */
     public static function with(
-        ModelConfig|array|null $model = null,
+        string|ModelConfig|array|null $model = null,
         ?float $timeout = null,
         ?array $variables = null,
     ): self {
@@ -68,9 +74,11 @@ final class Options implements BaseModel
     }
 
     /**
-     * @param ModelConfig|ModelConfigShape $model
+     * Model configuration object or model name string (e.g., 'openai/gpt-5-nano').
+     *
+     * @param ModelShape $model
      */
-    public function withModel(ModelConfig|array $model): self
+    public function withModel(string|ModelConfig|array $model): self
     {
         $self = clone $this;
         $self['model'] = $model;
