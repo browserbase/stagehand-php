@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.6.0 (2026-01-21)
+
+Full Changelog: [v3.5.0...v3.6.0](https://github.com/browserbase/stagehand-php/compare/v3.5.0...v3.6.0)
+
+### Features
+
+* add v3 integration tests matching cloud exactly ([720a537](https://github.com/browserbase/stagehand-php/commit/720a537000903162af127af6c5ba6d3c97d4a0dd))
+
 ## 3.5.0 (2026-01-21)
 
 Full Changelog: [v3.4.0...v3.5.0](https://github.com/browserbase/stagehand-php/compare/v3.4.0...v3.5.0)
