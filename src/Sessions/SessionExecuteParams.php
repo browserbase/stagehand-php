@@ -25,6 +25,7 @@ use Stagehand\Sessions\SessionExecuteParams\XStreamResponse;
  *   agentConfig: AgentConfig|AgentConfigShape,
  *   executeOptions: ExecuteOptions|ExecuteOptionsShape,
  *   frameID?: string|null,
+ *   shouldCache?: bool|null,
  *   xStreamResponse?: null|XStreamResponse|value-of<XStreamResponse>,
  * }
  */
@@ -45,6 +46,12 @@ final class SessionExecuteParams implements BaseModel
      */
     #[Optional('frameId', nullable: true)]
     public ?string $frameID;
+
+    /**
+     * If true, the server captures a cache entry and returns it to the client.
+     */
+    #[Optional]
+    public ?bool $shouldCache;
 
     /**
      * Whether to stream the response via SSE.
@@ -86,6 +93,7 @@ final class SessionExecuteParams implements BaseModel
         AgentConfig|array $agentConfig,
         ExecuteOptions|array $executeOptions,
         ?string $frameID = null,
+        ?bool $shouldCache = null,
         XStreamResponse|string|null $xStreamResponse = null,
     ): self {
         $self = new self;
@@ -94,6 +102,7 @@ final class SessionExecuteParams implements BaseModel
         $self['executeOptions'] = $executeOptions;
 
         null !== $frameID && $self['frameID'] = $frameID;
+        null !== $shouldCache && $self['shouldCache'] = $shouldCache;
         null !== $xStreamResponse && $self['xStreamResponse'] = $xStreamResponse;
 
         return $self;
@@ -129,6 +138,17 @@ final class SessionExecuteParams implements BaseModel
     {
         $self = clone $this;
         $self['frameID'] = $frameID;
+
+        return $self;
+    }
+
+    /**
+     * If true, the server captures a cache entry and returns it to the client.
+     */
+    public function withShouldCache(bool $shouldCache): self
+    {
+        $self = clone $this;
+        $self['shouldCache'] = $shouldCache;
 
         return $self;
     }
