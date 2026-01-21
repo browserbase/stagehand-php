@@ -142,6 +142,7 @@ final class SessionsTest extends TestCase
                 'maxSteps' => 20,
             ],
             frameID: 'frameId',
+            shouldCache: true,
             xStreamResponse: 'true',
         );
 

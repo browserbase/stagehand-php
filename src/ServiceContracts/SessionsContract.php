@@ -103,6 +103,7 @@ interface SessionsContract
      * @param AgentConfig|AgentConfigShape $agentConfig Body param
      * @param ExecuteOptions|ExecuteOptionsShape $executeOptions Body param
      * @param string|null $frameID Body param: Target frame ID for the agent
+     * @param bool $shouldCache Body param: If true, the server captures a cache entry and returns it to the client
      * @param \Stagehand\Sessions\SessionExecuteParams\XStreamResponse|value-of<\Stagehand\Sessions\SessionExecuteParams\XStreamResponse> $xStreamResponse Header param: Whether to stream the response via SSE
      * @param RequestOpts|null $requestOptions
      *
@@ -113,6 +114,7 @@ interface SessionsContract
         AgentConfig|array $agentConfig,
         ExecuteOptions|array $executeOptions,
         ?string $frameID = null,
+        ?bool $shouldCache = null,
         \Stagehand\Sessions\SessionExecuteParams\XStreamResponse|string|null $xStreamResponse = null,
         RequestOptions|array|null $requestOptions = null,
     ): SessionExecuteResponse;
@@ -124,6 +126,7 @@ interface SessionsContract
      * @param AgentConfig|AgentConfigShape $agentConfig Body param
      * @param ExecuteOptions|ExecuteOptionsShape $executeOptions Body param
      * @param string|null $frameID Body param: Target frame ID for the agent
+     * @param bool $shouldCache Body param: If true, the server captures a cache entry and returns it to the client
      * @param \Stagehand\Sessions\SessionExecuteParams\XStreamResponse|value-of<\Stagehand\Sessions\SessionExecuteParams\XStreamResponse> $xStreamResponse Header param: Whether to stream the response via SSE
      * @param RequestOpts|null $requestOptions
      *
@@ -136,6 +139,7 @@ interface SessionsContract
         AgentConfig|array $agentConfig,
         ExecuteOptions|array $executeOptions,
         ?string $frameID = null,
+        ?bool $shouldCache = null,
         \Stagehand\Sessions\SessionExecuteParams\XStreamResponse|string|null $xStreamResponse = null,
         RequestOptions|array|null $requestOptions = null,
     ): BaseStream;
