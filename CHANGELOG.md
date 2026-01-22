@@ -1,5 +1,18 @@
 # Changelog
 
+## 3.7.0 (2026-01-22)
+
+Full Changelog: [v3.6.0...v3.7.0](https://github.com/browserbase/stagehand-php/compare/v3.6.0...v3.7.0)
+
+### Features
+
+* Include replay endpoint in stainless spec so SDK clients can get run metrics ([7aa307a](https://github.com/browserbase/stagehand-php/commit/7aa307a606dab73325780ea7652ed649d5d4ab30))
+
+
+### Chores
+
+* **internal:** update phpstan comments ([544e99a](https://github.com/browserbase/stagehand-php/commit/544e99a2230737264bbd381c6d4b62974e4df5ed))
+
 ## 3.6.0 (2026-01-21)
 
 Full Changelog: [v3.5.0...v3.6.0](https://github.com/browserbase/stagehand-php/compare/v3.5.0...v3.6.0)
