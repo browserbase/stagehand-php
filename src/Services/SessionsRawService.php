@@ -27,6 +27,8 @@ use Stagehand\Sessions\SessionNavigateParams\Options;
 use Stagehand\Sessions\SessionNavigateResponse;
 use Stagehand\Sessions\SessionObserveParams;
 use Stagehand\Sessions\SessionObserveResponse;
+use Stagehand\Sessions\SessionReplayParams;
+use Stagehand\Sessions\SessionReplayResponse;
 use Stagehand\Sessions\SessionStartParams;
 use Stagehand\Sessions\SessionStartParams\Browser;
 use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams;
@@ -532,6 +534,44 @@ final class SessionsRawService implements SessionsRawContract
             options: $options,
             convert: StreamEvent::class,
             stream: SSEStream::class,
+        );
+    }
+
+    /**
+     * @api
+     *
+     * Retrieves replay metrics for a session.
+     *
+     * @param string $id Unique session identifier
+     * @param array{
+     *   xStreamResponse?: SessionReplayParams\XStreamResponse|value-of<SessionReplayParams\XStreamResponse>,
+     * }|SessionReplayParams $params
+     * @param RequestOpts|null $requestOptions
+     *
+     * @return BaseResponse<SessionReplayResponse>
+     *
+     * @throws APIException
+     */
+    public function replay(
+        string $id,
+        array|SessionReplayParams $params,
+        RequestOptions|array|null $requestOptions = null,
+    ): BaseResponse {
+        [$parsed, $options] = SessionReplayParams::parseRequest(
+            $params,
+            $requestOptions,
+        );
+
+        // @phpstan-ignore-next-line return.type
+        return $this->client->request(
+            method: 'get',
+            path: ['v1/sessions/%1$s/replay', $id],
+            headers: Util::array_transform_keys(
+                $parsed,
+                ['xStreamResponse' => 'x-stream-response']
+            ),
+            options: $options,
+            convert: SessionReplayResponse::class,
         );
     }
 
