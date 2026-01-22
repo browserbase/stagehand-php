@@ -20,6 +20,8 @@ use Stagehand\Sessions\SessionNavigateParams;
 use Stagehand\Sessions\SessionNavigateResponse;
 use Stagehand\Sessions\SessionObserveParams;
 use Stagehand\Sessions\SessionObserveResponse;
+use Stagehand\Sessions\SessionReplayParams;
+use Stagehand\Sessions\SessionReplayResponse;
 use Stagehand\Sessions\SessionStartParams;
 use Stagehand\Sessions\SessionStartResponse;
 use Stagehand\Sessions\StreamEvent;
@@ -196,6 +198,23 @@ interface SessionsRawContract
     public function observeStream(
         string $id,
         array|SessionObserveParams $params,
+        RequestOptions|array|null $requestOptions = null,
+    ): BaseResponse;
+
+    /**
+     * @api
+     *
+     * @param string $id Unique session identifier
+     * @param array<string,mixed>|SessionReplayParams $params
+     * @param RequestOpts|null $requestOptions
+     *
+     * @return BaseResponse<SessionReplayResponse>
+     *
+     * @throws APIException
+     */
+    public function replay(
+        string $id,
+        array|SessionReplayParams $params,
         RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 

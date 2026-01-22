@@ -18,6 +18,7 @@ use Stagehand\Sessions\SessionExecuteResponse;
 use Stagehand\Sessions\SessionExtractResponse;
 use Stagehand\Sessions\SessionNavigateResponse;
 use Stagehand\Sessions\SessionObserveResponse;
+use Stagehand\Sessions\SessionReplayResponse;
 use Stagehand\Sessions\SessionStartParams\Browser;
 use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams;
 use Stagehand\Sessions\SessionStartResponse;
@@ -258,6 +259,21 @@ interface SessionsContract
         \Stagehand\Sessions\SessionObserveParams\XStreamResponse|string|null $xStreamResponse = null,
         RequestOptions|array|null $requestOptions = null,
     ): BaseStream;
+
+    /**
+     * @api
+     *
+     * @param string $id Unique session identifier
+     * @param \Stagehand\Sessions\SessionReplayParams\XStreamResponse|value-of<\Stagehand\Sessions\SessionReplayParams\XStreamResponse> $xStreamResponse Whether to stream the response via SSE
+     * @param RequestOpts|null $requestOptions
+     *
+     * @throws APIException
+     */
+    public function replay(
+        string $id,
+        \Stagehand\Sessions\SessionReplayParams\XStreamResponse|string|null $xStreamResponse = null,
+        RequestOptions|array|null $requestOptions = null,
+    ): SessionReplayResponse;
 
     /**
      * @api
