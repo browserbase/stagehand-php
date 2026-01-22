@@ -21,6 +21,7 @@ use Stagehand\Sessions\SessionExecuteResponse;
 use Stagehand\Sessions\SessionExtractResponse;
 use Stagehand\Sessions\SessionNavigateResponse;
 use Stagehand\Sessions\SessionObserveResponse;
+use Stagehand\Sessions\SessionReplayResponse;
 use Stagehand\Sessions\SessionStartParams\Browser;
 use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams;
 use Stagehand\Sessions\SessionStartResponse;
@@ -421,6 +422,30 @@ final class SessionsService implements SessionsContract
 
         // @phpstan-ignore-next-line argument.type
         $response = $this->raw->observeStream($id, params: $params, requestOptions: $requestOptions);
+
+        return $response->parse();
+    }
+
+    /**
+     * @api
+     *
+     * Retrieves replay metrics for a session.
+     *
+     * @param string $id Unique session identifier
+     * @param \Stagehand\Sessions\SessionReplayParams\XStreamResponse|value-of<\Stagehand\Sessions\SessionReplayParams\XStreamResponse> $xStreamResponse Whether to stream the response via SSE
+     * @param RequestOpts|null $requestOptions
+     *
+     * @throws APIException
+     */
+    public function replay(
+        string $id,
+        \Stagehand\Sessions\SessionReplayParams\XStreamResponse|string|null $xStreamResponse = null,
+        RequestOptions|array|null $requestOptions = null,
+    ): SessionReplayResponse {
+        $params = Util::removeNulls(['xStreamResponse' => $xStreamResponse]);
+
+        // @phpstan-ignore-next-line argument.type
+        $response = $this->raw->replay($id, params: $params, requestOptions: $requestOptions);
 
         return $response->parse();
     }

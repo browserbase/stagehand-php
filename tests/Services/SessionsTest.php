@@ -12,6 +12,7 @@ use Stagehand\Sessions\SessionExecuteResponse;
 use Stagehand\Sessions\SessionExtractResponse;
 use Stagehand\Sessions\SessionNavigateResponse;
 use Stagehand\Sessions\SessionObserveResponse;
+use Stagehand\Sessions\SessionReplayResponse;
 use Stagehand\Sessions\SessionStartResponse;
 use Tests\UnsupportedMockTests;
 
@@ -216,6 +217,21 @@ final class SessionsTest extends TestCase
 
         // @phpstan-ignore-next-line method.alreadyNarrowedType
         $this->assertInstanceOf(SessionObserveResponse::class, $result);
+    }
+
+    #[Test]
+    public function testReplay(): void
+    {
+        if (UnsupportedMockTests::$skip) {
+            $this->markTestSkipped('Prism tests are disabled');
+        }
+
+        $result = $this->client->sessions->replay(
+            'c4dbf3a9-9a58-4b22-8a1c-9f20f9f9e123'
+        );
+
+        // @phpstan-ignore-next-line method.alreadyNarrowedType
+        $this->assertInstanceOf(SessionReplayResponse::class, $result);
     }
 
     #[Test]
