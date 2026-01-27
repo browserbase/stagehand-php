@@ -8,6 +8,7 @@ use Stagehand\Core\Attributes\Optional;
 use Stagehand\Core\Concerns\SdkModel;
 use Stagehand\Core\Contracts\BaseModel;
 use Stagehand\Sessions\ModelConfig;
+use Stagehand\Sessions\SessionExecuteParams\AgentConfig\Mode;
 use Stagehand\Sessions\SessionExecuteParams\AgentConfig\Provider;
 
 /**
@@ -16,6 +17,7 @@ use Stagehand\Sessions\SessionExecuteParams\AgentConfig\Provider;
  *
  * @phpstan-type AgentConfigShape = array{
  *   cua?: bool|null,
+ *   mode?: null|Mode|value-of<Mode>,
  *   model?: ModelShape|null,
  *   provider?: null|Provider|value-of<Provider>,
  *   systemPrompt?: string|null,
@@ -27,10 +29,18 @@ final class AgentConfig implements BaseModel
     use SdkModel;
 
     /**
-     * Enable Computer Use Agent mode.
+     * Deprecated. Use mode: 'cua' instead. If both are provided, mode takes precedence.
      */
     #[Optional]
     public ?bool $cua;
+
+    /**
+     * Tool mode for the agent (dom, hybrid, cua). If set, overrides cua.
+     *
+     * @var value-of<Mode>|null $mode
+     */
+    #[Optional(enum: Mode::class)]
+    public ?string $mode;
 
     /**
      * Model configuration object or model name string (e.g., 'openai/gpt-5-nano').
@@ -64,11 +74,13 @@ final class AgentConfig implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
+     * @param Mode|value-of<Mode>|null $mode
      * @param ModelShape|null $model
      * @param Provider|value-of<Provider>|null $provider
      */
     public static function with(
         ?bool $cua = null,
+        Mode|string|null $mode = null,
         string|ModelConfig|array|null $model = null,
         Provider|string|null $provider = null,
         ?string $systemPrompt = null,
@@ -76,6 +88,7 @@ final class AgentConfig implements BaseModel
         $self = new self;
 
         null !== $cua && $self['cua'] = $cua;
+        null !== $mode && $self['mode'] = $mode;
         null !== $model && $self['model'] = $model;
         null !== $provider && $self['provider'] = $provider;
         null !== $systemPrompt && $self['systemPrompt'] = $systemPrompt;
@@ -84,12 +97,25 @@ final class AgentConfig implements BaseModel
     }
 
     /**
-     * Enable Computer Use Agent mode.
+     * Deprecated. Use mode: 'cua' instead. If both are provided, mode takes precedence.
      */
     public function withCua(bool $cua): self
     {
         $self = clone $this;
         $self['cua'] = $cua;
+
+        return $self;
+    }
+
+    /**
+     * Tool mode for the agent (dom, hybrid, cua). If set, overrides cua.
+     *
+     * @param Mode|value-of<Mode> $mode
+     */
+    public function withMode(Mode|string $mode): self
+    {
+        $self = clone $this;
+        $self['mode'] = $mode;
 
         return $self;
     }
