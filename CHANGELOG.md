@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.9.0 (2026-01-27)
+
+Full Changelog: [v3.8.0...v3.9.0](https://github.com/browserbase/stagehand-php/compare/v3.8.0...v3.9.0)
+
+### Features
+
+* add auto-bedrock support based on bedrock/provider.model-name ([dd558cc](https://github.com/browserbase/stagehand-php/commit/dd558cca501859f0fc80eb2725c7718015160d85))
+
 ## 3.8.0 (2026-01-27)
 
 Full Changelog: [v3.7.0...v3.8.0](https://github.com/browserbase/stagehand-php/compare/v3.7.0...v3.8.0)
