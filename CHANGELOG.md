@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.8.0 (2026-01-27)
+
+Full Changelog: [v3.7.0...v3.8.0](https://github.com/browserbase/stagehand-php/compare/v3.7.0...v3.8.0)
+
+### Features
+
+* **api:** manual updates ([4ea4789](https://github.com/browserbase/stagehand-php/commit/4ea4789b6bfa2fa708727fcf73b3bcc1dbd9e852))
+
 ## 3.7.0 (2026-01-22)
 
 Full Changelog: [v3.6.0...v3.7.0](https://github.com/browserbase/stagehand-php/compare/v3.6.0...v3.7.0)
