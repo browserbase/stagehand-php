@@ -49,7 +49,7 @@ final class SSEStream implements BaseStream
             }
 
             if ($data = $row['data'] ?? '') {
-                if (str_starts_with($data, needle: 'finished')) {
+                if (str_starts_with($data, needle: '{"data":{"status":"finished"')) {
                     $done = true;
 
                     continue;
