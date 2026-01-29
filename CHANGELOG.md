@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.9.1 (2026-01-29)
+
+Full Changelog: [v3.9.0...v3.9.1](https://github.com/browserbase/stagehand-php/compare/v3.9.0...v3.9.1)
+
 ## 3.9.0 (2026-01-27)
 
 Full Changelog: [v3.8.0...v3.9.0](https://github.com/browserbase/stagehand-php/compare/v3.8.0...v3.9.0)
