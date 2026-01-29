@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.10.0 (2026-01-29)
+
+Full Changelog: [v3.9.1...v3.10.0](https://github.com/browserbase/stagehand-php/compare/v3.9.1...v3.10.0)
+
+### Features
+
+* Update stainless.yml for project and publish settings ([5a2f5e5](https://github.com/browserbase/stagehand-php/commit/5a2f5e551624d6a57f5a00f4f19e239474034796))
+
 ## 3.9.1 (2026-01-29)
 
 Full Changelog: [v3.9.0...v3.9.1](https://github.com/browserbase/stagehand-php/compare/v3.9.0...v3.9.1)
