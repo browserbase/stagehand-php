@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.11.0 (2026-01-29)
+
+Full Changelog: [v3.10.0...v3.11.0](https://github.com/browserbase/stagehand-php/compare/v3.10.0...v3.11.0)
+
+### Features
+
+* Add executionModel serialization to api client ([bd33c5a](https://github.com/browserbase/stagehand-php/commit/bd33c5a50a358970421a391050fb0be1939348b1))
+
 ## 3.10.0 (2026-01-29)
 
 Full Changelog: [v3.9.1...v3.10.0](https://github.com/browserbase/stagehand-php/compare/v3.9.1...v3.10.0)
