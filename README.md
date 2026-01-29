@@ -77,10 +77,22 @@ The REST API documentation can be found on [docs.stagehand.dev](https://docs.sta
 
 ## Installation
 
+To use this package, install via Composer by adding the following to your application's `composer.json`:
+
 <!-- x-release-please-start-version -->
 
-```
-composer require "browserbase/stagehand 3.10.0"
+```json
+{
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "git@github.com:browserbase/stagehand-php.git"
+    }
+  ],
+  "require": {
+    "browserbase/stagehand": "dev-main"
+  }
+}
 ```
 
 <!-- x-release-please-end -->
