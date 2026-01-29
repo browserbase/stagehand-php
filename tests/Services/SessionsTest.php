@@ -128,6 +128,12 @@ final class SessionsTest extends TestCase
             'c4dbf3a9-9a58-4b22-8a1c-9f20f9f9e123',
             agentConfig: [
                 'cua' => true,
+                'executionModel' => [
+                    'modelName' => 'openai/gpt-5-nano',
+                    'apiKey' => 'sk-some-openai-api-key',
+                    'baseURL' => 'https://api.openai.com/v1',
+                    'provider' => 'openai',
+                ],
                 'mode' => 'cua',
                 'model' => [
                     'modelName' => 'openai/gpt-5-nano',
