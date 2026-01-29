@@ -12,11 +12,14 @@ use Stagehand\Sessions\SessionExecuteParams\AgentConfig\Mode;
 use Stagehand\Sessions\SessionExecuteParams\AgentConfig\Provider;
 
 /**
+ * @phpstan-import-type ExecutionModelVariants from \Stagehand\Sessions\SessionExecuteParams\AgentConfig\ExecutionModel
  * @phpstan-import-type ModelVariants from \Stagehand\Sessions\SessionExecuteParams\AgentConfig\Model
+ * @phpstan-import-type ExecutionModelShape from \Stagehand\Sessions\SessionExecuteParams\AgentConfig\ExecutionModel
  * @phpstan-import-type ModelShape from \Stagehand\Sessions\SessionExecuteParams\AgentConfig\Model
  *
  * @phpstan-type AgentConfigShape = array{
  *   cua?: bool|null,
+ *   executionModel?: ExecutionModelShape|null,
  *   mode?: null|Mode|value-of<Mode>,
  *   model?: ModelShape|null,
  *   provider?: null|Provider|value-of<Provider>,
@@ -33,6 +36,14 @@ final class AgentConfig implements BaseModel
      */
     #[Optional]
     public ?bool $cua;
+
+    /**
+     * Model configuration object or model name string (e.g., 'openai/gpt-5-nano') for tool execution (observe/act calls within agent tools). If not specified, inherits from the main model configuration.
+     *
+     * @var ExecutionModelVariants|null $executionModel
+     */
+    #[Optional]
+    public string|ModelConfig|null $executionModel;
 
     /**
      * Tool mode for the agent (dom, hybrid, cua). If set, overrides cua.
@@ -74,12 +85,14 @@ final class AgentConfig implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
+     * @param ExecutionModelShape|null $executionModel
      * @param Mode|value-of<Mode>|null $mode
      * @param ModelShape|null $model
      * @param Provider|value-of<Provider>|null $provider
      */
     public static function with(
         ?bool $cua = null,
+        string|ModelConfig|array|null $executionModel = null,
         Mode|string|null $mode = null,
         string|ModelConfig|array|null $model = null,
         Provider|string|null $provider = null,
@@ -88,6 +101,7 @@ final class AgentConfig implements BaseModel
         $self = new self;
 
         null !== $cua && $self['cua'] = $cua;
+        null !== $executionModel && $self['executionModel'] = $executionModel;
         null !== $mode && $self['mode'] = $mode;
         null !== $model && $self['model'] = $model;
         null !== $provider && $self['provider'] = $provider;
@@ -103,6 +117,20 @@ final class AgentConfig implements BaseModel
     {
         $self = clone $this;
         $self['cua'] = $cua;
+
+        return $self;
+    }
+
+    /**
+     * Model configuration object or model name string (e.g., 'openai/gpt-5-nano') for tool execution (observe/act calls within agent tools). If not specified, inherits from the main model configuration.
+     *
+     * @param ExecutionModelShape $executionModel
+     */
+    public function withExecutionModel(
+        string|ModelConfig|array $executionModel
+    ): self {
+        $self = clone $this;
+        $self['executionModel'] = $executionModel;
 
         return $self;
     }
