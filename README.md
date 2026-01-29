@@ -11,7 +11,7 @@
 </div>
 <p align="center">
   <strong>The AI Browser Automation Framework</strong><br>
-  <a href="https://docs.stagehand.dev/v3/sdk/php">Read the Docs</a>
+  <!--<a href="https://docs.stagehand.dev/v3/sdk/php">Read the Docs</a>-->
 </p>
 
 <p align="center">
