@@ -13,7 +13,7 @@ The REST API documentation can be found on [docs.stagehand.dev](https://docs.sta
 <!-- x-release-please-start-version -->
 
 ```
-composer require "browserbase/stagehand 3.12.0"
+composer require "browserbase/stagehand 3.13.0"
 ```
 
 <!-- x-release-please-end -->
