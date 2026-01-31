@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.13.1 (2026-01-31)
+
+Full Changelog: [v3.13.0...v3.13.1](https://github.com/browserbase/stagehand-php/compare/v3.13.0...v3.13.1)
+
+### Bug Fixes
+
+* used redirect count instead of retry count in base client ([d3bab46](https://github.com/browserbase/stagehand-php/commit/d3bab461f31f650a74804f0db19a088a9689bc76))
+
 ## 3.13.0 (2026-01-31)
 
 Full Changelog: [v3.12.0...v3.13.0](https://github.com/browserbase/stagehand-php/compare/v3.12.0...v3.13.0)
