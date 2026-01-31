@@ -88,6 +88,17 @@ final class ExternalProxyConfig implements BaseModel
         return $self;
     }
 
+    /**
+     * @param 'external' $type
+     */
+    public function withType(string $type): self
+    {
+        $self = clone $this;
+        $self['type'] = $type;
+
+        return $self;
+    }
+
     public function withDomainPattern(string $domainPattern): self
     {
         $self = clone $this;
