@@ -1,5 +1,18 @@
 # Changelog
 
+## 3.12.0 (2026-01-31)
+
+Full Changelog: [v3.11.0...v3.12.0](https://github.com/browserbase/stagehand-php/compare/v3.11.0...v3.12.0)
+
+### Features
+
+* Removed MCP from readme for now ([94848f5](https://github.com/browserbase/stagehand-php/commit/94848f59fbdad4ace2f3a51303e1b3703a91bc15))
+
+
+### Chores
+
+* **internal:** ignore stainless-internal artifacts ([fa1d9e6](https://github.com/browserbase/stagehand-php/commit/fa1d9e675e935a164d96664b64e6688e7b1a66c0))
+
 ## 3.11.0 (2026-01-29)
 
 Full Changelog: [v3.10.0...v3.11.0](https://github.com/browserbase/stagehand-php/compare/v3.10.0...v3.11.0)
