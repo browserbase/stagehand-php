@@ -71,4 +71,15 @@ final class StreamEventLogDataOutput implements BaseModel
 
         return $self;
     }
+
+    /**
+     * @param 'running' $status
+     */
+    public function withStatus(string $status): self
+    {
+        $self = clone $this;
+        $self['status'] = $status;
+
+        return $self;
+    }
 }

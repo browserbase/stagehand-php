@@ -58,6 +58,17 @@ final class BrowserbaseProxyConfig implements BaseModel
         return $self;
     }
 
+    /**
+     * @param 'browserbase' $type
+     */
+    public function withType(string $type): self
+    {
+        $self = clone $this;
+        $self['type'] = $type;
+
+        return $self;
+    }
+
     public function withDomainPattern(string $domainPattern): self
     {
         $self = clone $this;
