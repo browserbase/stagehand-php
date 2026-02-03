@@ -6,6 +6,7 @@ use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Stagehand\Client;
+use Stagehand\Core\Util;
 use Stagehand\Sessions\SessionActResponse;
 use Stagehand\Sessions\SessionEndResponse;
 use Stagehand\Sessions\SessionExecuteResponse;
@@ -28,7 +29,7 @@ final class SessionsTest extends TestCase
     {
         parent::setUp();
 
-        $testUrl = getenv('TEST_API_BASE_URL') ?: 'http://127.0.0.1:4010';
+        $testUrl = Util::getenv('TEST_API_BASE_URL') ?: 'http://127.0.0.1:4010';
         $client = new Client(
             browserbaseAPIKey: 'My Browserbase API Key',
             browserbaseProjectID: 'My Browserbase Project ID',
