@@ -37,11 +37,17 @@ class Client extends BaseClient
         ?string $baseUrl = null,
         RequestOptions|array|null $requestOptions = null,
     ) {
-        $this->browserbaseAPIKey = (string) ($browserbaseAPIKey ?? getenv('BROWSERBASE_API_KEY'));
-        $this->browserbaseProjectID = (string) ($browserbaseProjectID ?? getenv('BROWSERBASE_PROJECT_ID'));
-        $this->modelAPIKey = (string) ($modelAPIKey ?? getenv('MODEL_API_KEY'));
+        $this->browserbaseAPIKey = (string) ($browserbaseAPIKey ?? Util::getenv(
+            'BROWSERBASE_API_KEY'
+        ));
+        $this->browserbaseProjectID = (string) ($browserbaseProjectID ?? Util::getenv(
+            'BROWSERBASE_PROJECT_ID'
+        ));
+        $this->modelAPIKey = (string) ($modelAPIKey ?? Util::getenv(
+            'MODEL_API_KEY'
+        ));
 
-        $baseUrl ??= getenv(
+        $baseUrl ??= Util::getenv(
             'STAGEHAND_BASE_URL'
         ) ?: 'https://api.stagehand.browserbase.com';
 
