@@ -1,5 +1,18 @@
 # Changelog
 
+## 3.14.0 (2026-02-03)
+
+Full Changelog: [v3.13.1...v3.14.0](https://github.com/browserbase/stagehand-php/compare/v3.13.1...v3.14.0)
+
+### Features
+
+* use `$_ENV` aware getenv helper ([648193c](https://github.com/browserbase/stagehand-php/commit/648193c0d5db24aec73e908a6415342059106763))
+
+
+### Chores
+
+* **internal:** php cs fixer should not be memory limited ([85b427d](https://github.com/browserbase/stagehand-php/commit/85b427d1f6c2d7074950c2b02a9731491e3f8a60))
+
 ## 3.13.1 (2026-01-31)
 
 Full Changelog: [v3.13.0...v3.13.1](https://github.com/browserbase/stagehand-php/compare/v3.13.0...v3.13.1)
