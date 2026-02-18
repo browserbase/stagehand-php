@@ -10,10 +10,9 @@ use Stagehand\Core\Contracts\BaseModel;
 
 /**
  * @phpstan-type TokenUsageShape = array{
- *   cachedInputTokens?: float|null,
+ *   cost?: float|null,
  *   inputTokens?: float|null,
  *   outputTokens?: float|null,
- *   reasoningTokens?: float|null,
  *   timeMs?: float|null,
  * }
  */
@@ -23,16 +22,13 @@ final class TokenUsage implements BaseModel
     use SdkModel;
 
     #[Optional]
-    public ?float $cachedInputTokens;
+    public ?float $cost;
 
     #[Optional]
     public ?float $inputTokens;
 
     #[Optional]
     public ?float $outputTokens;
-
-    #[Optional]
-    public ?float $reasoningTokens;
 
     #[Optional]
     public ?float $timeMs;
@@ -48,27 +44,25 @@ final class TokenUsage implements BaseModel
      * You must use named parameters to construct any parameters with a default value.
      */
     public static function with(
-        ?float $cachedInputTokens = null,
+        ?float $cost = null,
         ?float $inputTokens = null,
         ?float $outputTokens = null,
-        ?float $reasoningTokens = null,
         ?float $timeMs = null,
     ): self {
         $self = new self;
 
-        null !== $cachedInputTokens && $self['cachedInputTokens'] = $cachedInputTokens;
+        null !== $cost && $self['cost'] = $cost;
         null !== $inputTokens && $self['inputTokens'] = $inputTokens;
         null !== $outputTokens && $self['outputTokens'] = $outputTokens;
-        null !== $reasoningTokens && $self['reasoningTokens'] = $reasoningTokens;
         null !== $timeMs && $self['timeMs'] = $timeMs;
 
         return $self;
     }
 
-    public function withCachedInputTokens(float $cachedInputTokens): self
+    public function withCost(float $cost): self
     {
         $self = clone $this;
-        $self['cachedInputTokens'] = $cachedInputTokens;
+        $self['cost'] = $cost;
 
         return $self;
     }
@@ -85,14 +79,6 @@ final class TokenUsage implements BaseModel
     {
         $self = clone $this;
         $self['outputTokens'] = $outputTokens;
-
-        return $self;
-    }
-
-    public function withReasoningTokens(float $reasoningTokens): self
-    {
-        $self = clone $this;
-        $self['reasoningTokens'] = $reasoningTokens;
 
         return $self;
     }
