@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.15.0 (2026-02-18)
+
+Full Changelog: [v3.14.0...v3.15.0](https://github.com/browserbase/stagehand-php/compare/v3.14.0...v3.15.0)
+
+### Features
+
+* randomize region used for evals, split out pnpm and turbo cache, veri… ([49fa8e0](https://github.com/browserbase/stagehand-php/commit/49fa8e0ab9a8f5ff331a9858e5a6f1b76e3aff4c))
+
 ## 3.14.0 (2026-02-03)
 
 Full Changelog: [v3.13.1...v3.14.0](https://github.com/browserbase/stagehand-php/compare/v3.13.1...v3.14.0)
