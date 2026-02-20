@@ -44,7 +44,7 @@ final class SessionsTest extends TestCase
     public function testAct(): void
     {
         if (UnsupportedMockTests::$skip) {
-            $this->markTestSkipped('Prism tests are disabled');
+            $this->markTestSkipped('Mock server tests are disabled');
         }
 
         $result = $this->client->sessions->act(
@@ -60,7 +60,7 @@ final class SessionsTest extends TestCase
     public function testActWithOptionalParams(): void
     {
         if (UnsupportedMockTests::$skip) {
-            $this->markTestSkipped('Prism tests are disabled');
+            $this->markTestSkipped('Mock server tests are disabled');
         }
 
         $result = $this->client->sessions->act(
@@ -88,7 +88,7 @@ final class SessionsTest extends TestCase
     public function testEnd(): void
     {
         if (UnsupportedMockTests::$skip) {
-            $this->markTestSkipped('Prism tests are disabled');
+            $this->markTestSkipped('Mock server tests are disabled');
         }
 
         $result = $this->client->sessions->end(
@@ -103,7 +103,7 @@ final class SessionsTest extends TestCase
     public function testExecute(): void
     {
         if (UnsupportedMockTests::$skip) {
-            $this->markTestSkipped('Prism tests are disabled');
+            $this->markTestSkipped('Mock server tests are disabled');
         }
 
         $result = $this->client->sessions->execute(
@@ -122,7 +122,7 @@ final class SessionsTest extends TestCase
     public function testExecuteWithOptionalParams(): void
     {
         if (UnsupportedMockTests::$skip) {
-            $this->markTestSkipped('Prism tests are disabled');
+            $this->markTestSkipped('Mock server tests are disabled');
         }
 
         $result = $this->client->sessions->execute(
@@ -163,7 +163,7 @@ final class SessionsTest extends TestCase
     public function testExtract(): void
     {
         if (UnsupportedMockTests::$skip) {
-            $this->markTestSkipped('Prism tests are disabled');
+            $this->markTestSkipped('Mock server tests are disabled');
         }
 
         $result = $this->client->sessions->extract(
@@ -178,7 +178,7 @@ final class SessionsTest extends TestCase
     public function testNavigate(): void
     {
         if (UnsupportedMockTests::$skip) {
-            $this->markTestSkipped('Prism tests are disabled');
+            $this->markTestSkipped('Mock server tests are disabled');
         }
 
         $result = $this->client->sessions->navigate(
@@ -194,7 +194,7 @@ final class SessionsTest extends TestCase
     public function testNavigateWithOptionalParams(): void
     {
         if (UnsupportedMockTests::$skip) {
-            $this->markTestSkipped('Prism tests are disabled');
+            $this->markTestSkipped('Mock server tests are disabled');
         }
 
         $result = $this->client->sessions->navigate(
@@ -216,7 +216,7 @@ final class SessionsTest extends TestCase
     public function testObserve(): void
     {
         if (UnsupportedMockTests::$skip) {
-            $this->markTestSkipped('Prism tests are disabled');
+            $this->markTestSkipped('Mock server tests are disabled');
         }
 
         $result = $this->client->sessions->observe(
@@ -231,7 +231,7 @@ final class SessionsTest extends TestCase
     public function testReplay(): void
     {
         if (UnsupportedMockTests::$skip) {
-            $this->markTestSkipped('Prism tests are disabled');
+            $this->markTestSkipped('Mock server tests are disabled');
         }
 
         $result = $this->client->sessions->replay(
@@ -246,7 +246,7 @@ final class SessionsTest extends TestCase
     public function testStart(): void
     {
         if (UnsupportedMockTests::$skip) {
-            $this->markTestSkipped('Prism tests are disabled');
+            $this->markTestSkipped('Mock server tests are disabled');
         }
 
         $result = $this->client->sessions->start(modelName: 'openai/gpt-4o');
@@ -259,7 +259,7 @@ final class SessionsTest extends TestCase
     public function testStartWithOptionalParams(): void
     {
         if (UnsupportedMockTests::$skip) {
-            $this->markTestSkipped('Prism tests are disabled');
+            $this->markTestSkipped('Mock server tests are disabled');
         }
 
         $result = $this->client->sessions->start(
