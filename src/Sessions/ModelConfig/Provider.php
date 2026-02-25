@@ -16,4 +16,6 @@ enum Provider: string
     case GOOGLE = 'google';
 
     case MICROSOFT = 'microsoft';
+
+    case BEDROCK = 'bedrock';
 }
