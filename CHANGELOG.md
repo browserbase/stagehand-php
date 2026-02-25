@@ -1,5 +1,20 @@
 # Changelog
 
+## 3.16.0 (2026-02-25)
+
+Full Changelog: [v3.15.0...v3.16.0](https://github.com/browserbase/stagehand-php/compare/v3.15.0...v3.16.0)
+
+### Features
+
+* Add bedrock to provider enum in Zod schemas and OpenAPI spec ([d7beb58](https://github.com/browserbase/stagehand-php/commit/d7beb58a2fcb91f1c59b81cc47f10b49d6ee976b))
+
+
+### Chores
+
+* **internal:** remove mock server code ([084d88e](https://github.com/browserbase/stagehand-php/commit/084d88e9049da3fc2acca9f2077cb37eb5dacd8a))
+* **release:** add packagist trigger on published release ([61d3be2](https://github.com/browserbase/stagehand-php/commit/61d3be273bc999a751fc060e338edd784c30136e))
+* update mock server docs ([3a5e75e](https://github.com/browserbase/stagehand-php/commit/3a5e75efcd92d87945e5f4970c5deef392e6f98a))
+
 ## 3.15.0 (2026-02-18)
 
 Full Changelog: [v3.14.0...v3.15.0](https://github.com/browserbase/stagehand-php/compare/v3.14.0...v3.15.0)
