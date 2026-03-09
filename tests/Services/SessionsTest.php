@@ -270,6 +270,7 @@ final class SessionsTest extends TestCase
                 'launchOptions' => [
                     'acceptDownloads' => true,
                     'args' => ['string'],
+                    'cdpHeaders' => ['foo' => 'string'],
                     'cdpURL' => 'cdpUrl',
                     'chromiumSandbox' => true,
                     'connectTimeoutMs' => 0,
