@@ -20,6 +20,7 @@ use Stagehand\Sessions\SessionStartParams\Browser\LaunchOptions\Viewport;
  * @phpstan-type LaunchOptionsShape = array{
  *   acceptDownloads?: bool|null,
  *   args?: list<string>|null,
+ *   cdpHeaders?: array<string,string>|null,
  *   cdpURL?: string|null,
  *   chromiumSandbox?: bool|null,
  *   connectTimeoutMs?: float|null,
@@ -50,6 +51,10 @@ final class LaunchOptions implements BaseModel
     /** @var list<string>|null $args */
     #[Optional(list: 'string')]
     public ?array $args;
+
+    /** @var array<string,string>|null $cdpHeaders */
+    #[Optional(map: 'string')]
+    public ?array $cdpHeaders;
 
     #[Optional('cdpUrl')]
     public ?string $cdpURL;
@@ -114,6 +119,7 @@ final class LaunchOptions implements BaseModel
      * You must use named parameters to construct any parameters with a default value.
      *
      * @param list<string>|null $args
+     * @param array<string,string>|null $cdpHeaders
      * @param IgnoreDefaultArgsShape|null $ignoreDefaultArgs
      * @param Proxy|ProxyShape|null $proxy
      * @param Viewport|ViewportShape|null $viewport
@@ -121,6 +127,7 @@ final class LaunchOptions implements BaseModel
     public static function with(
         ?bool $acceptDownloads = null,
         ?array $args = null,
+        ?array $cdpHeaders = null,
         ?string $cdpURL = null,
         ?bool $chromiumSandbox = null,
         ?float $connectTimeoutMs = null,
@@ -143,6 +150,7 @@ final class LaunchOptions implements BaseModel
 
         null !== $acceptDownloads && $self['acceptDownloads'] = $acceptDownloads;
         null !== $args && $self['args'] = $args;
+        null !== $cdpHeaders && $self['cdpHeaders'] = $cdpHeaders;
         null !== $cdpURL && $self['cdpURL'] = $cdpURL;
         null !== $chromiumSandbox && $self['chromiumSandbox'] = $chromiumSandbox;
         null !== $connectTimeoutMs && $self['connectTimeoutMs'] = $connectTimeoutMs;
@@ -179,6 +187,17 @@ final class LaunchOptions implements BaseModel
     {
         $self = clone $this;
         $self['args'] = $args;
+
+        return $self;
+    }
+
+    /**
+     * @param array<string,string> $cdpHeaders
+     */
+    public function withCdpHeaders(array $cdpHeaders): self
+    {
+        $self = clone $this;
+        $self['cdpHeaders'] = $cdpHeaders;
 
         return $self;
     }
