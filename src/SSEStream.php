@@ -29,14 +29,7 @@ final class SSEStream implements BaseStream
             return;
         }
 
-        $done = false;
         foreach ($this->stream as $row) {
-            // @phpstan-ignore if.alwaysFalse
-            if ($done) {
-                // Iterate through the whole stream
-                continue;
-            }
-
             switch ($row['event'] ?? null) {
                 case null:
                     if ($data = $row['data'] ?? '') {
@@ -50,7 +43,9 @@ final class SSEStream implements BaseStream
 
             if ($data = $row['data'] ?? '') {
                 if (str_starts_with($data, needle: '{"data":{"status":"finished"')) {
-                    $done = true;
+                    $decoded = Util::decodeJson($data);
+
+                    yield Conversion::coerce($this->convert, value: $decoded);
 
                     continue;
                 }
