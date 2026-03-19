@@ -149,6 +149,8 @@ final class SessionsTest extends TestCase
                 'instruction' => 'Log in with username \'demo\' and password \'test123\', then navigate to settings',
                 'highlightCursor' => true,
                 'maxSteps' => 20,
+                'toolTimeout' => 30000,
+                'useSearch' => true,
             ],
             frameID: 'frameId',
             shouldCache: true,
