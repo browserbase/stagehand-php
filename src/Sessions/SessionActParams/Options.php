@@ -8,15 +8,18 @@ use Stagehand\Core\Attributes\Optional;
 use Stagehand\Core\Concerns\SdkModel;
 use Stagehand\Core\Contracts\BaseModel;
 use Stagehand\Sessions\ModelConfig;
+use Stagehand\Sessions\SessionActParams\Options\Variable;
 
 /**
  * @phpstan-import-type ModelVariants from \Stagehand\Sessions\SessionActParams\Options\Model
+ * @phpstan-import-type VariableVariants from \Stagehand\Sessions\SessionActParams\Options\Variable
  * @phpstan-import-type ModelShape from \Stagehand\Sessions\SessionActParams\Options\Model
+ * @phpstan-import-type VariableShape from \Stagehand\Sessions\SessionActParams\Options\Variable
  *
  * @phpstan-type OptionsShape = array{
  *   model?: ModelShape|null,
  *   timeout?: float|null,
- *   variables?: array<string,string>|null,
+ *   variables?: array<string,VariableShape>|null,
  * }
  */
 final class Options implements BaseModel
@@ -39,11 +42,11 @@ final class Options implements BaseModel
     public ?float $timeout;
 
     /**
-     * Variables to substitute in the action instruction.
+     * Variables to substitute in the action instruction. Accepts flat primitives or { value, description? } objects.
      *
-     * @var array<string,string>|null $variables
+     * @var array<string,VariableVariants>|null $variables
      */
-    #[Optional(map: 'string')]
+    #[Optional(map: Variable::class)]
     public ?array $variables;
 
     public function __construct()
@@ -57,7 +60,7 @@ final class Options implements BaseModel
      * You must use named parameters to construct any parameters with a default value.
      *
      * @param ModelShape|null $model
-     * @param array<string,string>|null $variables
+     * @param array<string,VariableShape>|null $variables
      */
     public static function with(
         string|ModelConfig|array|null $model = null,
@@ -98,9 +101,9 @@ final class Options implements BaseModel
     }
 
     /**
-     * Variables to substitute in the action instruction.
+     * Variables to substitute in the action instruction. Accepts flat primitives or { value, description? } objects.
      *
-     * @param array<string,string> $variables
+     * @param array<string,VariableShape> $variables
      */
     public function withVariables(array $variables): self
     {

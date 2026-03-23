@@ -75,7 +75,12 @@ final class SessionsTest extends TestCase
                     'provider' => 'openai',
                 ],
                 'timeout' => 30000,
-                'variables' => ['username' => 'john_doe'],
+                'variables' => [
+                    'username' => 'john_doe',
+                    'password' => [
+                        'value' => 'secret123', 'description' => 'The login password',
+                    ],
+                ],
             ],
             xStreamResponse: 'true',
         );
