@@ -1,5 +1,26 @@
 # Changelog
 
+## 3.18.0 (2026-03-24)
+
+Full Changelog: [v3.16.0...v3.18.0](https://github.com/browserbase/stagehand-php/compare/v3.16.0...v3.18.0)
+
+### Features
+
+* [fix]: add `useSearch` & `toolTimeout` to stainless types ([b192d02](https://github.com/browserbase/stagehand-php/commit/b192d027f259557655a980b8b013033726c70038))
+* [STG-1607] Yield finished SSE event instead of silently dropping it ([bcbd0d1](https://github.com/browserbase/stagehand-php/commit/bcbd0d1b1a07c26b372e01dee544ef0b4d2bb50d))
+* Add explicit SSE event names for local v3 streaming ([a9777b9](https://github.com/browserbase/stagehand-php/commit/a9777b9389adbaf2c2f9dfdc34ce41f3004b9085))
+* Add missing cdpHeaders field to v3 server openapi spec ([07f2358](https://github.com/browserbase/stagehand-php/commit/07f23586505243db4dc86414a3d5c381b26fd22d))
+* Include LLM headers in ModelConfig ([879642a](https://github.com/browserbase/stagehand-php/commit/879642a0677170a48904a52f339c0403f2b16203))
+* Revert broken finished SSE yield config ([7910a59](https://github.com/browserbase/stagehand-php/commit/7910a59b8374edd635c968ecd57548b1c6826f20))
+* variables for observe ([9187d2e](https://github.com/browserbase/stagehand-php/commit/9187d2ec460a547a9463a395175482cd1bd72c18))
+
+
+### Chores
+
+* **internal:** codegen related update ([20b3106](https://github.com/browserbase/stagehand-php/commit/20b3106f3919092115a690e43bb4641dccd91aad))
+* **internal:** tweak CI branches ([5c0e28e](https://github.com/browserbase/stagehand-php/commit/5c0e28e04a565c53dbd42f01fd920ba65ffea9e6))
+* **internal:** upgrade phpunit ([b09b7ff](https://github.com/browserbase/stagehand-php/commit/b09b7ffb3644b16039aa400ed430deeb993e18ce))
+
 ## 3.16.0 (2026-02-25)
 
 Full Changelog: [v3.15.0...v3.16.0](https://github.com/browserbase/stagehand-php/compare/v3.15.0...v3.16.0)
