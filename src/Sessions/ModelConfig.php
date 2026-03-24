@@ -15,6 +15,7 @@ use Stagehand\Sessions\ModelConfig\Provider;
  *   modelName: string,
  *   apiKey?: string|null,
  *   baseURL?: string|null,
+ *   headers?: array<string,string>|null,
  *   provider?: null|Provider|value-of<Provider>,
  * }
  */
@@ -40,6 +41,14 @@ final class ModelConfig implements BaseModel
      */
     #[Optional]
     public ?string $baseURL;
+
+    /**
+     * Custom headers sent with every request to the model provider.
+     *
+     * @var array<string,string>|null $headers
+     */
+    #[Optional(map: 'string')]
+    public ?array $headers;
 
     /**
      * AI provider for the model (or provide a baseURL endpoint instead).
@@ -73,12 +82,14 @@ final class ModelConfig implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
+     * @param array<string,string>|null $headers
      * @param Provider|value-of<Provider>|null $provider
      */
     public static function with(
         string $modelName,
         ?string $apiKey = null,
         ?string $baseURL = null,
+        ?array $headers = null,
         Provider|string|null $provider = null,
     ): self {
         $self = new self;
@@ -87,6 +98,7 @@ final class ModelConfig implements BaseModel
 
         null !== $apiKey && $self['apiKey'] = $apiKey;
         null !== $baseURL && $self['baseURL'] = $baseURL;
+        null !== $headers && $self['headers'] = $headers;
         null !== $provider && $self['provider'] = $provider;
 
         return $self;
@@ -121,6 +133,19 @@ final class ModelConfig implements BaseModel
     {
         $self = clone $this;
         $self['baseURL'] = $baseURL;
+
+        return $self;
+    }
+
+    /**
+     * Custom headers sent with every request to the model provider.
+     *
+     * @param array<string,string> $headers
+     */
+    public function withHeaders(array $headers): self
+    {
+        $self = clone $this;
+        $self['headers'] = $headers;
 
         return $self;
     }
