@@ -29,33 +29,9 @@ final class SSEStream implements BaseStream
             return;
         }
 
-        $done = false;
         foreach ($this->stream as $row) {
-            // @phpstan-ignore if.alwaysFalse
-            if ($done) {
-                // Iterate through the whole stream
-                continue;
-            }
-
             switch ($row['event'] ?? null) {
-                case null:
-                    if ($data = $row['data'] ?? '') {
-                        $decoded = Util::decodeJson($data);
-
-                        yield Conversion::coerce($this->convert, value: $decoded);
-                    }
-
-                    break;
-            }
-
-            if ($data = $row['data'] ?? '') {
-                if (str_starts_with($data, needle: '{"data":{"status":"finished"')) {
-                    $done = true;
-
-                    continue;
-                }
-
-                if (str_starts_with($data, needle: 'error')) {
+                case 'error':
                     if ($data = $row['data'] ?? '') {
                         $json = Util::decodeJson($data);
                         $message = Util::prettyEncodeJson($json);
@@ -69,8 +45,19 @@ final class SSEStream implements BaseStream
                         throw $exn;
                     }
 
-                    continue;
-                }
+                    break;
+
+                case 'starting':
+                case 'connected':
+                case 'running':
+                case 'finished':
+                    if ($data = $row['data'] ?? '') {
+                        $decoded = Util::decodeJson($data);
+
+                        yield Conversion::coerce($this->convert, value: $decoded);
+                    }
+
+                    break;
             }
         }
     }
