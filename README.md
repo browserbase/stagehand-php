@@ -276,7 +276,7 @@ use Stagehand\Core\Exceptions\RateLimitException;
 use Stagehand\Core\Exceptions\APIStatusException;
 
 try {
-  $response = $client->sessions->start(modelName: 'openai/gpt-5-nano');
+  $response = $client->sessions->start(modelName: 'openai/gpt-5.4-mini');
 } catch (APIConnectionException $e) {
   echo "The server could not be reached", PHP_EOL;
   var_dump($e->getPrevious());
@@ -322,7 +322,7 @@ $client = new Client(requestOptions: ['maxRetries' => 0]);
 
 // Or, configure per-request:
 $result = $client->sessions->start(
-  modelName: 'openai/gpt-5-nano', requestOptions: ['maxRetries' => 5]
+  modelName: 'openai/gpt-5.4-mini', requestOptions: ['maxRetries' => 5]
 );
 ```
 
@@ -340,7 +340,7 @@ Note: the `extra*` parameters of the same name overrides the documented paramete
 <?php
 
 $response = $client->sessions->start(
-  modelName: 'openai/gpt-5-nano',
+  modelName: 'openai/gpt-5.4-mini',
   requestOptions: [
     'extraQueryParams' => ['my_query_parameter' => 'value'],
     'extraBodyParams' => ['my_body_parameter' => 'value'],
