@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.19.3 (2026-04-03)
+
+Full Changelog: [v3.18.0...v3.19.3](https://github.com/browserbase/stagehand-php/compare/v3.18.0...v3.19.3)
+
+### Features
+
+* Replace default model used in server-v3 api spec examples ([b0b96f9](https://github.com/browserbase/stagehand-php/commit/b0b96f9947ada81950292af4f3fefb3743c6d1d6))
+
 ## 3.18.0 (2026-03-24)
 
 Full Changelog: [v3.16.0...v3.18.0](https://github.com/browserbase/stagehand-php/compare/v3.16.0...v3.18.0)
