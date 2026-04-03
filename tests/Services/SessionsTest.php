@@ -69,7 +69,7 @@ final class SessionsTest extends TestCase
             frameID: 'frameId',
             options: [
                 'model' => [
-                    'modelName' => 'openai/gpt-5-nano',
+                    'modelName' => 'openai/gpt-5.4-mini',
                     'apiKey' => 'sk-some-openai-api-key',
                     'baseURL' => 'https://api.openai.com/v1',
                     'headers' => ['foo' => 'string'],
@@ -136,7 +136,7 @@ final class SessionsTest extends TestCase
             agentConfig: [
                 'cua' => true,
                 'executionModel' => [
-                    'modelName' => 'openai/gpt-5-nano',
+                    'modelName' => 'openai/gpt-5.4-mini',
                     'apiKey' => 'sk-some-openai-api-key',
                     'baseURL' => 'https://api.openai.com/v1',
                     'headers' => ['foo' => 'string'],
@@ -144,7 +144,7 @@ final class SessionsTest extends TestCase
                 ],
                 'mode' => 'cua',
                 'model' => [
-                    'modelName' => 'openai/gpt-5-nano',
+                    'modelName' => 'openai/gpt-5.4-mini',
                     'apiKey' => 'sk-some-openai-api-key',
                     'baseURL' => 'https://api.openai.com/v1',
                     'headers' => ['foo' => 'string'],
@@ -259,7 +259,7 @@ final class SessionsTest extends TestCase
             $this->markTestSkipped('Mock server tests are disabled');
         }
 
-        $result = $this->client->sessions->start(modelName: 'openai/gpt-4o');
+        $result = $this->client->sessions->start(modelName: 'openai/gpt-5.4-mini');
 
         // @phpstan-ignore-next-line method.alreadyNarrowedType
         $this->assertInstanceOf(SessionStartResponse::class, $result);
@@ -273,7 +273,7 @@ final class SessionsTest extends TestCase
         }
 
         $result = $this->client->sessions->start(
-            modelName: 'openai/gpt-4o',
+            modelName: 'openai/gpt-5.4-mini',
             actTimeoutMs: 0,
             browser: [
                 'cdpURL' => 'ws://localhost:9222',
