@@ -314,6 +314,8 @@ final class SessionsTest extends TestCase
                 'browserSettings' => [
                     'advancedStealth' => true,
                     'blockAds' => true,
+                    'captchaImageSelector' => 'captchaImageSelector',
+                    'captchaInputSelector' => 'captchaInputSelector',
                     'context' => ['id' => 'id', 'persist' => true],
                     'extensionID' => 'extensionId',
                     'fingerprint' => [
@@ -330,8 +332,10 @@ final class SessionsTest extends TestCase
                         ],
                     ],
                     'logSession' => true,
+                    'os' => 'windows',
                     'recordSession' => true,
                     'solveCaptchas' => true,
+                    'verified' => true,
                     'viewport' => ['height' => 0, 'width' => 0],
                 ],
                 'extensionID' => 'extensionId',

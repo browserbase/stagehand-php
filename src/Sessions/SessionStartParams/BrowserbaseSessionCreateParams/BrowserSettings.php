@@ -9,6 +9,7 @@ use Stagehand\Core\Concerns\SdkModel;
 use Stagehand\Core\Contracts\BaseModel;
 use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings\Context;
 use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings\Fingerprint;
+use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings\Os;
 use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\BrowserSettings\Viewport;
 
 /**
@@ -19,12 +20,16 @@ use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams\Browser
  * @phpstan-type BrowserSettingsShape = array{
  *   advancedStealth?: bool|null,
  *   blockAds?: bool|null,
+ *   captchaImageSelector?: string|null,
+ *   captchaInputSelector?: string|null,
  *   context?: null|Context|ContextShape,
  *   extensionID?: string|null,
  *   fingerprint?: null|Fingerprint|FingerprintShape,
  *   logSession?: bool|null,
+ *   os?: null|Os|value-of<Os>,
  *   recordSession?: bool|null,
  *   solveCaptchas?: bool|null,
+ *   verified?: bool|null,
  *   viewport?: null|Viewport|ViewportShape,
  * }
  */
@@ -40,6 +45,12 @@ final class BrowserSettings implements BaseModel
     public ?bool $blockAds;
 
     #[Optional]
+    public ?string $captchaImageSelector;
+
+    #[Optional]
+    public ?string $captchaInputSelector;
+
+    #[Optional]
     public ?Context $context;
 
     #[Optional('extensionId')]
@@ -51,11 +62,18 @@ final class BrowserSettings implements BaseModel
     #[Optional]
     public ?bool $logSession;
 
+    /** @var value-of<Os>|null $os */
+    #[Optional(enum: Os::class)]
+    public ?string $os;
+
     #[Optional]
     public ?bool $recordSession;
 
     #[Optional]
     public ?bool $solveCaptchas;
+
+    #[Optional]
+    public ?bool $verified;
 
     #[Optional]
     public ?Viewport $viewport;
@@ -72,29 +90,38 @@ final class BrowserSettings implements BaseModel
      *
      * @param Context|ContextShape|null $context
      * @param Fingerprint|FingerprintShape|null $fingerprint
+     * @param Os|value-of<Os>|null $os
      * @param Viewport|ViewportShape|null $viewport
      */
     public static function with(
         ?bool $advancedStealth = null,
         ?bool $blockAds = null,
+        ?string $captchaImageSelector = null,
+        ?string $captchaInputSelector = null,
         Context|array|null $context = null,
         ?string $extensionID = null,
         Fingerprint|array|null $fingerprint = null,
         ?bool $logSession = null,
+        Os|string|null $os = null,
         ?bool $recordSession = null,
         ?bool $solveCaptchas = null,
+        ?bool $verified = null,
         Viewport|array|null $viewport = null,
     ): self {
         $self = new self;
 
         null !== $advancedStealth && $self['advancedStealth'] = $advancedStealth;
         null !== $blockAds && $self['blockAds'] = $blockAds;
+        null !== $captchaImageSelector && $self['captchaImageSelector'] = $captchaImageSelector;
+        null !== $captchaInputSelector && $self['captchaInputSelector'] = $captchaInputSelector;
         null !== $context && $self['context'] = $context;
         null !== $extensionID && $self['extensionID'] = $extensionID;
         null !== $fingerprint && $self['fingerprint'] = $fingerprint;
         null !== $logSession && $self['logSession'] = $logSession;
+        null !== $os && $self['os'] = $os;
         null !== $recordSession && $self['recordSession'] = $recordSession;
         null !== $solveCaptchas && $self['solveCaptchas'] = $solveCaptchas;
+        null !== $verified && $self['verified'] = $verified;
         null !== $viewport && $self['viewport'] = $viewport;
 
         return $self;
@@ -112,6 +139,22 @@ final class BrowserSettings implements BaseModel
     {
         $self = clone $this;
         $self['blockAds'] = $blockAds;
+
+        return $self;
+    }
+
+    public function withCaptchaImageSelector(string $captchaImageSelector): self
+    {
+        $self = clone $this;
+        $self['captchaImageSelector'] = $captchaImageSelector;
+
+        return $self;
+    }
+
+    public function withCaptchaInputSelector(string $captchaInputSelector): self
+    {
+        $self = clone $this;
+        $self['captchaInputSelector'] = $captchaInputSelector;
 
         return $self;
     }
@@ -154,6 +197,17 @@ final class BrowserSettings implements BaseModel
         return $self;
     }
 
+    /**
+     * @param Os|value-of<Os> $os
+     */
+    public function withOs(Os|string $os): self
+    {
+        $self = clone $this;
+        $self['os'] = $os;
+
+        return $self;
+    }
+
     public function withRecordSession(bool $recordSession): self
     {
         $self = clone $this;
@@ -166,6 +220,14 @@ final class BrowserSettings implements BaseModel
     {
         $self = clone $this;
         $self['solveCaptchas'] = $solveCaptchas;
+
+        return $self;
+    }
+
+    public function withVerified(bool $verified): self
+    {
+        $self = clone $this;
+        $self['verified'] = $verified;
 
         return $self;
     }
