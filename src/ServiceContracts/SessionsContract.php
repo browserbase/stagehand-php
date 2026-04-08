@@ -21,6 +21,9 @@ use Stagehand\Sessions\SessionObserveResponse;
 use Stagehand\Sessions\SessionReplayResponse;
 use Stagehand\Sessions\SessionStartParams\Browser;
 use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams;
+use Stagehand\Sessions\SessionStartParams\ModelClientOptions\BedrockAPIKeyModelClientOptions;
+use Stagehand\Sessions\SessionStartParams\ModelClientOptions\BedrockAwsCredentialsModelClientOptions;
+use Stagehand\Sessions\SessionStartParams\ModelClientOptions\GenericModelClientOptions;
 use Stagehand\Sessions\SessionStartResponse;
 use Stagehand\Sessions\StreamEvent;
 
@@ -28,6 +31,7 @@ use Stagehand\Sessions\StreamEvent;
  * @phpstan-import-type OptionsShape from \Stagehand\Sessions\SessionNavigateParams\Options
  * @phpstan-import-type BrowserShape from \Stagehand\Sessions\SessionStartParams\Browser
  * @phpstan-import-type BrowserbaseSessionCreateParamsShape from \Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams
+ * @phpstan-import-type ModelClientOptionsShape from \Stagehand\Sessions\SessionStartParams\ModelClientOptions
  * @phpstan-import-type InputShape from \Stagehand\Sessions\SessionActParams\Input
  * @phpstan-import-type OptionsShape from \Stagehand\Sessions\SessionActParams\Options as OptionsShape1
  * @phpstan-import-type RequestOpts from \Stagehand\RequestOptions
@@ -285,6 +289,7 @@ interface SessionsContract
      * @param string $browserbaseSessionID Body param: Existing Browserbase session ID to resume
      * @param float $domSettleTimeoutMs Body param: Timeout in ms to wait for DOM to settle
      * @param bool $experimental Body param
+     * @param ModelClientOptionsShape $modelClientOptions Body param: Optional provider-specific configuration for the session model (for example Bedrock region and credentials)
      * @param bool $selfHeal Body param: Enable self-healing for failed actions
      * @param string $systemPrompt Body param: Custom system prompt for AI operations
      * @param float $verbose Body param: Logging verbosity level (0=quiet, 1=normal, 2=debug)
@@ -302,6 +307,7 @@ interface SessionsContract
         ?string $browserbaseSessionID = null,
         ?float $domSettleTimeoutMs = null,
         ?bool $experimental = null,
+        BedrockAPIKeyModelClientOptions|array|BedrockAwsCredentialsModelClientOptions|GenericModelClientOptions|null $modelClientOptions = null,
         ?bool $selfHeal = null,
         ?string $systemPrompt = null,
         ?float $verbose = null,

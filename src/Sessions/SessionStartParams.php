@@ -11,6 +11,9 @@ use Stagehand\Core\Concerns\SdkParams;
 use Stagehand\Core\Contracts\BaseModel;
 use Stagehand\Sessions\SessionStartParams\Browser;
 use Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams;
+use Stagehand\Sessions\SessionStartParams\ModelClientOptions\BedrockAPIKeyModelClientOptions;
+use Stagehand\Sessions\SessionStartParams\ModelClientOptions\BedrockAwsCredentialsModelClientOptions;
+use Stagehand\Sessions\SessionStartParams\ModelClientOptions\GenericModelClientOptions;
 use Stagehand\Sessions\SessionStartParams\XStreamResponse;
 
 /**
@@ -18,8 +21,10 @@ use Stagehand\Sessions\SessionStartParams\XStreamResponse;
  *
  * @see Stagehand\Services\SessionsService::start()
  *
+ * @phpstan-import-type ModelClientOptionsVariants from \Stagehand\Sessions\SessionStartParams\ModelClientOptions
  * @phpstan-import-type BrowserShape from \Stagehand\Sessions\SessionStartParams\Browser
  * @phpstan-import-type BrowserbaseSessionCreateParamsShape from \Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams
+ * @phpstan-import-type ModelClientOptionsShape from \Stagehand\Sessions\SessionStartParams\ModelClientOptions
  *
  * @phpstan-type SessionStartParamsShape = array{
  *   modelName: string,
@@ -29,6 +34,7 @@ use Stagehand\Sessions\SessionStartParams\XStreamResponse;
  *   browserbaseSessionID?: string|null,
  *   domSettleTimeoutMs?: float|null,
  *   experimental?: bool|null,
+ *   modelClientOptions?: ModelClientOptionsShape|null,
  *   selfHeal?: bool|null,
  *   systemPrompt?: string|null,
  *   verbose?: float|null,
@@ -74,6 +80,14 @@ final class SessionStartParams implements BaseModel
 
     #[Optional]
     public ?bool $experimental;
+
+    /**
+     * Optional provider-specific configuration for the session model (for example Bedrock region and credentials).
+     *
+     * @var ModelClientOptionsVariants|null $modelClientOptions
+     */
+    #[Optional]
+    public BedrockAPIKeyModelClientOptions|BedrockAwsCredentialsModelClientOptions|GenericModelClientOptions|null $modelClientOptions;
 
     /**
      * Enable self-healing for failed actions.
@@ -133,6 +147,7 @@ final class SessionStartParams implements BaseModel
      *
      * @param Browser|BrowserShape|null $browser
      * @param BrowserbaseSessionCreateParams|BrowserbaseSessionCreateParamsShape|null $browserbaseSessionCreateParams
+     * @param ModelClientOptionsShape|null $modelClientOptions
      * @param XStreamResponse|value-of<XStreamResponse>|null $xStreamResponse
      */
     public static function with(
@@ -143,6 +158,7 @@ final class SessionStartParams implements BaseModel
         ?string $browserbaseSessionID = null,
         ?float $domSettleTimeoutMs = null,
         ?bool $experimental = null,
+        BedrockAPIKeyModelClientOptions|array|BedrockAwsCredentialsModelClientOptions|GenericModelClientOptions|null $modelClientOptions = null,
         ?bool $selfHeal = null,
         ?string $systemPrompt = null,
         ?float $verbose = null,
@@ -159,6 +175,7 @@ final class SessionStartParams implements BaseModel
         null !== $browserbaseSessionID && $self['browserbaseSessionID'] = $browserbaseSessionID;
         null !== $domSettleTimeoutMs && $self['domSettleTimeoutMs'] = $domSettleTimeoutMs;
         null !== $experimental && $self['experimental'] = $experimental;
+        null !== $modelClientOptions && $self['modelClientOptions'] = $modelClientOptions;
         null !== $selfHeal && $self['selfHeal'] = $selfHeal;
         null !== $systemPrompt && $self['systemPrompt'] = $systemPrompt;
         null !== $verbose && $self['verbose'] = $verbose;
@@ -239,6 +256,20 @@ final class SessionStartParams implements BaseModel
     {
         $self = clone $this;
         $self['experimental'] = $experimental;
+
+        return $self;
+    }
+
+    /**
+     * Optional provider-specific configuration for the session model (for example Bedrock region and credentials).
+     *
+     * @param ModelClientOptionsShape $modelClientOptions
+     */
+    public function withModelClientOptions(
+        BedrockAPIKeyModelClientOptions|array|BedrockAwsCredentialsModelClientOptions|GenericModelClientOptions $modelClientOptions,
+    ): self {
+        $self = clone $this;
+        $self['modelClientOptions'] = $modelClientOptions;
 
         return $self;
     }
