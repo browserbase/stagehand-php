@@ -2,41 +2,31 @@
 
 declare(strict_types=1);
 
-namespace Stagehand\Sessions;
+namespace Stagehand\Sessions\SessionStartParams\ModelClientOptions;
 
 use Stagehand\Core\Attributes\Optional;
-use Stagehand\Core\Attributes\Required;
 use Stagehand\Core\Concerns\SdkModel;
 use Stagehand\Core\Contracts\BaseModel;
-use Stagehand\Sessions\ModelConfig\Provider;
-use Stagehand\Sessions\ModelConfig\ProviderOptions\BedrockAPIKeyProviderOptions;
-use Stagehand\Sessions\ModelConfig\ProviderOptions\BedrockAwsCredentialsProviderOptions;
-use Stagehand\Sessions\ModelConfig\ProviderOptions\GoogleVertexProviderOptions;
+use Stagehand\Sessions\SessionStartParams\ModelClientOptions\GenericModelClientOptions\ProviderOptions\BedrockAPIKeyProviderOptions;
+use Stagehand\Sessions\SessionStartParams\ModelClientOptions\GenericModelClientOptions\ProviderOptions\BedrockAwsCredentialsProviderOptions;
+use Stagehand\Sessions\SessionStartParams\ModelClientOptions\GenericModelClientOptions\ProviderOptions\GoogleVertexProviderOptions;
 
 /**
- * @phpstan-import-type ProviderOptionsVariants from \Stagehand\Sessions\ModelConfig\ProviderOptions
- * @phpstan-import-type ProviderOptionsShape from \Stagehand\Sessions\ModelConfig\ProviderOptions
+ * @phpstan-import-type ProviderOptionsVariants from \Stagehand\Sessions\SessionStartParams\ModelClientOptions\GenericModelClientOptions\ProviderOptions
+ * @phpstan-import-type ProviderOptionsShape from \Stagehand\Sessions\SessionStartParams\ModelClientOptions\GenericModelClientOptions\ProviderOptions
  *
- * @phpstan-type ModelConfigShape = array{
- *   modelName: string,
+ * @phpstan-type GenericModelClientOptionsShape = array{
  *   apiKey?: string|null,
  *   baseURL?: string|null,
  *   headers?: array<string,string>|null,
- *   provider?: null|Provider|value-of<Provider>,
  *   providerOptions?: ProviderOptionsShape|null,
  *   skipAPIKeyFallback?: bool|null,
  * }
  */
-final class ModelConfig implements BaseModel
+final class GenericModelClientOptions implements BaseModel
 {
-    /** @use SdkModel<ModelConfigShape> */
+    /** @use SdkModel<GenericModelClientOptionsShape> */
     use SdkModel;
-
-    /**
-     * Model name string with provider prefix (e.g., 'openai/gpt-5-nano').
-     */
-    #[Required]
-    public string $modelName;
 
     /**
      * API key for the model provider.
@@ -59,14 +49,6 @@ final class ModelConfig implements BaseModel
     public ?array $headers;
 
     /**
-     * AI provider for the model (or provide a baseURL endpoint instead).
-     *
-     * @var value-of<Provider>|null $provider
-     */
-    #[Optional(enum: Provider::class)]
-    public ?string $provider;
-
-    /**
      * Provider-specific options passed through to the AI SDK provider constructor. For Bedrock: { region, accessKeyId, secretAccessKey, sessionToken }. For Vertex: { project, location, googleAuthOptions }.
      *
      * @var ProviderOptionsVariants|null $providerOptions
@@ -80,20 +62,6 @@ final class ModelConfig implements BaseModel
     #[Optional('skipApiKeyFallback')]
     public ?bool $skipAPIKeyFallback;
 
-    /**
-     * `new ModelConfig()` is missing required properties by the API.
-     *
-     * To enforce required parameters use
-     * ```
-     * ModelConfig::with(modelName: ...)
-     * ```
-     *
-     * Otherwise ensure the following setters are called
-     *
-     * ```
-     * (new ModelConfig)->withModelName(...)
-     * ```
-     */
     public function __construct()
     {
         $this->initialize();
@@ -105,39 +73,22 @@ final class ModelConfig implements BaseModel
      * You must use named parameters to construct any parameters with a default value.
      *
      * @param array<string,string>|null $headers
-     * @param Provider|value-of<Provider>|null $provider
      * @param ProviderOptionsShape|null $providerOptions
      */
     public static function with(
-        string $modelName,
         ?string $apiKey = null,
         ?string $baseURL = null,
         ?array $headers = null,
-        Provider|string|null $provider = null,
         BedrockAPIKeyProviderOptions|array|BedrockAwsCredentialsProviderOptions|GoogleVertexProviderOptions|null $providerOptions = null,
         ?bool $skipAPIKeyFallback = null,
     ): self {
         $self = new self;
 
-        $self['modelName'] = $modelName;
-
         null !== $apiKey && $self['apiKey'] = $apiKey;
         null !== $baseURL && $self['baseURL'] = $baseURL;
         null !== $headers && $self['headers'] = $headers;
-        null !== $provider && $self['provider'] = $provider;
         null !== $providerOptions && $self['providerOptions'] = $providerOptions;
         null !== $skipAPIKeyFallback && $self['skipAPIKeyFallback'] = $skipAPIKeyFallback;
-
-        return $self;
-    }
-
-    /**
-     * Model name string with provider prefix (e.g., 'openai/gpt-5-nano').
-     */
-    public function withModelName(string $modelName): self
-    {
-        $self = clone $this;
-        $self['modelName'] = $modelName;
 
         return $self;
     }
@@ -173,19 +124,6 @@ final class ModelConfig implements BaseModel
     {
         $self = clone $this;
         $self['headers'] = $headers;
-
-        return $self;
-    }
-
-    /**
-     * AI provider for the model (or provide a baseURL endpoint instead).
-     *
-     * @param Provider|value-of<Provider> $provider
-     */
-    public function withProvider(Provider|string $provider): self
-    {
-        $self = clone $this;
-        $self['provider'] = $provider;
 
         return $self;
     }
