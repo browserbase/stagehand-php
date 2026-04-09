@@ -12,7 +12,7 @@ use Stagehand\Sessions\StreamEvent\Data\StreamEventSystemDataOutput;
 use Stagehand\Sessions\StreamEvent\Type;
 
 /**
- * Server-Sent Event emitted during streaming responses. Events are sent as `data: <JSON>\n\n`. Key order: data (with status first), type, id.
+ * Server-Sent Event emitted during streaming responses. Events are sent as `event: <status>\ndata: <JSON>\n\n`, where the JSON payload has the shape `{ data, type, id }`.
  *
  * @phpstan-import-type DataVariants from \Stagehand\Sessions\StreamEvent\Data
  * @phpstan-import-type DataShape from \Stagehand\Sessions\StreamEvent\Data
