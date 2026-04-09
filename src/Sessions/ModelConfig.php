@@ -9,22 +9,14 @@ use Stagehand\Core\Attributes\Required;
 use Stagehand\Core\Concerns\SdkModel;
 use Stagehand\Core\Contracts\BaseModel;
 use Stagehand\Sessions\ModelConfig\Provider;
-use Stagehand\Sessions\ModelConfig\ProviderOptions\BedrockAPIKeyProviderOptions;
-use Stagehand\Sessions\ModelConfig\ProviderOptions\BedrockAwsCredentialsProviderOptions;
-use Stagehand\Sessions\ModelConfig\ProviderOptions\GoogleVertexProviderOptions;
 
 /**
- * @phpstan-import-type ProviderOptionsVariants from \Stagehand\Sessions\ModelConfig\ProviderOptions
- * @phpstan-import-type ProviderOptionsShape from \Stagehand\Sessions\ModelConfig\ProviderOptions
- *
  * @phpstan-type ModelConfigShape = array{
  *   modelName: string,
  *   apiKey?: string|null,
  *   baseURL?: string|null,
  *   headers?: array<string,string>|null,
  *   provider?: null|Provider|value-of<Provider>,
- *   providerOptions?: ProviderOptionsShape|null,
- *   skipAPIKeyFallback?: bool|null,
  * }
  */
 final class ModelConfig implements BaseModel
@@ -51,7 +43,7 @@ final class ModelConfig implements BaseModel
     public ?string $baseURL;
 
     /**
-     * Custom headers for the model provider.
+     * Custom headers sent with every request to the model provider.
      *
      * @var array<string,string>|null $headers
      */
@@ -65,20 +57,6 @@ final class ModelConfig implements BaseModel
      */
     #[Optional(enum: Provider::class)]
     public ?string $provider;
-
-    /**
-     * Provider-specific options passed through to the AI SDK provider constructor. For Bedrock: { region, accessKeyId, secretAccessKey, sessionToken }. For Vertex: { project, location, googleAuthOptions }.
-     *
-     * @var ProviderOptionsVariants|null $providerOptions
-     */
-    #[Optional]
-    public BedrockAPIKeyProviderOptions|BedrockAwsCredentialsProviderOptions|GoogleVertexProviderOptions|null $providerOptions;
-
-    /**
-     * When true, hosted sessions will not copy x-model-api-key into model.apiKey. Use this when auth is carried through providerOptions instead of an API key.
-     */
-    #[Optional('skipApiKeyFallback')]
-    public ?bool $skipAPIKeyFallback;
 
     /**
      * `new ModelConfig()` is missing required properties by the API.
@@ -106,7 +84,6 @@ final class ModelConfig implements BaseModel
      *
      * @param array<string,string>|null $headers
      * @param Provider|value-of<Provider>|null $provider
-     * @param ProviderOptionsShape|null $providerOptions
      */
     public static function with(
         string $modelName,
@@ -114,8 +91,6 @@ final class ModelConfig implements BaseModel
         ?string $baseURL = null,
         ?array $headers = null,
         Provider|string|null $provider = null,
-        BedrockAPIKeyProviderOptions|array|BedrockAwsCredentialsProviderOptions|GoogleVertexProviderOptions|null $providerOptions = null,
-        ?bool $skipAPIKeyFallback = null,
     ): self {
         $self = new self;
 
@@ -125,8 +100,6 @@ final class ModelConfig implements BaseModel
         null !== $baseURL && $self['baseURL'] = $baseURL;
         null !== $headers && $self['headers'] = $headers;
         null !== $provider && $self['provider'] = $provider;
-        null !== $providerOptions && $self['providerOptions'] = $providerOptions;
-        null !== $skipAPIKeyFallback && $self['skipAPIKeyFallback'] = $skipAPIKeyFallback;
 
         return $self;
     }
@@ -165,7 +138,7 @@ final class ModelConfig implements BaseModel
     }
 
     /**
-     * Custom headers for the model provider.
+     * Custom headers sent with every request to the model provider.
      *
      * @param array<string,string> $headers
      */
@@ -186,31 +159,6 @@ final class ModelConfig implements BaseModel
     {
         $self = clone $this;
         $self['provider'] = $provider;
-
-        return $self;
-    }
-
-    /**
-     * Provider-specific options passed through to the AI SDK provider constructor. For Bedrock: { region, accessKeyId, secretAccessKey, sessionToken }. For Vertex: { project, location, googleAuthOptions }.
-     *
-     * @param ProviderOptionsShape $providerOptions
-     */
-    public function withProviderOptions(
-        BedrockAPIKeyProviderOptions|array|BedrockAwsCredentialsProviderOptions|GoogleVertexProviderOptions $providerOptions,
-    ): self {
-        $self = clone $this;
-        $self['providerOptions'] = $providerOptions;
-
-        return $self;
-    }
-
-    /**
-     * When true, hosted sessions will not copy x-model-api-key into model.apiKey. Use this when auth is carried through providerOptions instead of an API key.
-     */
-    public function withSkipAPIKeyFallback(bool $skipAPIKeyFallback): self
-    {
-        $self = clone $this;
-        $self['skipAPIKeyFallback'] = $skipAPIKeyFallback;
 
         return $self;
     }
