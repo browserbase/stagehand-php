@@ -11,7 +11,11 @@ use Stagehand\Core\Contracts\BaseModel;
 
 /**
  * @phpstan-type ExecuteOptionsShape = array{
- *   instruction: string, highlightCursor?: bool|null, maxSteps?: float|null
+ *   instruction: string,
+ *   highlightCursor?: bool|null,
+ *   maxSteps?: float|null,
+ *   toolTimeout?: float|null,
+ *   useSearch?: bool|null,
  * }
  */
 final class ExecuteOptions implements BaseModel
@@ -36,6 +40,18 @@ final class ExecuteOptions implements BaseModel
      */
     #[Optional]
     public ?float $maxSteps;
+
+    /**
+     * Timeout in milliseconds for each agent tool call.
+     */
+    #[Optional]
+    public ?float $toolTimeout;
+
+    /**
+     * Whether to enable the web search tool powered by Browserbase Search API.
+     */
+    #[Optional]
+    public ?bool $useSearch;
 
     /**
      * `new ExecuteOptions()` is missing required properties by the API.
@@ -64,7 +80,9 @@ final class ExecuteOptions implements BaseModel
     public static function with(
         string $instruction,
         ?bool $highlightCursor = null,
-        ?float $maxSteps = null
+        ?float $maxSteps = null,
+        ?float $toolTimeout = null,
+        ?bool $useSearch = null,
     ): self {
         $self = new self;
 
@@ -72,6 +90,8 @@ final class ExecuteOptions implements BaseModel
 
         null !== $highlightCursor && $self['highlightCursor'] = $highlightCursor;
         null !== $maxSteps && $self['maxSteps'] = $maxSteps;
+        null !== $toolTimeout && $self['toolTimeout'] = $toolTimeout;
+        null !== $useSearch && $self['useSearch'] = $useSearch;
 
         return $self;
     }
@@ -105,6 +125,28 @@ final class ExecuteOptions implements BaseModel
     {
         $self = clone $this;
         $self['maxSteps'] = $maxSteps;
+
+        return $self;
+    }
+
+    /**
+     * Timeout in milliseconds for each agent tool call.
+     */
+    public function withToolTimeout(float $toolTimeout): self
+    {
+        $self = clone $this;
+        $self['toolTimeout'] = $toolTimeout;
+
+        return $self;
+    }
+
+    /**
+     * Whether to enable the web search tool powered by Browserbase Search API.
+     */
+    public function withUseSearch(bool $useSearch): self
+    {
+        $self = clone $this;
+        $self['useSearch'] = $useSearch;
 
         return $self;
     }

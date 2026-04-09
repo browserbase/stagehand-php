@@ -40,7 +40,6 @@ use Stagehand\SSEStream;
  * @phpstan-import-type OptionsShape from \Stagehand\Sessions\SessionNavigateParams\Options
  * @phpstan-import-type BrowserShape from \Stagehand\Sessions\SessionStartParams\Browser
  * @phpstan-import-type BrowserbaseSessionCreateParamsShape from \Stagehand\Sessions\SessionStartParams\BrowserbaseSessionCreateParams
- * @phpstan-import-type ModelClientOptionsShape from \Stagehand\Sessions\SessionStartParams\ModelClientOptions
  * @phpstan-import-type InputShape from \Stagehand\Sessions\SessionActParams\Input
  * @phpstan-import-type OptionsShape from \Stagehand\Sessions\SessionActParams\Options as OptionsShape1
  * @phpstan-import-type RequestOpts from \Stagehand\RequestOptions
@@ -589,7 +588,6 @@ final class SessionsRawService implements SessionsRawContract
      *   browserbaseSessionID?: string,
      *   domSettleTimeoutMs?: float,
      *   experimental?: bool,
-     *   modelClientOptions?: ModelClientOptionsShape,
      *   selfHeal?: bool,
      *   systemPrompt?: string,
      *   verbose?: float,
