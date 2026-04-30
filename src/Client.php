@@ -47,9 +47,9 @@ class Client extends BaseClient
             'MODEL_API_KEY'
         ));
 
-        $baseUrl ??= Util::getenv(
-            'STAGEHAND_BASE_URL'
-        ) ?: 'https://api.stagehand.browserbase.com';
+        $baseUrl ??= Util::getenv('STAGEHAND_API_URL')
+            ?: Util::getenv('STAGEHAND_BASE_URL')
+                ?: 'https://api.stagehand.browserbase.com';
 
         $options = RequestOptions::parse(
             RequestOptions::with(
