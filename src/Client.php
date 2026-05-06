@@ -18,6 +18,10 @@ class Client extends BaseClient
 {
     public string $browserbaseAPIKey;
 
+    /**
+     * Deprecated. Browserbase API keys are now project-scoped, so this value is no longer required.
+     * Accepted for backwards compatibility; it is ignored.
+     */
     public string $browserbaseProjectID;
 
     public string $modelAPIKey;
@@ -40,9 +44,7 @@ class Client extends BaseClient
         $this->browserbaseAPIKey = (string) ($browserbaseAPIKey ?? Util::getenv(
             'BROWSERBASE_API_KEY'
         ));
-        $this->browserbaseProjectID = (string) ($browserbaseProjectID ?? Util::getenv(
-            'BROWSERBASE_PROJECT_ID'
-        ));
+        $this->browserbaseProjectID = (string) $browserbaseProjectID;
         $this->modelAPIKey = (string) ($modelAPIKey ?? Util::getenv(
             'MODEL_API_KEY'
         ));
@@ -85,7 +87,6 @@ class Client extends BaseClient
     {
         return [
             ...$this->bbAPIKeyAuth(),
-            ...$this->bbProjectIDAuth(),
             ...$this->llmModelAPIKeyAuth(),
         ];
     }
@@ -101,9 +102,7 @@ class Client extends BaseClient
     /** @return array<string,string> */
     protected function bbProjectIDAuth(): array
     {
-        return $this->browserbaseProjectID ? [
-            'x-bb-project-id' => $this->browserbaseProjectID,
-        ] : [];
+        return [];
     }
 
     /** @return array<string,string> */

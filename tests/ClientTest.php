@@ -92,6 +92,24 @@ class ClientTest extends TestCase
         }
     }
 
+    public function testProjectIDHeaderIsOmitted(): void
+    {
+        $transporter = $this->mockTransport();
+
+        $client = new \Stagehand\Client(
+            baseUrl: 'http://localhost',
+            browserbaseAPIKey: 'My Browserbase API Key',
+            browserbaseProjectID: 'My Browserbase Project ID',
+            modelAPIKey: 'My Model API Key',
+            requestOptions: ['transporter' => $transporter],
+        );
+
+        $client->sessions->start(modelName: 'openai/gpt-5.4-mini');
+
+        $this->assertNotFalse($requested = $transporter->getRequests()[0] ?? false);
+        $this->assertSame('', $requested->getHeaderLine('x-bb-project-id'));
+    }
+
     private function mockTransport(): Client
     {
         $transporter = new Client;
