@@ -14,13 +14,24 @@ use Stagehand\Sessions\ModelConfig;
  * @phpstan-import-type ModelShape from \Stagehand\Sessions\SessionExtractParams\Options\Model
  *
  * @phpstan-type OptionsShape = array{
- *   model?: ModelShape|null, selector?: string|null, timeout?: float|null
+ *   ignoreSelectors?: list<string>|null,
+ *   model?: ModelShape|null,
+ *   selector?: string|null,
+ *   timeout?: float|null,
  * }
  */
 final class Options implements BaseModel
 {
     /** @use SdkModel<OptionsShape> */
     use SdkModel;
+
+    /**
+     * Selectors for elements and subtrees that should be excluded from extraction.
+     *
+     * @var list<string>|null $ignoreSelectors
+     */
+    #[Optional(list: 'string')]
+    public ?array $ignoreSelectors;
 
     /**
      * Model configuration object or model name string (e.g., 'openai/gpt-5-nano').
@@ -52,18 +63,34 @@ final class Options implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
+     * @param list<string>|null $ignoreSelectors
      * @param ModelShape|null $model
      */
     public static function with(
+        ?array $ignoreSelectors = null,
         string|ModelConfig|array|null $model = null,
         ?string $selector = null,
         ?float $timeout = null,
     ): self {
         $self = new self;
 
+        null !== $ignoreSelectors && $self['ignoreSelectors'] = $ignoreSelectors;
         null !== $model && $self['model'] = $model;
         null !== $selector && $self['selector'] = $selector;
         null !== $timeout && $self['timeout'] = $timeout;
+
+        return $self;
+    }
+
+    /**
+     * Selectors for elements and subtrees that should be excluded from extraction.
+     *
+     * @param list<string> $ignoreSelectors
+     */
+    public function withIgnoreSelectors(array $ignoreSelectors): self
+    {
+        $self = clone $this;
+        $self['ignoreSelectors'] = $ignoreSelectors;
 
         return $self;
     }
