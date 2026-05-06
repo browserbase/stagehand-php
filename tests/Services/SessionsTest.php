@@ -159,6 +159,7 @@ final class SessionsTest extends TestCase
                 'maxSteps' => 20,
                 'toolTimeout' => 30000,
                 'useSearch' => true,
+                'variables' => ['foo' => 'string'],
             ],
             frameID: 'frameId',
             shouldCache: true,
