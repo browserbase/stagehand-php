@@ -1,5 +1,28 @@
 # Changelog
 
+## 3.20.0 (2026-05-06)
+
+Full Changelog: [v3.19.3...v3.20.0](https://github.com/browserbase/stagehand-php/compare/v3.19.3...v3.20.0)
+
+### Features
+
+* [feat]: add `ignoreSelectors` to `extract()` ([4d548b6](https://github.com/browserbase/stagehand-php/commit/4d548b6b71174972b12884840185357a30e30d8d))
+* [STG-1798] feat: support Browserbase verified sessions ([52c4636](https://github.com/browserbase/stagehand-php/commit/52c4636560e5dd556db9c061a3bb9c48ffa20e76))
+* [STG-1808] Deprecate Browserbase project ID ([5ce5e23](https://github.com/browserbase/stagehand-php/commit/5ce5e2347bb5700816910f4973b1d74487e2b92e))
+* Bedrock auth passthrough ([40cb10e](https://github.com/browserbase/stagehand-php/commit/40cb10eb39c7f53b9c3fd668018c1b3569650e5c))
+* remove experimental requirement on agent variables ([#2079](https://github.com/browserbase/stagehand-php/issues/2079)) ([7271c1e](https://github.com/browserbase/stagehand-php/commit/7271c1e3ee6a8c3e8fe425a77196c051c7dfa086))
+* Revert "[STG-1573] Add providerOptions for extensible model auth ([#1822](https://github.com/browserbase/stagehand-php/issues/1822))" ([1f99ac3](https://github.com/browserbase/stagehand-php/commit/1f99ac3957867970c6eaa968e8daaa83ae855b7b))
+* support setting headers via env ([d6235c1](https://github.com/browserbase/stagehand-php/commit/d6235c1aa657237410c3bab8483b6a5f8ebf3eba))
+
+
+### Bug Fixes
+
+* **client:** properly generate file params ([4a6d856](https://github.com/browserbase/stagehand-php/commit/4a6d85692b4bec4a518cf201999e99b2a7129263))
+* **client:** resolve serialization issue with unions and enums ([17f1ece](https://github.com/browserbase/stagehand-php/commit/17f1ece3f13369ac5555a6df9af1bb4fdce3d307))
+* populate enum-typed properties with enum instances ([0ba1b6f](https://github.com/browserbase/stagehand-php/commit/0ba1b6fda9bd4709e3665a3bd7659373b87b64d3))
+* **release:** use canonical GitHub URL in Packagist publish script ([eb093f7](https://github.com/browserbase/stagehand-php/commit/eb093f76a7e0999169970d79341fafa2871a6eee))
+* revert enum parsing change that lead to unconditional failure ([ca1dd7a](https://github.com/browserbase/stagehand-php/commit/ca1dd7a1dd2d8cf0b0b2d50f9cf317c98652cc89))
+
 ## 3.19.3 (2026-04-03)
 
 Full Changelog: [v3.18.0...v3.19.3](https://github.com/browserbase/stagehand-php/compare/v3.18.0...v3.19.3)
