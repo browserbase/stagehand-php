@@ -18,9 +18,9 @@ class Client extends BaseClient
 {
     public string $browserbaseAPIKey;
 
-    public string $browserbaseProjectID;
-
     public string $modelAPIKey;
+
+    public string $browserbaseProjectID;
 
     /**
      * @api
@@ -32,19 +32,19 @@ class Client extends BaseClient
      */
     public function __construct(
         ?string $browserbaseAPIKey = null,
-        ?string $browserbaseProjectID = null,
         ?string $modelAPIKey = null,
+        ?string $browserbaseProjectID = null,
         ?string $baseUrl = null,
         RequestOptions|array|null $requestOptions = null,
     ) {
         $this->browserbaseAPIKey = (string) ($browserbaseAPIKey ?? Util::getenv(
             'BROWSERBASE_API_KEY'
         ));
-        $this->browserbaseProjectID = (string) ($browserbaseProjectID ?? Util::getenv(
-            'BROWSERBASE_PROJECT_ID'
-        ));
         $this->modelAPIKey = (string) ($modelAPIKey ?? Util::getenv(
             'MODEL_API_KEY'
+        ));
+        $this->browserbaseProjectID = (string) ($browserbaseProjectID ?? Util::getenv(
+            'BROWSERBASE_PROJECT_ID'
         ));
 
         $baseUrl ??= Util::getenv(

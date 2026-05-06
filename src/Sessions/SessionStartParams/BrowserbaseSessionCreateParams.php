@@ -41,6 +41,11 @@ final class BrowserbaseSessionCreateParams implements BaseModel
     #[Optional]
     public ?bool $keepAlive;
 
+    /**
+     * @deprecated
+     *
+     * Deprecated. Browserbase API keys are now project-scoped, so this field is no longer required.
+     */
     #[Optional('projectId')]
     public ?string $projectID;
 
@@ -126,6 +131,9 @@ final class BrowserbaseSessionCreateParams implements BaseModel
         return $self;
     }
 
+    /**
+     * Deprecated. Browserbase API keys are now project-scoped, so this field is no longer required.
+     */
     public function withProjectID(string $projectID): self
     {
         $self = clone $this;
