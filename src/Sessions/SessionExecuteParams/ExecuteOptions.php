@@ -8,14 +8,19 @@ use Stagehand\Core\Attributes\Optional;
 use Stagehand\Core\Attributes\Required;
 use Stagehand\Core\Concerns\SdkModel;
 use Stagehand\Core\Contracts\BaseModel;
+use Stagehand\Sessions\SessionExecuteParams\ExecuteOptions\Variable;
 
 /**
+ * @phpstan-import-type VariableVariants from \Stagehand\Sessions\SessionExecuteParams\ExecuteOptions\Variable
+ * @phpstan-import-type VariableShape from \Stagehand\Sessions\SessionExecuteParams\ExecuteOptions\Variable
+ *
  * @phpstan-type ExecuteOptionsShape = array{
  *   instruction: string,
  *   highlightCursor?: bool|null,
  *   maxSteps?: float|null,
  *   toolTimeout?: float|null,
  *   useSearch?: bool|null,
+ *   variables?: array<string,VariableShape>|null,
  * }
  */
 final class ExecuteOptions implements BaseModel
@@ -54,6 +59,14 @@ final class ExecuteOptions implements BaseModel
     public ?bool $useSearch;
 
     /**
+     * Variables available to the agent via %variableName% syntax in supported tools.
+     *
+     * @var array<string,VariableVariants>|null $variables
+     */
+    #[Optional(map: Variable::class)]
+    public ?array $variables;
+
+    /**
      * `new ExecuteOptions()` is missing required properties by the API.
      *
      * To enforce required parameters use
@@ -76,6 +89,8 @@ final class ExecuteOptions implements BaseModel
      * Construct an instance from the required parameters.
      *
      * You must use named parameters to construct any parameters with a default value.
+     *
+     * @param array<string,VariableShape>|null $variables
      */
     public static function with(
         string $instruction,
@@ -83,6 +98,7 @@ final class ExecuteOptions implements BaseModel
         ?float $maxSteps = null,
         ?float $toolTimeout = null,
         ?bool $useSearch = null,
+        ?array $variables = null,
     ): self {
         $self = new self;
 
@@ -92,6 +108,7 @@ final class ExecuteOptions implements BaseModel
         null !== $maxSteps && $self['maxSteps'] = $maxSteps;
         null !== $toolTimeout && $self['toolTimeout'] = $toolTimeout;
         null !== $useSearch && $self['useSearch'] = $useSearch;
+        null !== $variables && $self['variables'] = $variables;
 
         return $self;
     }
@@ -147,6 +164,19 @@ final class ExecuteOptions implements BaseModel
     {
         $self = clone $this;
         $self['useSearch'] = $useSearch;
+
+        return $self;
+    }
+
+    /**
+     * Variables available to the agent via %variableName% syntax in supported tools.
+     *
+     * @param array<string,VariableShape> $variables
+     */
+    public function withVariables(array $variables): self
+    {
+        $self = clone $this;
+        $self['variables'] = $variables;
 
         return $self;
     }
