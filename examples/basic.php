@@ -18,14 +18,12 @@ if (file_exists(__DIR__ . '/../.env')) {
 // Initialize the Stagehand client with API keys from environment variables
 $client = new Client(
     browserbaseAPIKey: getenv('BROWSERBASE_API_KEY') ?: throw new Exception('BROWSERBASE_API_KEY environment variable is required'),
-    browserbaseProjectID: getenv('BROWSERBASE_PROJECT_ID') ?: throw new Exception('BROWSERBASE_PROJECT_ID environment variable is required'),
     modelAPIKey: getenv('MODEL_API_KEY') ?: throw new Exception('MODEL_API_KEY environment variable is required'),
 );
 
 // Start a new session
 $startResponse = $client->sessions->start(
     browserbaseAPIKey: getenv('BROWSERBASE_API_KEY'),
-    browserbaseProjectID: getenv('BROWSERBASE_PROJECT_ID'),
     model: 'openai/gpt-4o',
 );
 echo "Session started: {$startResponse->data->sessionID}\n";

@@ -32,7 +32,6 @@ composer require browserbase/stagehand
 
 # Set environment variables
 export BROWSERBASE_API_KEY="your-bb-api-key"
-export BROWSERBASE_PROJECT_ID="your-bb-project-uuid"
 export MODEL_API_KEY="sk-proj-your-llm-api-key"
 
 # Run the example
@@ -45,7 +44,6 @@ use Stagehand\Client;
 
 $client = new Client(
     browserbaseAPIKey: getenv('BROWSERBASE_API_KEY'),
-    browserbaseProjectID: getenv('BROWSERBASE_PROJECT_ID'),
     modelAPIKey: getenv('MODEL_API_KEY'),
 );
 $startResponse = $client->sessions->start(model: 'openai/gpt-5-nano');
