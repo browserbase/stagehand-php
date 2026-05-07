@@ -17,6 +17,7 @@ use Stagehand\Sessions\SessionObserveParams\Options\Variable;
  * @phpstan-import-type VariableShape from \Stagehand\Sessions\SessionObserveParams\Options\Variable
  *
  * @phpstan-type OptionsShape = array{
+ *   ignoreSelectors?: list<string>|null,
  *   model?: ModelShape|null,
  *   selector?: string|null,
  *   timeout?: float|null,
@@ -27,6 +28,14 @@ final class Options implements BaseModel
 {
     /** @use SdkModel<OptionsShape> */
     use SdkModel;
+
+    /**
+     * Selectors for elements and subtrees that should be excluded from observation.
+     *
+     * @var list<string>|null $ignoreSelectors
+     */
+    #[Optional(list: 'string')]
+    public ?array $ignoreSelectors;
 
     /**
      * Model configuration object or model name string (e.g., 'openai/gpt-5-nano').
@@ -66,10 +75,12 @@ final class Options implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
+     * @param list<string>|null $ignoreSelectors
      * @param ModelShape|null $model
      * @param array<string,VariableShape>|null $variables
      */
     public static function with(
+        ?array $ignoreSelectors = null,
         string|ModelConfig|array|null $model = null,
         ?string $selector = null,
         ?float $timeout = null,
@@ -77,10 +88,24 @@ final class Options implements BaseModel
     ): self {
         $self = new self;
 
+        null !== $ignoreSelectors && $self['ignoreSelectors'] = $ignoreSelectors;
         null !== $model && $self['model'] = $model;
         null !== $selector && $self['selector'] = $selector;
         null !== $timeout && $self['timeout'] = $timeout;
         null !== $variables && $self['variables'] = $variables;
+
+        return $self;
+    }
+
+    /**
+     * Selectors for elements and subtrees that should be excluded from observation.
+     *
+     * @param list<string> $ignoreSelectors
+     */
+    public function withIgnoreSelectors(array $ignoreSelectors): self
+    {
+        $self = clone $this;
+        $self['ignoreSelectors'] = $ignoreSelectors;
 
         return $self;
     }
