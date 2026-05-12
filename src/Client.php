@@ -7,6 +7,7 @@ namespace Stagehand;
 use Http\Discovery\Psr17FactoryDiscovery;
 use Http\Discovery\Psr18ClientDiscovery;
 use Stagehand\Core\BaseClient;
+use Stagehand\Core\Implementation\StreamingHttpClient;
 use Stagehand\Core\Util;
 use Stagehand\Services\SessionsService;
 
@@ -60,6 +61,11 @@ class Client extends BaseClient
             ),
             $requestOptions,
         );
+
+        if (is_null($options->streamingTransporter)) {
+            assert(!is_null($options->transporter));
+            $options->streamingTransporter = new StreamingHttpClient($options->transporter);
+        }
 
         /** @var array<string, string|null> $headers */
         $headers = [

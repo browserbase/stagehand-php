@@ -78,6 +78,15 @@ foreach ($stream as $response) {
 }
 ```
 
+Streaming requests are dispatched through a separate `streamingTransporter` PSR-18 HTTP client. When unset, the SDK uses the configured `transporter`.
+Some PSR-18 HTTP clients will by default try to read the entire response, so you may need to specify a streaming capable implementation.
+
+```php
+$client = new Stagehand\Client(
+    requestOptions: Stagehand\RequestOptions::with(streamingTransporter: $myStreamingClient),
+);
+```
+
 ### Handling errors
 
 When the library is unable to connect to the API, or if the API returns a non-success status code (i.e., 4xx or 5xx response), a subclass of `Stagehand\Core\Exceptions\APIException` will be thrown:
