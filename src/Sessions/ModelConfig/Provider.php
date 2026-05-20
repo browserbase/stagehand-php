@@ -18,4 +18,6 @@ enum Provider: string
     case MICROSOFT = 'microsoft';
 
     case BEDROCK = 'bedrock';
+
+    case VERTEX = 'vertex';
 }

@@ -8,14 +8,20 @@ use Stagehand\Core\Attributes\Optional;
 use Stagehand\Core\Attributes\Required;
 use Stagehand\Core\Concerns\SdkModel;
 use Stagehand\Core\Contracts\BaseModel;
+use Stagehand\Sessions\ModelConfig\GoogleAuthOptions;
 use Stagehand\Sessions\ModelConfig\Provider;
 
 /**
+ * @phpstan-import-type GoogleAuthOptionsShape from \Stagehand\Sessions\ModelConfig\GoogleAuthOptions
+ *
  * @phpstan-type ModelConfigShape = array{
  *   modelName: string,
  *   apiKey?: string|null,
  *   baseURL?: string|null,
+ *   googleAuthOptions?: null|GoogleAuthOptions|GoogleAuthOptionsShape,
  *   headers?: array<string,string>|null,
+ *   location?: string|null,
+ *   project?: string|null,
  *   provider?: null|Provider|value-of<Provider>,
  * }
  */
@@ -43,12 +49,30 @@ final class ModelConfig implements BaseModel
     public ?string $baseURL;
 
     /**
+     * google-auth-library options used to authenticate Vertex AI models.
+     */
+    #[Optional]
+    public ?GoogleAuthOptions $googleAuthOptions;
+
+    /**
      * Custom headers sent with every request to the model provider.
      *
      * @var array<string,string>|null $headers
      */
     #[Optional(map: 'string')]
     public ?array $headers;
+
+    /**
+     * Google Cloud location for Vertex AI models.
+     */
+    #[Optional]
+    public ?string $location;
+
+    /**
+     * Google Cloud project ID for Vertex AI models.
+     */
+    #[Optional]
+    public ?string $project;
 
     /**
      * AI provider for the model (or provide a baseURL endpoint instead).
@@ -82,6 +106,7 @@ final class ModelConfig implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
+     * @param GoogleAuthOptions|GoogleAuthOptionsShape|null $googleAuthOptions
      * @param array<string,string>|null $headers
      * @param Provider|value-of<Provider>|null $provider
      */
@@ -89,7 +114,10 @@ final class ModelConfig implements BaseModel
         string $modelName,
         ?string $apiKey = null,
         ?string $baseURL = null,
+        GoogleAuthOptions|array|null $googleAuthOptions = null,
         ?array $headers = null,
+        ?string $location = null,
+        ?string $project = null,
         Provider|string|null $provider = null,
     ): self {
         $self = new self;
@@ -98,7 +126,10 @@ final class ModelConfig implements BaseModel
 
         null !== $apiKey && $self['apiKey'] = $apiKey;
         null !== $baseURL && $self['baseURL'] = $baseURL;
+        null !== $googleAuthOptions && $self['googleAuthOptions'] = $googleAuthOptions;
         null !== $headers && $self['headers'] = $headers;
+        null !== $location && $self['location'] = $location;
+        null !== $project && $self['project'] = $project;
         null !== $provider && $self['provider'] = $provider;
 
         return $self;
@@ -138,6 +169,20 @@ final class ModelConfig implements BaseModel
     }
 
     /**
+     * google-auth-library options used to authenticate Vertex AI models.
+     *
+     * @param GoogleAuthOptions|GoogleAuthOptionsShape $googleAuthOptions
+     */
+    public function withGoogleAuthOptions(
+        GoogleAuthOptions|array $googleAuthOptions
+    ): self {
+        $self = clone $this;
+        $self['googleAuthOptions'] = $googleAuthOptions;
+
+        return $self;
+    }
+
+    /**
      * Custom headers sent with every request to the model provider.
      *
      * @param array<string,string> $headers
@@ -146,6 +191,28 @@ final class ModelConfig implements BaseModel
     {
         $self = clone $this;
         $self['headers'] = $headers;
+
+        return $self;
+    }
+
+    /**
+     * Google Cloud location for Vertex AI models.
+     */
+    public function withLocation(string $location): self
+    {
+        $self = clone $this;
+        $self['location'] = $location;
+
+        return $self;
+    }
+
+    /**
+     * Google Cloud project ID for Vertex AI models.
+     */
+    public function withProject(string $project): self
+    {
+        $self = clone $this;
+        $self['project'] = $project;
 
         return $self;
     }
