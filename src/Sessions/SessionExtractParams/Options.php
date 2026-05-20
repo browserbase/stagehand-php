@@ -16,6 +16,7 @@ use Stagehand\Sessions\ModelConfig;
  * @phpstan-type OptionsShape = array{
  *   ignoreSelectors?: list<string>|null,
  *   model?: ModelShape|null,
+ *   screenshot?: bool|null,
  *   selector?: string|null,
  *   timeout?: float|null,
  * }
@@ -40,6 +41,12 @@ final class Options implements BaseModel
      */
     #[Optional]
     public string|ModelConfig|null $model;
+
+    /**
+     * When true, include a screenshot of the current viewport in the extraction LLM call. Defaults to false.
+     */
+    #[Optional]
+    public ?bool $screenshot;
 
     /**
      * CSS selector to scope extraction to a specific element.
@@ -69,6 +76,7 @@ final class Options implements BaseModel
     public static function with(
         ?array $ignoreSelectors = null,
         string|ModelConfig|array|null $model = null,
+        ?bool $screenshot = null,
         ?string $selector = null,
         ?float $timeout = null,
     ): self {
@@ -76,6 +84,7 @@ final class Options implements BaseModel
 
         null !== $ignoreSelectors && $self['ignoreSelectors'] = $ignoreSelectors;
         null !== $model && $self['model'] = $model;
+        null !== $screenshot && $self['screenshot'] = $screenshot;
         null !== $selector && $self['selector'] = $selector;
         null !== $timeout && $self['timeout'] = $timeout;
 
@@ -104,6 +113,17 @@ final class Options implements BaseModel
     {
         $self = clone $this;
         $self['model'] = $model;
+
+        return $self;
+    }
+
+    /**
+     * When true, include a screenshot of the current viewport in the extraction LLM call. Defaults to false.
+     */
+    public function withScreenshot(bool $screenshot): self
+    {
+        $self = clone $this;
+        $self['screenshot'] = $screenshot;
 
         return $self;
     }
