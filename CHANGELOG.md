@@ -1,5 +1,21 @@
 # Changelog
 
+## 3.21.0 (2026-05-27)
+
+Full Changelog: [v3.20.0...v3.21.0](https://github.com/browserbase/stagehand-php/compare/v3.20.0...v3.21.0)
+
+### Features
+
+* [feat]: add `ignoreSelectors` to `observe()` ([872590f](https://github.com/browserbase/stagehand-php/commit/872590fe228fd2f0ce70d7cbefdddbf3c22fe147))
+* [STG-1756] forward Vertex model config ([f72af00](https://github.com/browserbase/stagehand-php/commit/f72af008c8601ebf6266e699800c9fbb6fb1cd9d))
+* Add `screenshot` option to Extract ([944e2e3](https://github.com/browserbase/stagehand-php/commit/944e2e3a0a55618c9742a0defa3e06f9778719a4))
+* STG-1756 add Vertex auth params to Stagehand spec ([786c9fd](https://github.com/browserbase/stagehand-php/commit/786c9fda24ea073f57bde1ec3cc6e332c7d50300))
+
+
+### Bug Fixes
+
+* guzzle requires special handling to enable streaming ([9d1c43a](https://github.com/browserbase/stagehand-php/commit/9d1c43a1435dc0ba0f66094ffaf4c3e6d463b17a))
+
 ## 3.20.0 (2026-05-06)
 
 Full Changelog: [v3.19.3...v3.20.0](https://github.com/browserbase/stagehand-php/compare/v3.19.3...v3.20.0)
