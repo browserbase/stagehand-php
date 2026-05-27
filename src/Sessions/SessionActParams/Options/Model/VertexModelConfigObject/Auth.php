@@ -2,38 +2,48 @@
 
 declare(strict_types=1);
 
-namespace Stagehand\Sessions\ModelConfig;
+namespace Stagehand\Sessions\SessionActParams\Options\Model\VertexModelConfigObject;
 
 use Stagehand\Core\Attributes\Optional;
+use Stagehand\Core\Attributes\Required;
 use Stagehand\Core\Concerns\SdkModel;
 use Stagehand\Core\Contracts\BaseModel;
-use Stagehand\Sessions\ModelConfig\GoogleAuthOptions\Credentials;
-use Stagehand\Sessions\ModelConfig\GoogleAuthOptions\Scopes;
+use Stagehand\Sessions\SessionActParams\Options\Model\VertexModelConfigObject\Auth\Credentials;
+use Stagehand\Sessions\SessionActParams\Options\Model\VertexModelConfigObject\Auth\Scopes;
 
 /**
- * google-auth-library options used to authenticate Vertex AI models.
+ * Vertex provider authentication configuration.
  *
- * @phpstan-import-type ScopesVariants from \Stagehand\Sessions\ModelConfig\GoogleAuthOptions\Scopes
- * @phpstan-import-type CredentialsShape from \Stagehand\Sessions\ModelConfig\GoogleAuthOptions\Credentials
- * @phpstan-import-type ScopesShape from \Stagehand\Sessions\ModelConfig\GoogleAuthOptions\Scopes
+ * @phpstan-import-type ScopesVariants from \Stagehand\Sessions\SessionActParams\Options\Model\VertexModelConfigObject\Auth\Scopes
+ * @phpstan-import-type CredentialsShape from \Stagehand\Sessions\SessionActParams\Options\Model\VertexModelConfigObject\Auth\Credentials
+ * @phpstan-import-type ScopesShape from \Stagehand\Sessions\SessionActParams\Options\Model\VertexModelConfigObject\Auth\Scopes
  *
- * @phpstan-type GoogleAuthOptionsShape = array{
- *   credentials?: null|Credentials|CredentialsShape,
+ * @phpstan-type AuthShape = array{
+ *   credentials: Credentials|CredentialsShape,
+ *   type: 'googleServiceAccount',
  *   projectID?: string|null,
  *   scopes?: ScopesShape|null,
  *   universeDomain?: string|null,
  * }
  */
-final class GoogleAuthOptions implements BaseModel
+final class Auth implements BaseModel
 {
-    /** @use SdkModel<GoogleAuthOptionsShape> */
+    /** @use SdkModel<AuthShape> */
     use SdkModel;
+
+    /**
+     * Use inline Google Cloud service account credentials for provider authentication.
+     *
+     * @var 'googleServiceAccount' $type
+     */
+    #[Required]
+    public string $type = 'googleServiceAccount';
 
     /**
      * Google Cloud service account credentials.
      */
-    #[Optional]
-    public ?Credentials $credentials;
+    #[Required]
+    public Credentials $credentials;
 
     /**
      * Google Cloud project ID used by google-auth-library.
@@ -55,6 +65,20 @@ final class GoogleAuthOptions implements BaseModel
     #[Optional]
     public ?string $universeDomain;
 
+    /**
+     * `new Auth()` is missing required properties by the API.
+     *
+     * To enforce required parameters use
+     * ```
+     * Auth::with(credentials: ...)
+     * ```
+     *
+     * Otherwise ensure the following setters are called
+     *
+     * ```
+     * (new Auth)->withCredentials(...)
+     * ```
+     */
     public function __construct()
     {
         $this->initialize();
@@ -65,18 +89,19 @@ final class GoogleAuthOptions implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
-     * @param Credentials|CredentialsShape|null $credentials
+     * @param Credentials|CredentialsShape $credentials
      * @param ScopesShape|null $scopes
      */
     public static function with(
-        Credentials|array|null $credentials = null,
+        Credentials|array $credentials,
         ?string $projectID = null,
         string|array|null $scopes = null,
         ?string $universeDomain = null,
     ): self {
         $self = new self;
 
-        null !== $credentials && $self['credentials'] = $credentials;
+        $self['credentials'] = $credentials;
+
         null !== $projectID && $self['projectID'] = $projectID;
         null !== $scopes && $self['scopes'] = $scopes;
         null !== $universeDomain && $self['universeDomain'] = $universeDomain;
@@ -93,6 +118,19 @@ final class GoogleAuthOptions implements BaseModel
     {
         $self = clone $this;
         $self['credentials'] = $credentials;
+
+        return $self;
+    }
+
+    /**
+     * Use inline Google Cloud service account credentials for provider authentication.
+     *
+     * @param 'googleServiceAccount' $type
+     */
+    public function withType(string $type): self
+    {
+        $self = clone $this;
+        $self['type'] = $type;
 
         return $self;
     }

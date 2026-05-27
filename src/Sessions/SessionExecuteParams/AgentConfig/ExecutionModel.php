@@ -7,15 +7,17 @@ namespace Stagehand\Sessions\SessionExecuteParams\AgentConfig;
 use Stagehand\Core\Concerns\SdkUnion;
 use Stagehand\Core\Conversion\Contracts\Converter;
 use Stagehand\Core\Conversion\Contracts\ConverterSource;
-use Stagehand\Sessions\ModelConfig;
+use Stagehand\Sessions\SessionExecuteParams\AgentConfig\ExecutionModel\GenericModelConfigObject;
+use Stagehand\Sessions\SessionExecuteParams\AgentConfig\ExecutionModel\VertexModelConfigObject;
 
 /**
  * Model configuration object or model name string (e.g., 'openai/gpt-5-nano') for tool execution (observe/act calls within agent tools). If not specified, inherits from the main model configuration.
  *
- * @phpstan-import-type ModelConfigShape from \Stagehand\Sessions\ModelConfig
+ * @phpstan-import-type VertexModelConfigObjectShape from \Stagehand\Sessions\SessionExecuteParams\AgentConfig\ExecutionModel\VertexModelConfigObject
+ * @phpstan-import-type GenericModelConfigObjectShape from \Stagehand\Sessions\SessionExecuteParams\AgentConfig\ExecutionModel\GenericModelConfigObject
  *
- * @phpstan-type ExecutionModelVariants = string|ModelConfig
- * @phpstan-type ExecutionModelShape = ExecutionModelVariants|ModelConfigShape
+ * @phpstan-type ExecutionModelVariants = string|VertexModelConfigObject|GenericModelConfigObject
+ * @phpstan-type ExecutionModelShape = ExecutionModelVariants|VertexModelConfigObjectShape|GenericModelConfigObjectShape
  */
 final class ExecutionModel implements ConverterSource
 {
@@ -26,6 +28,8 @@ final class ExecutionModel implements ConverterSource
      */
     public static function variants(): array
     {
-        return [ModelConfig::class, 'string'];
+        return [
+            VertexModelConfigObject::class, GenericModelConfigObject::class, 'string',
+        ];
     }
 }

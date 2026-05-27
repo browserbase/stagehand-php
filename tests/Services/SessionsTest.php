@@ -69,10 +69,7 @@ final class SessionsTest extends TestCase
             frameID: 'frameId',
             options: [
                 'model' => [
-                    'modelName' => 'openai/gpt-5.4-mini',
-                    'apiKey' => 'sk-some-openai-api-key',
-                    'baseURL' => 'https://api.openai.com/v1',
-                    'googleAuthOptions' => [
+                    'auth' => [
                         'credentials' => [
                             'clientEmail' => 'client_email',
                             'privateKey' => 'private_key',
@@ -86,14 +83,24 @@ final class SessionsTest extends TestCase
                             'type' => 'service_account',
                             'universeDomain' => 'universe_domain',
                         ],
+                        'type' => 'googleServiceAccount',
                         'projectID' => 'projectId',
                         'scopes' => 'string',
                         'universeDomain' => 'universeDomain',
                     ],
+                    'modelName' => 'openai/gpt-5.4-mini',
+                    'provider' => 'vertex',
+                    'providerOptions' => [
+                        'vertex' => [
+                            'location' => 'us-central1',
+                            'project' => 'my-gcp-project',
+                            'baseURL' => 'https://example.com',
+                            'headers' => ['foo' => 'string'],
+                        ],
+                    ],
+                    'apiKey' => 'sk-some-openai-api-key',
+                    'baseURL' => 'https://api.openai.com/v1',
                     'headers' => ['foo' => 'string'],
-                    'location' => 'us-central1',
-                    'project' => 'my-gcp-project',
-                    'provider' => 'openai',
                 ],
                 'timeout' => 30000,
                 'variables' => [
@@ -156,10 +163,7 @@ final class SessionsTest extends TestCase
             agentConfig: [
                 'cua' => true,
                 'executionModel' => [
-                    'modelName' => 'openai/gpt-5.4-mini',
-                    'apiKey' => 'sk-some-openai-api-key',
-                    'baseURL' => 'https://api.openai.com/v1',
-                    'googleAuthOptions' => [
+                    'auth' => [
                         'credentials' => [
                             'clientEmail' => 'client_email',
                             'privateKey' => 'private_key',
@@ -173,21 +177,28 @@ final class SessionsTest extends TestCase
                             'type' => 'service_account',
                             'universeDomain' => 'universe_domain',
                         ],
+                        'type' => 'googleServiceAccount',
                         'projectID' => 'projectId',
                         'scopes' => 'string',
                         'universeDomain' => 'universeDomain',
                     ],
+                    'modelName' => 'openai/gpt-5.4-mini',
+                    'provider' => 'vertex',
+                    'providerOptions' => [
+                        'vertex' => [
+                            'location' => 'us-central1',
+                            'project' => 'my-gcp-project',
+                            'baseURL' => 'https://example.com',
+                            'headers' => ['foo' => 'string'],
+                        ],
+                    ],
+                    'apiKey' => 'sk-some-openai-api-key',
+                    'baseURL' => 'https://api.openai.com/v1',
                     'headers' => ['foo' => 'string'],
-                    'location' => 'us-central1',
-                    'project' => 'my-gcp-project',
-                    'provider' => 'openai',
                 ],
                 'mode' => 'cua',
                 'model' => [
-                    'modelName' => 'openai/gpt-5.4-mini',
-                    'apiKey' => 'sk-some-openai-api-key',
-                    'baseURL' => 'https://api.openai.com/v1',
-                    'googleAuthOptions' => [
+                    'auth' => [
                         'credentials' => [
                             'clientEmail' => 'client_email',
                             'privateKey' => 'private_key',
@@ -201,14 +212,24 @@ final class SessionsTest extends TestCase
                             'type' => 'service_account',
                             'universeDomain' => 'universe_domain',
                         ],
+                        'type' => 'googleServiceAccount',
                         'projectID' => 'projectId',
                         'scopes' => 'string',
                         'universeDomain' => 'universeDomain',
                     ],
+                    'modelName' => 'openai/gpt-5.4-mini',
+                    'provider' => 'vertex',
+                    'providerOptions' => [
+                        'vertex' => [
+                            'location' => 'us-central1',
+                            'project' => 'my-gcp-project',
+                            'baseURL' => 'https://example.com',
+                            'headers' => ['foo' => 'string'],
+                        ],
+                    ],
+                    'apiKey' => 'sk-some-openai-api-key',
+                    'baseURL' => 'https://api.openai.com/v1',
                     'headers' => ['foo' => 'string'],
-                    'location' => 'us-central1',
-                    'project' => 'my-gcp-project',
-                    'provider' => 'openai',
                 ],
                 'provider' => 'openai',
                 'systemPrompt' => 'systemPrompt',

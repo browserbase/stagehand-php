@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stagehand\Sessions\ModelConfig\GoogleAuthOptions\Credentials;
+namespace Stagehand\Sessions\SessionActParams\Options\Model\VertexModelConfigObject\Auth\Credentials;
 
 enum Type: string
 {

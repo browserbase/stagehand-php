@@ -7,15 +7,17 @@ namespace Stagehand\Sessions\SessionExtractParams\Options;
 use Stagehand\Core\Concerns\SdkUnion;
 use Stagehand\Core\Conversion\Contracts\Converter;
 use Stagehand\Core\Conversion\Contracts\ConverterSource;
-use Stagehand\Sessions\ModelConfig;
+use Stagehand\Sessions\SessionExtractParams\Options\Model\GenericModelConfigObject;
+use Stagehand\Sessions\SessionExtractParams\Options\Model\VertexModelConfigObject;
 
 /**
  * Model configuration object or model name string (e.g., 'openai/gpt-5-nano').
  *
- * @phpstan-import-type ModelConfigShape from \Stagehand\Sessions\ModelConfig
+ * @phpstan-import-type VertexModelConfigObjectShape from \Stagehand\Sessions\SessionExtractParams\Options\Model\VertexModelConfigObject
+ * @phpstan-import-type GenericModelConfigObjectShape from \Stagehand\Sessions\SessionExtractParams\Options\Model\GenericModelConfigObject
  *
- * @phpstan-type ModelVariants = string|ModelConfig
- * @phpstan-type ModelShape = ModelVariants|ModelConfigShape
+ * @phpstan-type ModelVariants = string|VertexModelConfigObject|GenericModelConfigObject
+ * @phpstan-type ModelShape = ModelVariants|VertexModelConfigObjectShape|GenericModelConfigObjectShape
  */
 final class Model implements ConverterSource
 {
@@ -26,6 +28,8 @@ final class Model implements ConverterSource
      */
     public static function variants(): array
     {
-        return [ModelConfig::class, 'string'];
+        return [
+            VertexModelConfigObject::class, GenericModelConfigObject::class, 'string',
+        ];
     }
 }

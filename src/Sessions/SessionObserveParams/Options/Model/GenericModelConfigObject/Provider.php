@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stagehand\Sessions\ModelConfig;
+namespace Stagehand\Sessions\SessionObserveParams\Options\Model\GenericModelConfigObject;
 
 /**
  * AI provider for the model (or provide a baseURL endpoint instead).
@@ -18,6 +18,4 @@ enum Provider: string
     case MICROSOFT = 'microsoft';
 
     case BEDROCK = 'bedrock';
-
-    case VERTEX = 'vertex';
 }
