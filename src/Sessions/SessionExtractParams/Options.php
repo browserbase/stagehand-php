@@ -7,7 +7,8 @@ namespace Stagehand\Sessions\SessionExtractParams;
 use Stagehand\Core\Attributes\Optional;
 use Stagehand\Core\Concerns\SdkModel;
 use Stagehand\Core\Contracts\BaseModel;
-use Stagehand\Sessions\ModelConfig;
+use Stagehand\Sessions\SessionExtractParams\Options\Model\GenericModelConfigObject;
+use Stagehand\Sessions\SessionExtractParams\Options\Model\VertexModelConfigObject;
 
 /**
  * @phpstan-import-type ModelVariants from \Stagehand\Sessions\SessionExtractParams\Options\Model
@@ -40,7 +41,7 @@ final class Options implements BaseModel
      * @var ModelVariants|null $model
      */
     #[Optional]
-    public string|ModelConfig|null $model;
+    public string|VertexModelConfigObject|GenericModelConfigObject|null $model;
 
     /**
      * When true, include a screenshot of the current viewport in the extraction LLM call. Defaults to false.
@@ -75,7 +76,7 @@ final class Options implements BaseModel
      */
     public static function with(
         ?array $ignoreSelectors = null,
-        string|ModelConfig|array|null $model = null,
+        string|VertexModelConfigObject|array|GenericModelConfigObject|null $model = null,
         ?bool $screenshot = null,
         ?string $selector = null,
         ?float $timeout = null,
@@ -109,8 +110,9 @@ final class Options implements BaseModel
      *
      * @param ModelShape $model
      */
-    public function withModel(string|ModelConfig|array $model): self
-    {
+    public function withModel(
+        string|VertexModelConfigObject|array|GenericModelConfigObject $model
+    ): self {
         $self = clone $this;
         $self['model'] = $model;
 

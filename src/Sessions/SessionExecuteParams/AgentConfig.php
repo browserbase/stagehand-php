@@ -7,7 +7,8 @@ namespace Stagehand\Sessions\SessionExecuteParams;
 use Stagehand\Core\Attributes\Optional;
 use Stagehand\Core\Concerns\SdkModel;
 use Stagehand\Core\Contracts\BaseModel;
-use Stagehand\Sessions\ModelConfig;
+use Stagehand\Sessions\SessionExecuteParams\AgentConfig\ExecutionModel\GenericModelConfigObject;
+use Stagehand\Sessions\SessionExecuteParams\AgentConfig\ExecutionModel\VertexModelConfigObject;
 use Stagehand\Sessions\SessionExecuteParams\AgentConfig\Mode;
 use Stagehand\Sessions\SessionExecuteParams\AgentConfig\Provider;
 
@@ -43,7 +44,7 @@ final class AgentConfig implements BaseModel
      * @var ExecutionModelVariants|null $executionModel
      */
     #[Optional]
-    public string|ModelConfig|null $executionModel;
+    public string|VertexModelConfigObject|GenericModelConfigObject|null $executionModel;
 
     /**
      * Tool mode for the agent (dom, hybrid, cua). If set, overrides cua.
@@ -59,7 +60,7 @@ final class AgentConfig implements BaseModel
      * @var ModelVariants|null $model
      */
     #[Optional]
-    public string|ModelConfig|null $model;
+    public string|\Stagehand\Sessions\SessionExecuteParams\AgentConfig\Model\VertexModelConfigObject|AgentConfig\Model\GenericModelConfigObject|null $model;
 
     /**
      * AI provider for the agent (legacy, use model: openai/gpt-5-nano instead).
@@ -92,9 +93,9 @@ final class AgentConfig implements BaseModel
      */
     public static function with(
         ?bool $cua = null,
-        string|ModelConfig|array|null $executionModel = null,
+        string|VertexModelConfigObject|array|GenericModelConfigObject|null $executionModel = null,
         Mode|string|null $mode = null,
-        string|ModelConfig|array|null $model = null,
+        string|AgentConfig\Model\VertexModelConfigObject|array|AgentConfig\Model\GenericModelConfigObject|null $model = null,
         Provider|string|null $provider = null,
         ?string $systemPrompt = null,
     ): self {
@@ -127,7 +128,7 @@ final class AgentConfig implements BaseModel
      * @param ExecutionModelShape $executionModel
      */
     public function withExecutionModel(
-        string|ModelConfig|array $executionModel
+        string|VertexModelConfigObject|array|GenericModelConfigObject $executionModel,
     ): self {
         $self = clone $this;
         $self['executionModel'] = $executionModel;
@@ -153,8 +154,9 @@ final class AgentConfig implements BaseModel
      *
      * @param ModelShape $model
      */
-    public function withModel(string|ModelConfig|array $model): self
-    {
+    public function withModel(
+        string|AgentConfig\Model\VertexModelConfigObject|array|AgentConfig\Model\GenericModelConfigObject $model,
+    ): self {
         $self = clone $this;
         $self['model'] = $model;
 

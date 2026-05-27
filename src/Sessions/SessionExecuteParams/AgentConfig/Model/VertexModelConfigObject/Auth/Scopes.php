@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Stagehand\Sessions\ModelConfig\GoogleAuthOptions;
+namespace Stagehand\Sessions\SessionExecuteParams\AgentConfig\Model\VertexModelConfigObject\Auth;
 
 use Stagehand\Core\Concerns\SdkUnion;
 use Stagehand\Core\Conversion\Contracts\Converter;

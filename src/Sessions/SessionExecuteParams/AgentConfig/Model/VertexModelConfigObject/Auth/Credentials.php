@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Stagehand\Sessions\ModelConfig\GoogleAuthOptions;
+namespace Stagehand\Sessions\SessionExecuteParams\AgentConfig\Model\VertexModelConfigObject\Auth;
 
 use Stagehand\Core\Attributes\Optional;
 use Stagehand\Core\Attributes\Required;
 use Stagehand\Core\Concerns\SdkModel;
 use Stagehand\Core\Contracts\BaseModel;
-use Stagehand\Sessions\ModelConfig\GoogleAuthOptions\Credentials\Type;
+use Stagehand\Sessions\SessionExecuteParams\AgentConfig\Model\VertexModelConfigObject\Auth\Credentials\Type;
 
 /**
  * Google Cloud service account credentials.
