@@ -80,7 +80,7 @@ The REST API documentation can be found on [docs.stagehand.dev](https://docs.sta
 <!-- x-release-please-start-version -->
 
 ```
-composer require "browserbase/stagehand 3.20.0"
+composer require "browserbase/stagehand 3.21.0"
 ```
 
 <!-- x-release-please-end -->
@@ -256,6 +256,15 @@ $stream = $client->sessions->actStream(
 foreach ($stream as $response) {
   var_dump($response);
 }
+```
+
+Streaming requests are dispatched through a separate `streamingTransporter` PSR-18 HTTP client. When unset, the SDK uses the configured `transporter`.
+Some PSR-18 HTTP clients will by default try to read the entire response, so you may need to specify a streaming capable implementation.
+
+```php
+$client = new Stagehand\Client(
+    requestOptions: Stagehand\RequestOptions::with(streamingTransporter: $myStreamingClient),
+);
 ```
 
 ### Handling errors

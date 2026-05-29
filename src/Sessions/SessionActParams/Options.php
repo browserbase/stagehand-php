@@ -7,7 +7,8 @@ namespace Stagehand\Sessions\SessionActParams;
 use Stagehand\Core\Attributes\Optional;
 use Stagehand\Core\Concerns\SdkModel;
 use Stagehand\Core\Contracts\BaseModel;
-use Stagehand\Sessions\ModelConfig;
+use Stagehand\Sessions\SessionActParams\Options\Model\GenericModelConfigObject;
+use Stagehand\Sessions\SessionActParams\Options\Model\VertexModelConfigObject;
 use Stagehand\Sessions\SessionActParams\Options\Variable;
 
 /**
@@ -33,7 +34,7 @@ final class Options implements BaseModel
      * @var ModelVariants|null $model
      */
     #[Optional]
-    public string|ModelConfig|null $model;
+    public string|VertexModelConfigObject|GenericModelConfigObject|null $model;
 
     /**
      * Timeout in ms for the action.
@@ -63,7 +64,7 @@ final class Options implements BaseModel
      * @param array<string,VariableShape>|null $variables
      */
     public static function with(
-        string|ModelConfig|array|null $model = null,
+        string|VertexModelConfigObject|array|GenericModelConfigObject|null $model = null,
         ?float $timeout = null,
         ?array $variables = null,
     ): self {
@@ -81,8 +82,9 @@ final class Options implements BaseModel
      *
      * @param ModelShape $model
      */
-    public function withModel(string|ModelConfig|array $model): self
-    {
+    public function withModel(
+        string|VertexModelConfigObject|array|GenericModelConfigObject $model
+    ): self {
         $self = clone $this;
         $self['model'] = $model;
 

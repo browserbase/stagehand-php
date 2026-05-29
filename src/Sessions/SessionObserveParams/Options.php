@@ -7,7 +7,8 @@ namespace Stagehand\Sessions\SessionObserveParams;
 use Stagehand\Core\Attributes\Optional;
 use Stagehand\Core\Concerns\SdkModel;
 use Stagehand\Core\Contracts\BaseModel;
-use Stagehand\Sessions\ModelConfig;
+use Stagehand\Sessions\SessionObserveParams\Options\Model\GenericModelConfigObject;
+use Stagehand\Sessions\SessionObserveParams\Options\Model\VertexModelConfigObject;
 use Stagehand\Sessions\SessionObserveParams\Options\Variable;
 
 /**
@@ -17,6 +18,7 @@ use Stagehand\Sessions\SessionObserveParams\Options\Variable;
  * @phpstan-import-type VariableShape from \Stagehand\Sessions\SessionObserveParams\Options\Variable
  *
  * @phpstan-type OptionsShape = array{
+ *   ignoreSelectors?: list<string>|null,
  *   model?: ModelShape|null,
  *   selector?: string|null,
  *   timeout?: float|null,
@@ -29,12 +31,20 @@ final class Options implements BaseModel
     use SdkModel;
 
     /**
+     * Selectors for elements and subtrees that should be excluded from observation.
+     *
+     * @var list<string>|null $ignoreSelectors
+     */
+    #[Optional(list: 'string')]
+    public ?array $ignoreSelectors;
+
+    /**
      * Model configuration object or model name string (e.g., 'openai/gpt-5-nano').
      *
      * @var ModelVariants|null $model
      */
     #[Optional]
-    public string|ModelConfig|null $model;
+    public string|VertexModelConfigObject|GenericModelConfigObject|null $model;
 
     /**
      * CSS selector to scope observation to a specific element.
@@ -66,17 +76,20 @@ final class Options implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
+     * @param list<string>|null $ignoreSelectors
      * @param ModelShape|null $model
      * @param array<string,VariableShape>|null $variables
      */
     public static function with(
-        string|ModelConfig|array|null $model = null,
+        ?array $ignoreSelectors = null,
+        string|VertexModelConfigObject|array|GenericModelConfigObject|null $model = null,
         ?string $selector = null,
         ?float $timeout = null,
         ?array $variables = null,
     ): self {
         $self = new self;
 
+        null !== $ignoreSelectors && $self['ignoreSelectors'] = $ignoreSelectors;
         null !== $model && $self['model'] = $model;
         null !== $selector && $self['selector'] = $selector;
         null !== $timeout && $self['timeout'] = $timeout;
@@ -86,12 +99,26 @@ final class Options implements BaseModel
     }
 
     /**
+     * Selectors for elements and subtrees that should be excluded from observation.
+     *
+     * @param list<string> $ignoreSelectors
+     */
+    public function withIgnoreSelectors(array $ignoreSelectors): self
+    {
+        $self = clone $this;
+        $self['ignoreSelectors'] = $ignoreSelectors;
+
+        return $self;
+    }
+
+    /**
      * Model configuration object or model name string (e.g., 'openai/gpt-5-nano').
      *
      * @param ModelShape $model
      */
-    public function withModel(string|ModelConfig|array $model): self
-    {
+    public function withModel(
+        string|VertexModelConfigObject|array|GenericModelConfigObject $model
+    ): self {
         $self = clone $this;
         $self['model'] = $model;
 
