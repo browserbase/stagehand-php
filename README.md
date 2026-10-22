@@ -1,3 +1,9 @@
+> **⚠️ No longer maintained**
+>
+> The Stagehand PHP SDK is no longer maintained and will not receive updates, bug fixes, or security patches.
+>
+> For current Stagehand options, see the [Stagehand documentation](https://docs.stagehand.dev).
+
 <!-- x-stagehand-custom-start -->
 <div id="toc" align="center" style="margin-bottom: 0;">
   <ul style="list-style: none; margin: 0; padding: 0;">
