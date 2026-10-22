@@ -8,6 +8,7 @@ use Stagehand\Core\Attributes\Optional;
 use Stagehand\Core\Attributes\Required;
 use Stagehand\Core\Concerns\SdkModel;
 use Stagehand\Core\Contracts\BaseModel;
+use Stagehand\Sessions\SessionActParams\Options\Model\GenericModelConfigObject\OpenAIEndpointFormat;
 use Stagehand\Sessions\SessionActParams\Options\Model\GenericModelConfigObject\Provider;
 
 /**
@@ -16,6 +17,7 @@ use Stagehand\Sessions\SessionActParams\Options\Model\GenericModelConfigObject\P
  *   apiKey?: string|null,
  *   baseURL?: string|null,
  *   headers?: array<string,string>|null,
+ *   openaiEndpointFormat?: null|OpenAIEndpointFormat|value-of<OpenAIEndpointFormat>,
  *   provider?: null|Provider|value-of<Provider>,
  * }
  */
@@ -51,6 +53,14 @@ final class GenericModelConfigObject implements BaseModel
     public ?array $headers;
 
     /**
+     * Wire format used by an OpenAI-compatible endpoint. Defaults to the Responses API; use chat for Chat Completions-only endpoints.
+     *
+     * @var value-of<OpenAIEndpointFormat>|null $openaiEndpointFormat
+     */
+    #[Optional(enum: OpenAIEndpointFormat::class)]
+    public ?string $openaiEndpointFormat;
+
+    /**
      * AI provider for the model (or provide a baseURL endpoint instead).
      *
      * @var value-of<Provider>|null $provider
@@ -83,6 +93,7 @@ final class GenericModelConfigObject implements BaseModel
      * You must use named parameters to construct any parameters with a default value.
      *
      * @param array<string,string>|null $headers
+     * @param OpenAIEndpointFormat|value-of<OpenAIEndpointFormat>|null $openaiEndpointFormat
      * @param Provider|value-of<Provider>|null $provider
      */
     public static function with(
@@ -90,6 +101,7 @@ final class GenericModelConfigObject implements BaseModel
         ?string $apiKey = null,
         ?string $baseURL = null,
         ?array $headers = null,
+        OpenAIEndpointFormat|string|null $openaiEndpointFormat = null,
         Provider|string|null $provider = null,
     ): self {
         $self = new self;
@@ -99,6 +111,7 @@ final class GenericModelConfigObject implements BaseModel
         null !== $apiKey && $self['apiKey'] = $apiKey;
         null !== $baseURL && $self['baseURL'] = $baseURL;
         null !== $headers && $self['headers'] = $headers;
+        null !== $openaiEndpointFormat && $self['openaiEndpointFormat'] = $openaiEndpointFormat;
         null !== $provider && $self['provider'] = $provider;
 
         return $self;
@@ -146,6 +159,20 @@ final class GenericModelConfigObject implements BaseModel
     {
         $self = clone $this;
         $self['headers'] = $headers;
+
+        return $self;
+    }
+
+    /**
+     * Wire format used by an OpenAI-compatible endpoint. Defaults to the Responses API; use chat for Chat Completions-only endpoints.
+     *
+     * @param OpenAIEndpointFormat|value-of<OpenAIEndpointFormat> $openaiEndpointFormat
+     */
+    public function withOpenAIEndpointFormat(
+        OpenAIEndpointFormat|string $openaiEndpointFormat
+    ): self {
+        $self = clone $this;
+        $self['openaiEndpointFormat'] = $openaiEndpointFormat;
 
         return $self;
     }

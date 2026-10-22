@@ -16,6 +16,7 @@ use Stagehand\Core\Conversion\Contracts\ConverterSource;
 use Stagehand\Core\Exceptions\APIConnectionException;
 use Stagehand\Core\Exceptions\APIStatusException;
 use Stagehand\Core\Implementation\RawResponse;
+use Stagehand\Core\Implementation\StreamingHttpClient;
 use Stagehand\RequestOptions;
 
 /**
@@ -249,7 +250,13 @@ abstract class BaseClient
         $err = null;
 
         try {
-            $rsp = $transporter->sendRequest($req);
+            if ($transporter instanceof StreamingHttpClient) {
+                $rsp = $transporter->sendRequest($req, timeout: $opts->timeout);
+            } elseif (is_a($transporter, '\GuzzleHttp\Client')) {
+                $rsp = $transporter->send($req, ['timeout' => $opts->timeout]);
+            } else {
+                $rsp = $transporter->sendRequest($req);
+            }
         } catch (ClientExceptionInterface $e) {
             $err = $e;
         }

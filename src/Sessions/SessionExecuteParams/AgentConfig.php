@@ -7,6 +7,8 @@ namespace Stagehand\Sessions\SessionExecuteParams;
 use Stagehand\Core\Attributes\Optional;
 use Stagehand\Core\Concerns\SdkModel;
 use Stagehand\Core\Contracts\BaseModel;
+use Stagehand\Sessions\SessionExecuteParams\AgentConfig\ExecutionModel\AzureAPIKeyModelConfigObject;
+use Stagehand\Sessions\SessionExecuteParams\AgentConfig\ExecutionModel\AzureEntraModelConfigObject;
 use Stagehand\Sessions\SessionExecuteParams\AgentConfig\ExecutionModel\GenericModelConfigObject;
 use Stagehand\Sessions\SessionExecuteParams\AgentConfig\ExecutionModel\VertexModelConfigObject;
 use Stagehand\Sessions\SessionExecuteParams\AgentConfig\Mode;
@@ -44,7 +46,7 @@ final class AgentConfig implements BaseModel
      * @var ExecutionModelVariants|null $executionModel
      */
     #[Optional]
-    public string|VertexModelConfigObject|GenericModelConfigObject|null $executionModel;
+    public string|VertexModelConfigObject|AzureEntraModelConfigObject|AzureAPIKeyModelConfigObject|GenericModelConfigObject|null $executionModel;
 
     /**
      * Tool mode for the agent (dom, hybrid, cua). If set, overrides cua.
@@ -60,7 +62,7 @@ final class AgentConfig implements BaseModel
      * @var ModelVariants|null $model
      */
     #[Optional]
-    public string|\Stagehand\Sessions\SessionExecuteParams\AgentConfig\Model\VertexModelConfigObject|AgentConfig\Model\GenericModelConfigObject|null $model;
+    public string|\Stagehand\Sessions\SessionExecuteParams\AgentConfig\Model\VertexModelConfigObject|\Stagehand\Sessions\SessionExecuteParams\AgentConfig\Model\AzureEntraModelConfigObject|\Stagehand\Sessions\SessionExecuteParams\AgentConfig\Model\AzureAPIKeyModelConfigObject|AgentConfig\Model\GenericModelConfigObject|null $model;
 
     /**
      * AI provider for the agent (legacy, use model: openai/gpt-5-nano instead).
@@ -93,9 +95,9 @@ final class AgentConfig implements BaseModel
      */
     public static function with(
         ?bool $cua = null,
-        string|VertexModelConfigObject|array|GenericModelConfigObject|null $executionModel = null,
+        string|VertexModelConfigObject|array|AzureEntraModelConfigObject|AzureAPIKeyModelConfigObject|GenericModelConfigObject|null $executionModel = null,
         Mode|string|null $mode = null,
-        string|AgentConfig\Model\VertexModelConfigObject|array|AgentConfig\Model\GenericModelConfigObject|null $model = null,
+        string|AgentConfig\Model\VertexModelConfigObject|array|AgentConfig\Model\AzureEntraModelConfigObject|AgentConfig\Model\AzureAPIKeyModelConfigObject|AgentConfig\Model\GenericModelConfigObject|null $model = null,
         Provider|string|null $provider = null,
         ?string $systemPrompt = null,
     ): self {
@@ -128,7 +130,7 @@ final class AgentConfig implements BaseModel
      * @param ExecutionModelShape $executionModel
      */
     public function withExecutionModel(
-        string|VertexModelConfigObject|array|GenericModelConfigObject $executionModel,
+        string|VertexModelConfigObject|array|AzureEntraModelConfigObject|AzureAPIKeyModelConfigObject|GenericModelConfigObject $executionModel,
     ): self {
         $self = clone $this;
         $self['executionModel'] = $executionModel;
@@ -155,7 +157,7 @@ final class AgentConfig implements BaseModel
      * @param ModelShape $model
      */
     public function withModel(
-        string|AgentConfig\Model\VertexModelConfigObject|array|AgentConfig\Model\GenericModelConfigObject $model,
+        string|AgentConfig\Model\VertexModelConfigObject|array|AgentConfig\Model\AzureEntraModelConfigObject|AgentConfig\Model\AzureAPIKeyModelConfigObject|AgentConfig\Model\GenericModelConfigObject $model,
     ): self {
         $self = clone $this;
         $self['model'] = $model;

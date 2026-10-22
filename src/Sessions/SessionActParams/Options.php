@@ -7,6 +7,8 @@ namespace Stagehand\Sessions\SessionActParams;
 use Stagehand\Core\Attributes\Optional;
 use Stagehand\Core\Concerns\SdkModel;
 use Stagehand\Core\Contracts\BaseModel;
+use Stagehand\Sessions\SessionActParams\Options\Model\AzureAPIKeyModelConfigObject;
+use Stagehand\Sessions\SessionActParams\Options\Model\AzureEntraModelConfigObject;
 use Stagehand\Sessions\SessionActParams\Options\Model\GenericModelConfigObject;
 use Stagehand\Sessions\SessionActParams\Options\Model\VertexModelConfigObject;
 use Stagehand\Sessions\SessionActParams\Options\Variable;
@@ -34,7 +36,7 @@ final class Options implements BaseModel
      * @var ModelVariants|null $model
      */
     #[Optional]
-    public string|VertexModelConfigObject|GenericModelConfigObject|null $model;
+    public string|VertexModelConfigObject|AzureEntraModelConfigObject|AzureAPIKeyModelConfigObject|GenericModelConfigObject|null $model;
 
     /**
      * Timeout in ms for the action.
@@ -64,7 +66,7 @@ final class Options implements BaseModel
      * @param array<string,VariableShape>|null $variables
      */
     public static function with(
-        string|VertexModelConfigObject|array|GenericModelConfigObject|null $model = null,
+        string|VertexModelConfigObject|array|AzureEntraModelConfigObject|AzureAPIKeyModelConfigObject|GenericModelConfigObject|null $model = null,
         ?float $timeout = null,
         ?array $variables = null,
     ): self {
@@ -83,7 +85,7 @@ final class Options implements BaseModel
      * @param ModelShape $model
      */
     public function withModel(
-        string|VertexModelConfigObject|array|GenericModelConfigObject $model
+        string|VertexModelConfigObject|array|AzureEntraModelConfigObject|AzureAPIKeyModelConfigObject|GenericModelConfigObject $model,
     ): self {
         $self = clone $this;
         $self['model'] = $model;

@@ -1,5 +1,20 @@
 # Changelog
 
+## 3.22.0 (2026-08-14)
+
+Full Changelog: [v3.21.0...v3.22.0](https://github.com/browserbase/stagehand-php/compare/v3.21.0...v3.22.0)
+
+### Features
+
+* [STG-2090] Add Azure Entra model auth support ([804b83d](https://github.com/browserbase/stagehand-php/commit/804b83d439fb62c8abf8d25853d41dc524a78d69))
+* **server-v3:** expose OpenAI endpoint format ([389a4db](https://github.com/browserbase/stagehand-php/commit/389a4db907137c7cc32f4cc01ddd503a73de6e80))
+* **stlc:** configurable CI runner and private-production-repo support in workflow templates ([0f76548](https://github.com/browserbase/stagehand-php/commit/0f76548bdf0f6a9e77aa3fd5e20a9224ed81ebc7))
+
+
+### Chores
+
+* **internal:** codegen related update ([38312f0](https://github.com/browserbase/stagehand-php/commit/38312f0fc4dd5e7b2320d9d20e64212032f5c21d))
+
 ## 3.21.0 (2026-05-27)
 
 Full Changelog: [v3.20.0...v3.21.0](https://github.com/browserbase/stagehand-php/compare/v3.20.0...v3.21.0)
